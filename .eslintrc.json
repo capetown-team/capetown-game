@@ -4,6 +4,7 @@
     "es2021": true
   },
   "extends": [
+    "plugin:jest/recommended",
     "plugin:prettier/recommended",
     "plugin:react/recommended",
     "airbnb"
