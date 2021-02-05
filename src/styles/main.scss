@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap');
+@import 'colors';
+
+* {
+  text-rendering: geometricPrecision;
+}
+
+html {
+  font-size: 10px;
+}
+
+body {
+  font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+  font-size: 1.6rem;
+  color: $black;
+  padding: 0;
+  margin: 0;
+}
+
+input, textarea {
+  color: $black;
+  font-family: inherit;
+
+  &::placeholder {
+    color: $grey;
+  }
+}
+
+button {
+  cursor: pointer;
+}
+
+input, textarea, button {
+  &:focus {
+    outline: 0;
+  }
+}
