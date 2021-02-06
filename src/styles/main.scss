@@ -1,8 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600&display=swap');
-@import 'colors';
+@import 'layout/colors';
 
 * {
   text-rendering: geometricPrecision;
+}
+
+*,
+*:before,
+*:after {
+ margin: 0;
+ padding: 0;
+ box-sizing: border-box;
 }
 
 html {
@@ -17,7 +25,8 @@ body {
   margin: 0;
 }
 
-input, textarea {
+input,
+ textarea {
   color: $black;
   font-family: inherit;
 
@@ -30,8 +39,48 @@ button {
   cursor: pointer;
 }
 
-input, textarea, button {
+input,
+ textarea,
+ button {
   &:focus {
     outline: 0;
   }
+}
+
+ul,
+ol {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+p,
+h1 {
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+header,
+section,
+footer,
+aside,
+nav,
+main,
+article,
+figure {
+  display: block;
+}
+
+button:focus,
+input:focus,
+textarea:focus,
+input:invalid,
+input {
+  outline: none;
+  box-shadow: none;
 }

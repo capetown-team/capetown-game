@@ -1,0 +1,15 @@
+.search {
+  background-color: $light-grey;
+  border-radius: 5px;
+  padding: 10px 10px 10px 40px;
+  background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA8AAAAPCAYAAAA71pVKAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAFzSURBVHgBnVJLTsNADLWdIrEj3CBH6BHSE5QgYN1uQF3RiM+W7lhUVcQCRbApPUAUOEHDDcoNcgO6BCkzxhPyo60Q9C0yYzvPfvYYoYFgGtucwTmzdpHRYeQUkRLMYOYPvBRWgBXxPm7rFsdydWAdKYP2L8+OntfIQRg7mnheEJda8x0JQaruSfVh6VeYda5PTxYluWU+CtQIgcwPKWnsXAwO00pRGL8wccwAbQusQFydMkZ5eaJuIWO02puxlVZ+bjC6wXRqV2QjWc7c8anxFTbganCcGNnmnn3Y7bry7rfzD7BXHeT3vaXITSEfgO5tYk3CqFer8JK6skBpnuUG4c3kIRo2ieMwdoEwyA3Ep2aseufJYzQ3AynMVKazQJRFYah6lGdLLEX9cqhUSdghjzXMCtORvAclkZkTOZayda7Zh2LIdeUSJsAIXcV630J6V5y9mWmPw2hk2iqVmX1YI/+GHwmkhX+RmwmUxj5sg9ui5y/eUJ9njJnaDQAAAABJRU5ErkJggg==');
+  background-repeat: no-repeat;
+  background-position: 10px 50%;
+
+  &__input {
+    border: none;
+    background: none;
+    width: 185px;
+    text-align: center;
+  }
+}

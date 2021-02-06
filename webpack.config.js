@@ -4,7 +4,10 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const WebpackBar = require('webpackbar');
 
+const isDev = process.env.NODE_ENV === 'development';
+
 module.exports = {
+  mode: 'development',
   entry: './src/index.tsx',
   output: {
     path: path.join(__dirname, '/dist'),
@@ -24,40 +27,29 @@ module.exports = {
         exclude: /node_modules/
       },
       {
-        test: /\.scss$/,
+        test: /\.scss$/i,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: {
-              publicPath: './'
-            }
-          },
-          {
-            loader: 'css-loader',
-            options: { sourceMap: true }
-          },
-          {
-            loader: 'sass-loader',
-            options: { sourceMap: true }
-          }
+          isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader'
         ]
       }
     ]
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './public/index.html'
     }),
     new MiniCssExtractPlugin({
       filename: '[name].[contenthash].css'
     }),
-    new CleanWebpackPlugin(),
     new WebpackBar()
   ],
   devServer: {
     contentBase: './dist',
     historyApiFallback: true,
-    hot: true,
+    hot: isDev,
     open: true
   }
 };
