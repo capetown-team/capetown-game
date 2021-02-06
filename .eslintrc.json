@@ -4,10 +4,11 @@
     "es2021": true
   },
   "extends": [
-    "plugin:jest/recommended",
+    "airbnb",
     "plugin:prettier/recommended",
     "plugin:react/recommended",
-    "airbnb"
+    "plugin:@typescript-eslint/recommended",
+    "plugin:jest/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -32,7 +33,11 @@
     "comma-dangle": ["error", "never"],
     "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
     "import/prefer-default-export": "off",
-    "import/extensions": "off"
+    "import/extensions": "off",
+    "object-curly-newline": "off",
+    "react/jsx-props-no-spreading": ["error", { "custom": "ignore" }],
+    "react/display-name": "off",
+    "react/jsx-curly-newline": "off"
   },
   "settings": {
     "import/resolver": {

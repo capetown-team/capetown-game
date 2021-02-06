@@ -2,7 +2,7 @@ import React from 'react';
 
 import './Forum.scss';
 
-export const Forum = () => (
+export const Forum = (): JSX.Element => (
   <main className="container">
     <header className="topping">
       <div className="search">

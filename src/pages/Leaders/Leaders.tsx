@@ -2,7 +2,7 @@ import React from 'react';
 
 import './Leaders.scss';
 
-export const Leaders = () => (
+export const Leaders = (): JSX.Element => (
   <main className="container">
     <header className="topping">
       <div className="search">
