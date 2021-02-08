@@ -64,7 +64,7 @@ export const Leaders: FC = () => {
 
   return (
     <main>
-      <Topping title="Доска лидеров" searchHandler={handlerSearch} />
+      <Topping title="Доска лидеров test" searchHandler={handlerSearch} />
       <Pagination
         usersPerPage={usersPerPage}
         totalUsers={filterUsers.length}
