@@ -19,25 +19,30 @@ const Pagination: FC<Props> = ({
   currentPage,
   paginate
 }) => {
-  const pageNumbers = [];
+  const pageNumbers = React.useMemo(() => {
+    const res: { num: number; current: boolean }[] = [];
 
-  for (let i = 1; i <= Math.ceil(totalUsers / usersPerPage); i += 1) {
-    if (i === currentPage) {
-      pageNumbers.push({ num: i, current: true });
-    } else {
-      pageNumbers.push({ num: i, current: false });
+    for (let i = 1; i <= Math.ceil(totalUsers / usersPerPage); i += 1) {
+      if (i === currentPage) {
+        res.push({ num: i, current: true });
+      } else {
+        res.push({ num: i, current: false });
+      }
     }
-  }
+
+    return res;
+  }, [currentPage]);
+
   return (
     <ul className={b()}>
-      {pageNumbers.map((item) => (
-        <li key={item.num} className="pagination__list">
+      {pageNumbers.map(({ num, current }) => (
+        <li key={num} className={b('list')}>
           <span
-            onClick={() => paginate(item.num)}
-            className={item.current ? b('link', { active: true }) : b('link')}
+            onClick={() => paginate(num)}
+            className={b('link', { active: !!current })}
             role="presentation"
           >
-            {item.num}
+            {num}
           </span>
         </li>
       ))}

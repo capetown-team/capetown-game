@@ -1,16 +1,18 @@
-import { Props } from '@/pages/Leaders/Leaders';
+import { Props as leaderData } from '@/pages/Leaders/Leaders';
 
-interface PaginationData {
+// type Data<T extends string | number> = T[];
+
+type Props = {
   currentPage: number;
   perPage: number;
-  data: Props[];
-}
+  data: leaderData[];
+};
 
 interface PaginationHook {
-  currentData: Props[];
+  currentData: leaderData[];
 }
 
-export const usePagination = (props: PaginationData): PaginationHook => {
+export const usePagination = (props: Props): PaginationHook => {
   const { currentPage, perPage, data } = props;
 
   const indexOfLast = currentPage * perPage;
