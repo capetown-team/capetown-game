@@ -1,1 +1,3 @@
-export { Leaders } from './Leaders';
+import { Leaders } from './Leaders';
+
+export default Leaders;

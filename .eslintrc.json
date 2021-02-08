@@ -37,7 +37,13 @@
     "object-curly-newline": "off",
     "react/jsx-props-no-spreading": ["error", { "custom": "ignore" }],
     "react/display-name": "off",
-    "react/jsx-curly-newline": "off"
+    "react/jsx-curly-newline": "off",
+    "prettier/prettier": ["error", {"endOfLine": "auto"}],
+    "linebreak-style": 0,
+    "no-multi-assign": "off",
+    "react/prop-types": "off",
+    "no-unused-vars": "off",
+    "arrow-body-style": "off"
   },
   "settings": {
     "import/resolver": {

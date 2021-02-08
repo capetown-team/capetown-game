@@ -1,65 +1,89 @@
-import React from 'react';
-
+import React, { useEffect, useState, FC } from 'react';
+import block from 'bem-cn-lite';
+import Pagination from '@/components/Pagination';
+import { usersData } from '@/pages/Leaders/data';
+import { Loading } from '@/components/Loading';
+import Topping from '@/components/Topping';
+import LeaderList from '@/pages/Leaders/LeaderList';
 import './Leaders.scss';
 
-export const Leaders = (): JSX.Element => (
-  <main className="container">
-    <header className="topping">
-      <div className="search">
-        <input className="search__input" type="text" placeholder="Поиск" />
-      </div>
-      <h2 className="topping__title">Доска лидеров</h2>
-    </header>
+const b = block('table');
 
-    <ul className="pagination">
-      <li className="pagination__list">
-        <span className="pagination__link">«</span>
-      </li>
-      <li className="pagination__list">
-        <span className="pagination__link">1</span>
-      </li>
-      <li className="pagination__list">
-        <span className="pagination__link pagination__link_active">2</span>
-      </li>
-      <li className="pagination__list">
-        <span className="pagination__link">3</span>
-      </li>
-      <li className="pagination__list">
-        <span className="pagination__link">»</span>
-      </li>
-    </ul>
+export type UserType = {
+  id: number;
+  displayName: string;
+  avatar: null | string;
+  score: number;
+};
 
-    <div className="table">
-      <div className="table__list table__list_header">
-        <div className="table__item">#</div>
-        <div className="table__item">Ава</div>
-        <div className="table__item table__item_main">Игрок</div>
-        <div className="table__item">Очки</div>
-      </div>
-      <div className="table__list">
-        <div className="table__item">1</div>
-        <div className="table__item">
-          <div className="table__avatar">
-            <img src="" alt="" />
-          </div>
+export type SearchFnType = (event: React.ChangeEvent<HTMLInputElement>) => void;
+export type PaginateType = (num: number) => void;
+
+export const Leaders: FC = () => {
+  const [loading, setLoading] = useState(true);
+  const usersEmpty: UserType[] = [];
+  const [users, setUsers] = useState(usersEmpty);
+  const [search, setSearch] = useState('');
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [usersPerPage] = useState(7);
+
+  // имутируем подключение к API
+  useEffect(() => {
+    setUsers(usersData);
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  const filterUsers = users.filter((user) => {
+    return user.displayName
+      .toLocaleLowerCase()
+      .includes(search.toLocaleLowerCase());
+  });
+
+  // Получаем текущих пользователей пагинации 13-45
+  const indexOfLastUser = currentPage * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = filterUsers.slice(indexOfFirstUser, indexOfLastUser);
+
+  // change page
+  const handlerPaginate: PaginateType = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handlerSearch: SearchFnType = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { value } = event.target;
+    setCurrentPage(1);
+    setSearch(value);
+  };
+
+  return (
+    <main>
+      <Topping title="Доска лидеров" searchHandler={handlerSearch} />
+      <Pagination
+        usersPerPage={usersPerPage}
+        totalUsers={filterUsers.length}
+        paginate={handlerPaginate}
+        currentPage={currentPage}
+      />
+
+      <div className={b()}>
+        <div className={b('list', { header: true })}>
+          <div className={b('item')}>#</div>
+          <div className={b('item')}>Ава</div>
+          <div className={b('item', { main: true })}>Игрок</div>
+          <div className={b('item')}>Очки</div>
         </div>
-        <div className="table__item table__item_main">Арина</div>
-        <div className="table__item">1170</div>
+
+        {currentUsers.map((user: UserType, index: number) => (
+          <LeaderList key={user.id} {...user} index={index} />
+        ))}
       </div>
-      <div className="table__list">
-        <div className="table__item">1</div>
-        <div className="table__item">
-          <div className="table__avatar">
-            <img
-              className="table__img"
-              src="https://ca.slack-edge.com/TPV9DP0N4-U018E7Z0T1B-a4ca2e163b27-512"
-              alt=""
-            />
-          </div>
-        </div>
-        <div className="table__item table__item_main">Арина</div>
-        <div className="table__item">1170</div>
-      </div>
-    </div>
-  </main>
-);
+    </main>
+  );
+};
