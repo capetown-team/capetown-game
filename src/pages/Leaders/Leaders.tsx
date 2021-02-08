@@ -5,6 +5,7 @@ import { usersData } from '@/pages/Leaders/data';
 import { Loading } from '@/components/Loading';
 import { Topping } from '@/components/Topping';
 import { LeaderList } from '@/pages/Leaders/LeaderList';
+import { usePagination } from '@/hooks/usePagination';
 
 import './Leaders.scss';
 
@@ -45,10 +46,11 @@ const Leaders: FC = () => {
       .includes(search.toLocaleLowerCase());
   });
 
-  // Получаем текущих пользователей пагинации 13-45
-  const indexOfLastUser = currentPage * usersPerPage;
-  const indexOfFirstUser = indexOfLastUser - usersPerPage;
-  const currentUsers = filterUsers.slice(indexOfFirstUser, indexOfLastUser);
+  const { currentData } = usePagination({
+    currentPage,
+    perPage: usersPerPage,
+    data: filterUsers
+  });
 
   // change page
   const handlerPaginate: PaginateType = (pageNumber: number) => {
@@ -81,7 +83,7 @@ const Leaders: FC = () => {
           <div className={b('item')}>Очки</div>
         </li>
 
-        {currentUsers.map((user: Props, index: number) => (
+        {currentData.map((user: Props, index: number) => (
           <LeaderList key={user.id} {...user} index={index} />
         ))}
       </ul>
