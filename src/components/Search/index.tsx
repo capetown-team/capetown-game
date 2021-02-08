@@ -1,3 +1,1 @@
-import Search from '@/components/Search/Search';
-
-export default Search;
+export { Search } from '@/components/Search/Search';

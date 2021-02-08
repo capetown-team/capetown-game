@@ -1,6 +1,6 @@
-import { UserType } from '@/pages/Leaders/Leaders';
+import { Props } from './Leaders';
 
-export const usersData: UserType[] = [
+export const usersData: Props[] = [
   {
     id: 1,
     displayName: 'Gilliam Underwood',

@@ -1,19 +1,15 @@
-import React from 'react';
+import React, { memo, FC } from 'react';
 import block from 'bem-cn-lite';
+import { Props as LeaderProps } from '@/pages/Leaders/Leaders';
 
 const b = block('table');
 
-type UserType = {
-  displayName: string;
-  avatar: null | string;
-  score: number;
-  index: number;
-};
+type Props = Omit<LeaderProps, 'id'>;
 
-const LeaderList = ({ avatar, displayName, score, index }: UserType) => {
+const LeaderList: FC<Props> = ({ avatar, displayName, score, index }) => {
   return (
-    <div className={b('list')}>
-      <div className={b('item')}>{index + 1}</div>
+    <li className={b('list')}>
+      <div className={b('item')}>{index ? index + 1 : 1}</div>
       <div className={b('item')}>
         <div className={b('avatar')}>
           {avatar ? (
@@ -23,8 +19,10 @@ const LeaderList = ({ avatar, displayName, score, index }: UserType) => {
       </div>
       <div className={b('item', { main: true })}>{displayName}</div>
       <div className={b('item')}>{score}</div>
-    </div>
+    </li>
   );
 };
 
-export default React.memo(LeaderList);
+const WrappedLeaderList = memo(LeaderList);
+
+export { WrappedLeaderList as LeaderList };

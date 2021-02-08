@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { withErrorBoundary } from 'react-error-boundary';
 
 import { PrivateRoute } from '@/components/PrivateRoute';
-import Leaders from '@/pages/Leaders';
+import { Leaders } from '@/pages/Leaders';
 import { Forum } from '@/pages/Forum';
 
 import './App.scss';

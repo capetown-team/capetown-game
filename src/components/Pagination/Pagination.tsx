@@ -6,14 +6,14 @@ import './Pagination.scss';
 
 const b = block('pagination');
 
-export type NumberType = {
+export type Props = {
   usersPerPage: number;
   totalUsers: number;
   currentPage: number;
   paginate: PaginateType;
 };
 
-const Pagination: FC<NumberType> = ({
+const Pagination: FC<Props> = ({
   usersPerPage,
   totalUsers,
   currentPage,
@@ -45,4 +45,6 @@ const Pagination: FC<NumberType> = ({
   );
 };
 
-export default memo(Pagination);
+const WrappedPagination = memo(Pagination);
+
+export { WrappedPagination as Pagination };

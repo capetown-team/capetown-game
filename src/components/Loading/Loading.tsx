@@ -1,5 +1,8 @@
 import React, { memo, FC } from 'react';
 
-export const Loading: FC = memo(() => (
-  <p style={{ textAlign: 'center' }}>loading</p>
-));
+import './Loading.scss';
+
+const Loading: FC = () => <p style={{ textAlign: 'center' }}>loading</p>;
+const WrappedLoading = memo(Loading);
+
+export { WrappedLoading as Loading };

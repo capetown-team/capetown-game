@@ -1,15 +1,16 @@
 import React, { memo, FC } from 'react';
 import block from 'bem-cn-lite';
+import { onSearch } from '@/pages/Leaders/Leaders';
+
 import './Search.scss';
-import { SearchFnType } from '@/pages/Leaders/Leaders';
 
 const b = block('search');
 
-export type ToppingType = {
-  searchHandler: SearchFnType;
+export type Props = {
+  searchHandler: onSearch;
 };
 
-const Search: FC<ToppingType> = ({ searchHandler }) => (
+const Search: FC<Props> = ({ searchHandler }) => (
   <div className={b()}>
     <input
       className={b('input')}
@@ -20,4 +21,6 @@ const Search: FC<ToppingType> = ({ searchHandler }) => (
   </div>
 );
 
-export default memo(Search);
+const WrappedSearch = memo(Search);
+
+export { WrappedSearch as Search };

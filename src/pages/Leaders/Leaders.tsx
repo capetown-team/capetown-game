@@ -1,32 +1,33 @@
-import React, { useEffect, useState, FC } from 'react';
+import React, { useEffect, useState, FC, memo } from 'react';
 import block from 'bem-cn-lite';
-import Pagination from '@/components/Pagination';
+import { Pagination } from '@/components/Pagination';
 import { usersData } from '@/pages/Leaders/data';
 import { Loading } from '@/components/Loading';
-import Topping from '@/components/Topping';
-import LeaderList from '@/pages/Leaders/LeaderList';
+import { Topping } from '@/components/Topping';
+import { LeaderList } from '@/pages/Leaders/LeaderList';
+
 import './Leaders.scss';
 
 const b = block('table');
 
-export type UserType = {
+export type Props = {
   id: number;
   displayName: string;
   avatar: null | string;
   score: number;
+  index?: number;
 };
 
-export type SearchFnType = (event: React.ChangeEvent<HTMLInputElement>) => void;
+export type onSearch = (event: React.ChangeEvent<HTMLInputElement>) => void;
 export type PaginateType = (num: number) => void;
 
-export const Leaders: FC = () => {
+const Leaders: FC = () => {
   const [loading, setLoading] = useState(true);
-  const usersEmpty: UserType[] = [];
-  const [users, setUsers] = useState(usersEmpty);
+  const [users, setUsers] = useState<Props[]>([]);
   const [search, setSearch] = useState('');
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [usersPerPage] = useState(7);
+  const usersPerPage = 7;
 
   // имутируем подключение к API
   useEffect(() => {
@@ -54,7 +55,7 @@ export const Leaders: FC = () => {
     setCurrentPage(pageNumber);
   };
 
-  const handlerSearch: SearchFnType = (
+  const handlerSearch: onSearch = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const { value } = event.target;
@@ -64,7 +65,7 @@ export const Leaders: FC = () => {
 
   return (
     <main>
-      <Topping title="Доска лидеров test" searchHandler={handlerSearch} />
+      <Topping title="Доска лидеров" searchHandler={handlerSearch} />
       <Pagination
         usersPerPage={usersPerPage}
         totalUsers={filterUsers.length}
@@ -72,18 +73,22 @@ export const Leaders: FC = () => {
         currentPage={currentPage}
       />
 
-      <div className={b()}>
-        <div className={b('list', { header: true })}>
+      <ul className={b()}>
+        <li className={b('list', { header: true })}>
           <div className={b('item')}>#</div>
           <div className={b('item')}>Ава</div>
           <div className={b('item', { main: true })}>Игрок</div>
           <div className={b('item')}>Очки</div>
-        </div>
+        </li>
 
-        {currentUsers.map((user: UserType, index: number) => (
+        {currentUsers.map((user: Props, index: number) => (
           <LeaderList key={user.id} {...user} index={index} />
         ))}
-      </div>
+      </ul>
     </main>
   );
 };
+
+const WrappedLeaders = memo(Leaders);
+
+export { WrappedLeaders as Leaders };

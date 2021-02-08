@@ -1,3 +1,1 @@
-import Pagination from '@/components/Pagination/Pagination';
-
-export default Pagination;
+export { Pagination } from './Pagination';

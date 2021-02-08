@@ -1,3 +1,1 @@
-import LeaderList from '@/pages/Leaders/LeaderList/LeaderList';
-
-export default LeaderList;
+export { LeaderList } from './LeaderList';

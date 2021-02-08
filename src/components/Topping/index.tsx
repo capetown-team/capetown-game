@@ -1,3 +1,1 @@
-import Topping from '@/components/Topping/Topping';
-
-export default Topping;
+export { Topping } from './Topping';
