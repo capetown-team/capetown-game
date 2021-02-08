@@ -1,65 +1,110 @@
-import React from 'react';
+import React, {
+  useEffect,
+  useState,
+  FC,
+  memo,
+  useMemo,
+  useCallback
+} from 'react';
+import block from 'bem-cn-lite';
+import { Pagination } from '@/components/Pagination';
+import { usersData } from '@/pages/Leaders/data';
+import { Loading } from '@/components/Loading';
+import { Topping } from '@/components/Topping';
+import { LeaderList } from '@/pages/Leaders/LeaderList';
+import { usePagination } from '@/hooks/usePagination';
 
 import './Leaders.scss';
 
-export const Leaders = (): JSX.Element => (
-  <main className="container">
-    <header className="topping">
-      <div className="search">
-        <input className="search__input" type="text" placeholder="Поиск" />
-      </div>
-      <h2 className="topping__title">Доска лидеров</h2>
-    </header>
+const b = block('table');
 
-    <ul className="pagination">
-      <li className="pagination__list">
-        <span className="pagination__link">«</span>
-      </li>
-      <li className="pagination__list">
-        <span className="pagination__link">1</span>
-      </li>
-      <li className="pagination__list">
-        <span className="pagination__link pagination__link_active">2</span>
-      </li>
-      <li className="pagination__list">
-        <span className="pagination__link">3</span>
-      </li>
-      <li className="pagination__list">
-        <span className="pagination__link">»</span>
-      </li>
-    </ul>
+export type Props = {
+  id: number;
+  displayName: string;
+  avatar: null | string;
+  score: number;
+  index?: number;
+};
 
-    <div className="table">
-      <div className="table__list table__list_header">
-        <div className="table__item">#</div>
-        <div className="table__item">Ава</div>
-        <div className="table__item table__item_main">Игрок</div>
-        <div className="table__item">Очки</div>
-      </div>
-      <div className="table__list">
-        <div className="table__item">1</div>
-        <div className="table__item">
-          <div className="table__avatar">
-            <img src="" alt="" />
-          </div>
-        </div>
-        <div className="table__item table__item_main">Арина</div>
-        <div className="table__item">1170</div>
-      </div>
-      <div className="table__list">
-        <div className="table__item">1</div>
-        <div className="table__item">
-          <div className="table__avatar">
-            <img
-              className="table__img"
-              src="https://ca.slack-edge.com/TPV9DP0N4-U018E7Z0T1B-a4ca2e163b27-512"
-              alt=""
-            />
-          </div>
-        </div>
-        <div className="table__item table__item_main">Арина</div>
-        <div className="table__item">1170</div>
-      </div>
-    </div>
-  </main>
-);
+export type onSearch = (event: React.ChangeEvent<HTMLInputElement>) => void;
+export type PaginateType = (num: number) => void;
+
+const Leaders: FC = () => {
+  const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState<Props[]>([]);
+  const [search, setSearch] = useState('');
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const usersPerPage = 7;
+
+  useMemo(() => {
+    const data = usersData.filter((user) => {
+      return user.displayName
+        .toLocaleLowerCase()
+        .includes(search.toLocaleLowerCase());
+    });
+
+    return setUsers(data);
+  }, [search]);
+
+  const { currentData } = usePagination({
+    currentPage,
+    perPage: usersPerPage,
+    data: users
+  });
+
+  const handlerPaginate: PaginateType = useCallback(
+    (pageNumber: number) => {
+      setCurrentPage(pageNumber);
+    },
+    [currentPage]
+  );
+
+  const handlerSearch: onSearch = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target;
+      setCurrentPage(1);
+      setSearch(value);
+    },
+    [search]
+  );
+
+  // имутируем подключение к API
+  useEffect(() => {
+    setUsers(usersData);
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  return (
+    <main>
+      <Topping title="Доска лидеров" searchHandler={handlerSearch} />
+      <Pagination
+        usersPerPage={usersPerPage}
+        totalUsers={users.length}
+        paginate={handlerPaginate}
+        currentPage={currentPage}
+      />
+
+      <ul className={b()}>
+        <li className={b('list', { header: true })}>
+          <div className={b('item')}>#</div>
+          <div className={b('item')}>Ава</div>
+          <div className={b('item', { main: true })}>Игрок</div>
+          <div className={b('item')}>Очки</div>
+        </li>
+
+        {currentData.map((user: Props, index: number) => (
+          <LeaderList key={user.id} {...user} index={index} />
+        ))}
+      </ul>
+    </main>
+  );
+};
+
+const WrappedLeaders = memo(Leaders);
+
+export { WrappedLeaders as Leaders };
