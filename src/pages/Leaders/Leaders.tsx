@@ -1,4 +1,11 @@
-import React, { useEffect, useState, FC, memo } from 'react';
+import React, {
+  useEffect,
+  useState,
+  FC,
+  memo,
+  useMemo,
+  useCallback
+} from 'react';
 import block from 'bem-cn-lite';
 import { Pagination } from '@/components/Pagination';
 import { usersData } from '@/pages/Leaders/data';
@@ -30,6 +37,38 @@ const Leaders: FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 7;
 
+  useMemo(() => {
+    const data = usersData.filter((user) => {
+      return user.displayName
+        .toLocaleLowerCase()
+        .includes(search.toLocaleLowerCase());
+    });
+
+    return setUsers(data);
+  }, [search]);
+
+  const { currentData } = usePagination({
+    currentPage,
+    perPage: usersPerPage,
+    data: users
+  });
+
+  const handlerPaginate: PaginateType = useCallback(
+    (pageNumber: number) => {
+      setCurrentPage(pageNumber);
+    },
+    [currentPage]
+  );
+
+  const handlerSearch: onSearch = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const { value } = event.target;
+      setCurrentPage(1);
+      setSearch(value);
+    },
+    [search]
+  );
+
   // имутируем подключение к API
   useEffect(() => {
     setUsers(usersData);
@@ -40,37 +79,12 @@ const Leaders: FC = () => {
     return <Loading />;
   }
 
-  const filterUsers = users.filter((user) => {
-    return user.displayName
-      .toLocaleLowerCase()
-      .includes(search.toLocaleLowerCase());
-  });
-
-  const { currentData } = usePagination({
-    currentPage,
-    perPage: usersPerPage,
-    data: filterUsers
-  });
-
-  // change page
-  const handlerPaginate: PaginateType = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const handlerSearch: onSearch = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const { value } = event.target;
-    setCurrentPage(1);
-    setSearch(value);
-  };
-
   return (
     <main>
       <Topping title="Доска лидеров" searchHandler={handlerSearch} />
       <Pagination
         usersPerPage={usersPerPage}
-        totalUsers={filterUsers.length}
+        totalUsers={users.length}
         paginate={handlerPaginate}
         currentPage={currentPage}
       />
