@@ -7,11 +7,12 @@ import { Leaders } from '@/pages/Leaders';
 import { Forum } from '@/pages/Forum';
 import { Autorization } from '@/pages/Autorization';
 import { Registration } from '@/pages/Registration';
+import { SomeError } from '@/components/SomeError'
 
 import './App.scss';
 
 const Test = () => <h1>Capetown Game</h1>;
-const ErrorComponent = () => <h1>Error</h1>;
+const ErrorComponent = () => <h1>Error1</h1>;
 
 const routes = [
   {
@@ -30,7 +31,21 @@ const routes = [
     component: Forum,
     isPrivate: true
   },
+{
+    path: '/error',
+    component: SomeError,
+    isPrivate: false,
+    text: 'Oops! Something wrong :(',
+    isInside: true
+  },
   {
+    path: '*',
+    component: SomeError,
+    isPrivate: false,
+    text: 'Oops! Not found :(',
+    isInside: true
+  },
+{
     path: '/login',
     component: Autorization,
     isPrivate: false
@@ -46,10 +61,11 @@ export const App = (): JSX.Element => (
   <div className="app">
     <Router>
       <Switch>
-        {routes.map(({ path, component, isPrivate, ...rest }) => {
+        {routes.map(({ path, component, isPrivate, isInside, ...rest }) => {
           const RouteComponent = isPrivate ? PrivateRoute : Route;
+          const Component = component;
 
-          return (
+          return !isInside ? (
             <RouteComponent
               key={path}
               path={path}
@@ -58,6 +74,10 @@ export const App = (): JSX.Element => (
               })}
               {...rest}
             />
+          ) : (
+            <RouteComponent key={path} path={path}>
+              <Component {...rest} />
+            </RouteComponent>
           );
         })}
       </Switch>
