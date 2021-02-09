@@ -1,9 +1,19 @@
-@import '../../styles/layout/colors';
+@import '@/styles/layout/colors';
+
 .button {
-    width: 280px;
-    height: 38px;
     background: $light-blue;
     text-align: center;
     display: block;
-    margin: auto;
+    &__size_s {
+        width: 280px;
+        height: 38px;
+    }
+    &__size_m {
+        width: 308px;
+        height: 42px;
+    }
+    &__size_l {
+        width: 336px;
+        height: 46px;
+    }
 }

@@ -5,8 +5,8 @@ import { withErrorBoundary } from 'react-error-boundary';
 import { PrivateRoute } from '@/components/PrivateRoute';
 import { Leaders } from '@/pages/Leaders';
 import { Forum } from '@/pages/Forum';
-import { Autorisation } from '@/pages/Autorisation';
-import { Registration } from '@/pages/Registration'
+import { Autorization } from '@/pages/Autorization';
+import { Registration } from '@/pages/Registration';
 
 import './App.scss';
 
@@ -30,15 +30,15 @@ const routes = [
     component: Forum,
     isPrivate: true
   },
-   {
+  {
     path: '/login',
-    component: Autorisation,
-    isPrivate: true
+    component: Autorization,
+    isPrivate: false
   },
   {
     path: '/registration',
     component: Registration,
-    isPrivate: true
+    isPrivate: false
   }
 ];
 

@@ -2,19 +2,16 @@ import React from 'react';
 
 import './Input.scss';
 
-interface InputProps {
-    id?: string;
-    placeHolder?: string;
-    children?: string | never[];
-  }
- 
-export function Input(props: InputProps) {
-    const { id, placeHolder } = props;
-        
-    return (         
-        <React.Fragment>
-            <input className="input" placeholder={placeHolder} id={id}>        
-            </input>
-        </React.Fragment>        
-    )
-}
+type changeEvent =
+  | ((event: React.ChangeEvent<HTMLInputElement>) => void)
+  | undefined;
+type inputProps = {
+  placeHolder?: string;
+  onChange?: changeEvent;
+};
+
+export const Input: React.FC<inputProps> = ({ placeHolder, onChange }) => {
+  return (
+    <input className="input" placeholder={placeHolder} onChange={onChange} />
+  );
+};
