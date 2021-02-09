@@ -19,13 +19,7 @@
     "sourceType": "module",
     "project": "./tsconfig.json"
   },
-  "plugins": [
-    "prettier",
-    "jest",
-    "react",
-    "react-hooks",
-    "@typescript-eslint"
-  ],
+  "plugins": ["prettier", "jest", "react", "react-hooks", "@typescript-eslint"],
   "rules": {
     "no-underscore-dangle": ["error", { "allowAfterThis": true }],
     "no-use-before-define": "off",
@@ -38,15 +32,14 @@
     "react/jsx-props-no-spreading": ["error", { "custom": "ignore" }],
     "react/display-name": "off",
     "react/jsx-curly-newline": "off",
-    "react/prop-types": "off"
+    // Все правильно, это правило нам не нужно)
 
+    "react/prop-types": "off"
   },
   "settings": {
     "import/resolver": {
       "alias": {
-        "map": [
-          ["@", "./src"]
-        ],
+        "map": [["@", "./src"]],
         "extensions": [".js", ".ts", ".tsx", ".scss"]
       }
     }

@@ -10,26 +10,26 @@ export const Registration = (): JSX.Element => (
       <div className="title">Регистрация</div>
       <div className="row">
         <div className="title-input"> Email </div>
-        <Input placeHolder="Email" />
+        <Input placeholder="Email" />
       </div>
       <div className="row">
         <div className="title-input"> Логин </div>
-        <Input placeHolder="Логин" />
+        <Input placeholder="Логин" />
       </div>
       <div className="row">
         <div className="title-input"> Имя </div>
-        <Input placeHolder="Имя" />
+        <Input placeholder="Имя" />
       </div>
       <div className="row">
         <div className="title-input"> Пароль </div>
-        <Input placeHolder="Пароль" />
+        <Input placeholder="Пароль" />
       </div>
       <div className="row">
         <div className="title-input"> Пароль (еще раз) </div>
-        <Input placeHolder="Пароль (еще раз) " />
+        <Input placeholder="Пароль (еще раз) " />
       </div>
       <div className="row-button">
-        <Button type="submit" size="s">
+        <Button type="submit" size="s" onClick={() => true}>
           Зарегистрироваться
         </Button>
       </div>

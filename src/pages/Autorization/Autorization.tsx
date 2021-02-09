@@ -11,15 +11,15 @@ export const Autorization = (): JSX.Element => (
       <div className="main">
         <div className="row">
           <div className="title-input"> Логин</div>
-          <Input placeHolder="Логин" />
+          <Input placeholder="Логин" />
         </div>
         <div className="row">
           <div className="title-input"> Пароль </div>
-          <Input placeHolder="Пароль" />
+          <Input placeholder="Пароль" />
         </div>
         <div className="row-button">
-          <Button type="submit" size="s">
-            Вход
+          <Button type="submit" size="s" onClick={() => true}>
+            <span>Вход</span>
           </Button>
         </div>
         <div className="row">

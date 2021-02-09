@@ -1,18 +1,18 @@
-import React, { memo, FC } from 'react';
+import React, { memo, FC, MouseEvent, ReactNode } from 'react';
 
 import './Button.scss';
 
-type mouseEvent =
-  | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
-  | undefined;
-
 type Props = {
-  placeHolder?: string;
-  onClick?: mouseEvent;
+  placeholder?: string;
+  // Вот такого типа будет достаточно
+  onClick: (event: MouseEvent) => void;
   size: string;
+  type: string;
+  children: ReactNode | string;
 };
 
 const Button: FC<Props> = ({ size, children, onClick }) => {
+  // Поребейсь ветку на мастер, там появилась библиотека что бы разруливать такие места
   const className = `button button__size_${size}`;
   return (
     <button type="submit" className={className} onClick={onClick}>
