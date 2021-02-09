@@ -10,7 +10,6 @@ import { SomeError } from '@/components/SomeError';
 import './App.scss';
 
 const Test = () => <h1>Capetown Game</h1>;
-const ErrorComponent = () => <h1>Error1</h1>;
 
 const routes = [
   {
