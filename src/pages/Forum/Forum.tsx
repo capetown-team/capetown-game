@@ -1,49 +1,67 @@
-import React from 'react';
+import React, { memo, useEffect, useState } from 'react';
+import block from 'bem-cn-lite';
+import { data as DataForum } from '@/pages/Forum/data';
+import { usePagination } from '@/hooks/usePagination';
+import { Topping } from '@/components/Topping';
+import { Loading } from '@/components/Loading';
+import { ForumList } from '@/pages/Forum/ForumList';
+import { Pagination } from '@/components/Pagination';
 
 import './Forum.scss';
 
-export const Forum = (): JSX.Element => (
-  <main className="container">
-    <header className="topping">
-      <div className="search">
-        <input className="search__input" type="text" placeholder="Поиск" />
-      </div>
-      <h2 className="topping__title">Форум</h2>
-    </header>
+const b = block('table');
 
-    <ul className="pagination">
-      <li className="pagination__list">
-        <span className="pagination__link">«</span>
-      </li>
-      <li className="pagination__list">
-        <span className="pagination__link">1</span>
-      </li>
-      <li className="pagination__list">
-        <span className="pagination__link pagination__link_active">2</span>
-      </li>
-      <li className="pagination__list">
-        <span className="pagination__link">3</span>
-      </li>
-      <li className="pagination__list">
-        <span className="pagination__link">»</span>
-      </li>
-    </ul>
+export type Props = {
+  id: number;
+  title: string;
+  message: number;
+};
 
-    <div className="table">
-      <div className="table__list table__list_header">
-        <div className="table__item">Статус</div>
-        <div className="table__item table__item_main">Тема</div>
-        <div className="table__item table__item_message">Сообщения</div>
-      </div>
-      <div className="table__list">
-        <div className="table__item">
-          <div className="table__page" />
-        </div>
-        <div className="table__item table__item_main">
-          Делимся секретами игры
-        </div>
-        <div className="table__item table__item_message">1170</div>
-      </div>
-    </div>
-  </main>
-);
+const Forum = () => {
+  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<Props[]>([]);
+
+  const usersPerPage = 7;
+
+  const { currentData, currentPage, handlerPaginate } = usePagination({
+    perPage: usersPerPage,
+    data
+  });
+
+  useEffect(() => {
+    setData(DataForum);
+    setLoading(false);
+  }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  return (
+    <main className="container">
+      <Topping title="Форум" />
+
+      <Pagination
+        usersPerPage={usersPerPage}
+        totalUsers={data.length}
+        paginate={handlerPaginate}
+        currentPage={currentPage}
+      />
+
+      <ul className={b()}>
+        <li className={b('list', { header: true })}>
+          <div className={b('item')}>Статус</div>
+          <div className={b('item', { main: true })}>Тема</div>
+          <div className={b('item', { message: true })}>Сообщения</div>
+        </li>
+        {currentData.map((item: Props) => (
+          <ForumList key={item.id} {...item} />
+        ))}
+      </ul>
+    </main>
+  );
+};
+
+const WrappedForum = memo(Forum);
+
+export { WrappedForum as Forum };

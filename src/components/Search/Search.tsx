@@ -1,13 +1,13 @@
 import React, { memo, FC } from 'react';
 import block from 'bem-cn-lite';
-import { onSearch } from '@/pages/Leaders/Leaders';
+import { SearchType } from '@/types.d';
 
 import './Search.scss';
 
 const b = block('search');
 
 export type Props = {
-  searchHandler: onSearch;
+  searchHandler: SearchType;
 };
 
 const Search: FC<Props> = ({ searchHandler }) => (
