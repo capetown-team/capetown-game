@@ -1,71 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { withErrorBoundary } from 'react-error-boundary';
 
 import { PrivateRoute } from '@/components/PrivateRoute';
-import { Leaders } from '@/pages/Leaders';
-import { Forum } from '@/pages/Forum';
-import { SomeError } from '@/components/SomeError';
+import { routes } from './routes';
 
 import './App.scss';
 
-const Test = () => <h1>Capetown Game</h1>;
-const ErrorComponent = () => <h1>Error1</h1>;
+const ErrorComponent = () => <h1>Error Boundary</h1>;
 
-const routes = [
-  {
-    path: '/',
-    component: Test,
-    isPrivate: true,
-    exact: true
-  },
-  {
-    path: '/leaders',
-    component: Leaders,
-    isPrivate: true
-  },
-  {
-    path: '/forum',
-    component: Forum,
-    isPrivate: true
-  },
-  {
-    path: '/error',
-    component: SomeError,
-    isPrivate: false,
-    text: 'Oops! Something wrong :(',
-    isInside: true
-  },
-  {
-    path: '*',
-    component: SomeError,
-    isPrivate: false,
-    text: 'Oops! Not found :(',
-    isInside: true
-  }
-];
+export const useAuth = () => {
+  const [isAuthorized, setAuth] = useState(true);
 
-export const App = (): JSX.Element => (
+  const signIn = () => {
+    setAuth(true);
+  };
+
+  return { isAuthorized, signIn };
+};
+
+export const App = () => (
   <div className="app">
     <Router>
       <Switch>
-        {routes.map(({ path, component, isPrivate, isInside, ...rest }) => {
+        {routes.map(({ path, component, isPrivate, ...rest }) => {
           const RouteComponent = isPrivate ? PrivateRoute : Route;
-          const Component = component;
+          const { isAuthorized } = useAuth();
 
-          return !isInside ? (
+          return (
             <RouteComponent
               key={path}
               path={path}
+              isAuthorized={isAuthorized}
               component={withErrorBoundary(component, {
                 fallbackRender: ErrorComponent
               })}
               {...rest}
             />
-          ) : (
-            <RouteComponent key={path} path={path}>
-              <Component {...rest} />
-            </RouteComponent>
           );
         })}
       </Switch>
