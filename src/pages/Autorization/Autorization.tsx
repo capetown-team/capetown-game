@@ -18,8 +18,8 @@ export const Autorization = (): JSX.Element => (
           <Input placeholder="Пароль" />
         </div>
         <div className="row-button">
-          <Button type="submit" size="s" onClick={() => true}>
-            <span>Вход</span>
+          <Button type="submit" size="s">
+            Вход
           </Button>
         </div>
         <div className="row">
