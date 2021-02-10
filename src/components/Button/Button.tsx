@@ -1,20 +1,20 @@
 import React, { memo, FC, MouseEvent, ReactNode } from 'react';
 import block from 'bem-cn-lite';
 
-const b = block('button');
-
 import './Button.scss';
+
+const b = block('button');
 
 type Props = {
   placeholder?: string;
-  onClick: (event: MouseEvent) => void;
+  onClick?: (event: MouseEvent) => void;
   size: string;
   type: string;
   children: ReactNode | string;
 };
 
 const Button: FC<Props> = ({ size, children, onClick }) => {
-  const className = b({ size: 's' });;
+  const className = b({ size: 's' });
   return (
     <button type="submit" className={className} onClick={onClick}>
       {children}
