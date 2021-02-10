@@ -9,12 +9,6 @@
     "lint:style": "stylelint --fix ./src",
     "lint": "./node_modules/.bin/eslint ./src --ext .tsx,.ts,.js"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm run lint"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/capetown-team/capetown-game.git"
