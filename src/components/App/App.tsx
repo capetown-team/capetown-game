@@ -6,6 +6,8 @@ import { PrivateRoute } from '@/components/PrivateRoute';
 import { Leaders } from '@/pages/Leaders';
 import { Forum } from '@/pages/Forum';
 import { SomeError } from '@/components/SomeError';
+import { Autorization } from '@/pages/Autorization';
+import { Registration } from '@/pages/Registration';
 
 import './App.scss';
 
@@ -42,6 +44,16 @@ const routes = [
     isPrivate: false,
     text: 'Oops! Not found :(',
     isInside: true
+  },
+  {
+    path: '/login',
+    component: Autorization,
+    isPrivate: false
+  },
+  {
+    path: '/registration',
+    component: Registration,
+    isPrivate: false
   }
 ];
 
