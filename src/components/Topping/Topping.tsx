@@ -1,7 +1,7 @@
 import React, { memo, FC } from 'react';
 import block from 'bem-cn-lite';
 import { Search } from '@/components/Search';
-import { onSearch } from '@/pages/Leaders/Leaders';
+import { SearchType } from '@/types.d';
 
 import './Topping.scss';
 
@@ -9,7 +9,7 @@ const b = block('topping');
 
 export type Props = {
   title: string;
-  searchHandler?: onSearch;
+  searchHandler?: SearchType;
 };
 
 const Topping: FC<Props> = ({ title, searchHandler }) => {

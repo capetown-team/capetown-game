@@ -8,11 +8,12 @@ import React, {
 } from 'react';
 import block from 'bem-cn-lite';
 import { Pagination } from '@/components/Pagination';
+import { SearchType } from '@/types.d';
 import { usersData } from '@/pages/Leaders/data';
+import { usePagination } from '@/hooks/usePagination';
 import { Loading } from '@/components/Loading';
 import { Topping } from '@/components/Topping';
 import { LeaderList } from '@/pages/Leaders/LeaderList';
-import { usePagination } from '@/hooks/usePagination';
 
 import './Leaders.scss';
 
@@ -26,15 +27,11 @@ export type Props = {
   index?: number;
 };
 
-export type onSearch = (event: React.ChangeEvent<HTMLInputElement>) => void;
-export type PaginateType = (num: number) => void;
-
 const Leaders: FC = () => {
   const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<Props[]>([]);
   const [search, setSearch] = useState('');
 
-  const [currentPage, setCurrentPage] = useState(1);
   const usersPerPage = 7;
 
   useMemo(() => {
@@ -47,23 +44,15 @@ const Leaders: FC = () => {
     return setUsers(data);
   }, [search]);
 
-  const { currentData } = usePagination({
-    currentPage,
+  const { currentData, currentPage, handlerPaginate } = usePagination({
     perPage: usersPerPage,
-    data: users
+    data: users,
+    search
   });
 
-  const handlerPaginate: PaginateType = useCallback(
-    (pageNumber: number) => {
-      setCurrentPage(pageNumber);
-    },
-    [currentPage]
-  );
-
-  const handlerSearch: onSearch = useCallback(
+  const handlerSearch: SearchType = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const { value } = event.target;
-      setCurrentPage(1);
       setSearch(value);
     },
     [search]
@@ -80,16 +69,17 @@ const Leaders: FC = () => {
   }
 
   return (
-    <main>
+    <main className={b()}>
       <Topping title="Доска лидеров" searchHandler={handlerSearch} />
       <Pagination
         usersPerPage={usersPerPage}
         totalUsers={users.length}
         paginate={handlerPaginate}
         currentPage={currentPage}
+        search={search}
       />
 
-      <ul className={b()}>
+      <ul>
         <li className={b('list', { header: true })}>
           <div className={b('item')}>#</div>
           <div className={b('item')}>Ава</div>

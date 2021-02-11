@@ -1,6 +1,6 @@
-import React, { memo, FC } from 'react';
+import React, { memo, FC, useMemo } from 'react';
 import block from 'bem-cn-lite';
-import { PaginateType } from '@/pages/Leaders/Leaders';
+import { PaginateType } from '@/types.d';
 
 import './Pagination.scss';
 
@@ -11,15 +11,17 @@ export type Props = {
   totalUsers: number;
   currentPage: number;
   paginate: PaginateType;
+  search?: string;
 };
 
 const Pagination: FC<Props> = ({
   usersPerPage,
   totalUsers,
   currentPage,
-  paginate
+  paginate,
+  search
 }) => {
-  const pageNumbers = React.useMemo(() => {
+  const pageNumbers = useMemo(() => {
     const res: { num: number; current: boolean }[] = [];
 
     for (let i = 1; i <= Math.ceil(totalUsers / usersPerPage); i += 1) {
@@ -31,7 +33,7 @@ const Pagination: FC<Props> = ({
     }
 
     return res;
-  }, [currentPage]);
+  }, [currentPage, search]);
 
   return (
     <ul className={b()}>
