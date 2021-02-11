@@ -38,7 +38,7 @@ const Forum = () => {
   }
 
   return (
-    <main className="container">
+    <main className={b()}>
       <Topping title="Форум" />
 
       <Pagination
@@ -48,14 +48,19 @@ const Forum = () => {
         currentPage={currentPage}
       />
 
-      <ul className={b()}>
+      <ul>
         <li className={b('list', { header: true })}>
           <div className={b('item')}>Статус</div>
           <div className={b('item', { main: true })}>Тема</div>
           <div className={b('item', { message: true })}>Сообщения</div>
         </li>
         {currentData.map((item: Props) => (
-          <ForumList key={item.id} {...item} />
+          <ForumList
+            key={item.id}
+            id={item.id}
+            title={item.title}
+            message={item.message}
+          />
         ))}
       </ul>
     </main>

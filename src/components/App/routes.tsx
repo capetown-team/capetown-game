@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Leaders } from '@/pages/Leaders';
 import { Forum } from '@/pages/Forum';
+import { ItemForum } from '@/pages/ItemForum';
 import { SomeError } from '@/components/SomeError';
 
 const Test = () => <h1>Capetown Game</h1>;
@@ -21,6 +22,13 @@ export const routes = [
   {
     path: '/forum',
     component: Forum,
+    exact: true,
+    isPrivate: true
+  },
+  {
+    path: '/forum/:id',
+    component: ItemForum,
+    exact: true,
     isPrivate: true
   },
   {

@@ -69,7 +69,7 @@ const Leaders: FC = () => {
   }
 
   return (
-    <main>
+    <main className={b()}>
       <Topping title="Доска лидеров" searchHandler={handlerSearch} />
       <Pagination
         usersPerPage={usersPerPage}
@@ -79,7 +79,7 @@ const Leaders: FC = () => {
         search={search}
       />
 
-      <ul className={b()}>
+      <ul>
         <li className={b('list', { header: true })}>
           <div className={b('item')}>#</div>
           <div className={b('item')}>Ава</div>
