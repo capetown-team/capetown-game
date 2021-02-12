@@ -1,53 +1,46 @@
-interface User {
+import axios from 'axios';
+
+type User = {
   email?: string;
   name?: string;
   login: string;
   password: string;
   avatar?: string;
-}
+};
 
 const host = 'https://ya-praktikum.tech/api/v2';
 
-export async function isAutorizied(user: User) {
-  try {
-    const response = await fetch(`${host}/auth/signin`, {
-      method: 'POST',
-      credentials: 'include',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json;charset=utf-8'
-      },
-      body: JSON.stringify(user)
-    });
-
-    if (response.status === 200) {
+export const isAutorizied = async (user: User) => {
+  return axios
+    .post(`${host}/auth/signin`, user)
+    .then(function (response) {
+      console.log(response);
       return true;
-    }
-    return false;
-  } catch (err) {
-    return false;
-  }
-}
-
-export function isRegistrationSuccess(user: User) {
-  return fetch(`${host}/auth/signup`, {
-    method: 'POST',
-    credentials: 'include',
-    mode: 'cors',
-    headers: {
-      'content-type': 'application/json'
-    },
-    body: JSON.stringify({
-      first_name: user.name,
-      second_name: user.name,
-      login: user.login,
-      email: user.email,
-      phone: '+79194234578',
-      password: user.password
     })
-  })
-    .then((response) => response.text()) // Можно вытащить через .json()
-    .then((data) => {
-      return data;
+    .catch(function (error) {
+      console.log(error);
+      return false;
     });
-}
+};
+
+export const isRegistrationSuccess = (user: User) => {
+  const data = {
+    first_name: user.name,
+    second_name: user.name,
+    login: user.login,
+    email: user.email,
+    phone: '+79191234567',
+    password: user.password
+  };
+
+  return axios
+    .post(`${host}/auth/signup`, data)
+    .then(function (response) {
+      console.log(response);
+      return true;
+    })
+    .catch(function (error) {
+      console.log(error);
+      return false;
+    });
+};
