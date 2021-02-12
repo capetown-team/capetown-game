@@ -1,18 +1,19 @@
-@import '../../styles/layout/colors';
 @import '../../styles/common/login';
 
-.title {
-    margin-top: 48px;
-}
+.form {
+    &__title {
+        margin-top: 48px;
+    }
 
-.row {
-    margin-top: 12px;
-}
+    &__row {
+        margin-top: 12px;
+    }
 
-.row-button {
-    margin-top: 12px;
-    margin-bottom: 30px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
+    &__row-button {
+        margin-top: 12px;
+        margin-bottom: 30px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+    }
 }

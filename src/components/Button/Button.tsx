@@ -9,14 +9,20 @@ type Props = {
   placeholder?: string;
   onClick?: (event: MouseEvent) => void;
   size: string;
-  type: string;
+  type?: string;
   children: ReactNode | string;
+  disabled?: boolean;
 };
 
-const Button: FC<Props> = ({ size, children, onClick }) => {
-  const className = b({ size: 's' });
+const Button: FC<Props> = ({ size, children, onClick, disabled }) => {
+  const className = b({ size });
   return (
-    <button type="submit" className={className} onClick={onClick}>
+    <button
+      disabled={disabled}
+      type="submit"
+      className={className}
+      onClick={onClick}
+    >
       {children}
     </button>
   );
