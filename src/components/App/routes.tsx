@@ -6,6 +6,7 @@ import { ItemForum } from '@/pages/ItemForum';
 import { SomeError } from '@/components/SomeError';
 import { Autorization } from '@/pages/Autorization';
 import { Registration } from '@/pages/Registration';
+import { Game } from '@/pages/Game';
 
 const Test = () => <h1>Capetown Game</h1>;
 
@@ -31,6 +32,11 @@ export const routes = [
     path: '/forum/:id',
     component: ItemForum,
     exact: true,
+    isPrivate: true
+  },
+  {
+    path: '/game',
+    component: Game,
     isPrivate: true
   },
   {

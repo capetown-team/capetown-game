@@ -44,7 +44,8 @@
     "react/prop-types": "off",
     "no-unused-vars": "off",
     "arrow-body-style": "off",
-    "@typescript-eslint/explicit-module-boundary-types": "off"
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "lines-between-class-members": "off"
   },
   "settings": {
     "import/resolver": {

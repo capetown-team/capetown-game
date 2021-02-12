@@ -41,7 +41,7 @@ const Leaders: FC = () => {
         .includes(search.toLocaleLowerCase());
     });
 
-    return setUsers(data);
+    setUsers(data);
   }, [search]);
 
   const { currentData, currentPage, handlerPaginate } = usePagination({
