@@ -88,7 +88,6 @@ export class Engine {
       this.ctx.beginPath();
 
       if (this.pacman.isMouthOpen) {
-        console.log('this.pacman.direction ', this.pacman.direction);
         const deltaRadians = (this.pacman.direction * Math.PI) / 2;
         this.ctx.arc(
           this.pacman.posX + this.pacman.radius,
