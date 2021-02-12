@@ -1,6 +1,6 @@
 @import '../../styles/layout/colors';
 
-.login {
+.form__login {
     position: absolute;
     width: 369px;
     height: 512px;
@@ -9,21 +9,21 @@
     vertical-align: center;
 }
 
-.body {
+.form__wrapper {
     text-align: center;
     display: flex;
     justify-content: center;
 }
 
-.link {
+.form__link {
     color: $light-blue;
 }
 
-.row {
+.form__row {
     margin-top: 15px;
 }
 
-.title-input {
+.form__title-input {
     width: 280px;
     text-align: left;
     margin-left: 44.5px;

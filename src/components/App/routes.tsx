@@ -28,12 +28,14 @@ export const routes = [
   {
     path: '/autorization',
     component: Autorization,
-    isPrivate: false
+    isPrivate: false,
+    exact: true
   },
   {
     path: '/registration',
     component: Registration,
-    isPrivate: false
+    isPrivate: false,
+    exact: true
   },
   {
     path: '/error',

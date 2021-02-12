@@ -14,7 +14,7 @@ const typeValidErrors = {
   PWDR_ERROR: 'Пароли не совпадают'
 };
 
-export function isValidEmail(email: string) {
+export const isValidEmail = (email: string) => {
   let result = '';
 
   if (email.length < 5) {
@@ -28,9 +28,9 @@ export function isValidEmail(email: string) {
   }
 
   return result;
-}
+};
 
-export function isValidLogin(login: string) {
+export const isValidLogin = (login: string) => {
   let result = '';
 
   if (login.length < 5) {
@@ -44,9 +44,9 @@ export function isValidLogin(login: string) {
   }
 
   return result;
-}
+};
 
-export function isValidName(name: string) {
+export const isValidName = (name: string) => {
   let result = '';
 
   if (name.length < 5) {
@@ -57,12 +57,9 @@ export function isValidName(name: string) {
   }
 
   return result;
-}
+};
 
-export function isValidPassword(
-  password: string,
-  passwordConfirm: string | undefined = undefined
-) {
+export const isValidPassword = (password: string) => {
   let result = '';
 
   if (password.length < 8) {
@@ -77,9 +74,19 @@ export function isValidPassword(
   if (password.search(REXP_NUMERAL) < 0) {
     result = typeValidErrors.NUMERAL_ERROR;
   }
+
+  return result;
+};
+
+export const isValidPasswordConfirm = (
+  password: string,
+  passwordConfirm: string | undefined = undefined
+) => {
+  let result = '';
+
   if (passwordConfirm !== undefined && !(password === passwordConfirm)) {
     result = typeValidErrors.PWDR_ERROR;
   }
 
   return result;
-}
+};

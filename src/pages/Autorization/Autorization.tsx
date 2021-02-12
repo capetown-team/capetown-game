@@ -11,6 +11,10 @@ import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { isValidLogin, isValidPassword } from '@/modules/validation';
 import { isAutorizied } from '@/api/login';
+import block from 'bem-cn-lite';
+import { Link } from 'react-router-dom';
+
+const b = block('form');
 
 export const Autorization = () => {
   const [login, setLogin] = useState('');
@@ -83,12 +87,12 @@ export const Autorization = () => {
   };
 
   return (
-    <div className="body">
-      <form className="login">
-        <div className="title">Авторизация</div>
-        <div className="main">
-          <div className="row">
-            <div className="title-input"> Логин</div>
+    <div className={b('wrapper')}>
+      <form className={b('login')}>
+        <div className={b('title')}>Авторизация</div>
+        <div className={b('main')}>
+          <div className={b('row')}>
+            <div className={b('title-input')}> Логин</div>
             {loginDirty && loginError && (
               <div style={{ color: 'red' }}>{loginError}</div>
             )}
@@ -102,7 +106,7 @@ export const Autorization = () => {
             />
           </div>
           <div className="row">
-            <div className="title-input"> Пароль </div>
+            <div className={b('title-input')}> Пароль </div>
             {passwordDirty && passwordError && (
               <div style={{ color: 'red' }}>{passwordError}</div>
             )}
@@ -116,7 +120,7 @@ export const Autorization = () => {
               placeholder="Пароль"
             />
           </div>
-          <div className="row-button">
+          <div className={b('row-button')}>
             <Button
               disabled={!formValid}
               type="submit"
@@ -126,10 +130,10 @@ export const Autorization = () => {
               Вход
             </Button>
           </div>
-          <div className="row">
-            <div className="link">
-              <a href="/registraion">Регистрация</a>
-            </div>
+          <div className={b('row')}>
+            <Link className={b('link')} to="/registration">
+              Регистрация
+            </Link>
           </div>
         </div>
       </form>

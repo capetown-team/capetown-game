@@ -13,9 +13,13 @@ import {
   isValidLogin,
   isValidName,
   isValidEmail,
-  isValidPassword
+  isValidPassword,
+  isValidPasswordConfirm
 } from '@/modules/validation';
 import { isRegistrationSuccess } from '@/api/login';
+import block from 'bem-cn-lite';
+
+const b = block('form');
 
 export const Registration = () => {
   const [login, setLogin] = useState('');
@@ -43,12 +47,18 @@ export const Registration = () => {
   const [formValid, setFormValid] = useState(false);
 
   useEffect(() => {
-    if (loginError || passwordError || emailError || nameError) {
+    if (
+      loginError ||
+      passwordError ||
+      emailError ||
+      nameError ||
+      passwordConfirmError
+    ) {
       setFormValid(false);
     } else {
       setFormValid(true);
     }
-  }, [loginError, passwordError, emailError, nameError]);
+  }, [loginError, passwordError, passwordConfirmError, emailError, nameError]);
 
   const blurHandler = (e: FocusEvent<Element>) => {
     switch ((e.target as HTMLInputElement).name) {
@@ -109,10 +119,7 @@ export const Registration = () => {
   const passwordHandler = (e: ChangeEvent<Element>) => {
     const text = (e.target as HTMLInputElement).value;
     setPassword(text);
-    const elementPasswordConfirm = document.getElementById(
-      'passwordConfirm'
-    ) as HTMLInputElement;
-    const passwordErr = isValidPassword(text, elementPasswordConfirm.value);
+    const passwordErr = isValidPassword(text);
     setPasswordError(passwordErr);
   };
 
@@ -122,7 +129,7 @@ export const Registration = () => {
     const elementPassword = document.getElementById(
       'password'
     ) as HTMLInputElement;
-    const passwordErr = isValidPassword(text, elementPassword.value);
+    const passwordErr = isValidPasswordConfirm(text, elementPassword.value);
     setPasswordConfirmError(passwordErr);
   };
 
@@ -141,11 +148,11 @@ export const Registration = () => {
   };
 
   return (
-    <div className="body">
-      <form className="login">
-        <div className="title">Регистрация</div>
-        <div className="row">
-          <div className="title-input"> Email </div>
+    <div className={b('wrapper')}>
+      <form className={b('login')}>
+        <div className={b('title')}>Регистрация</div>
+        <div className={b('row')}>
+          <div className={b('title-input')}>Email</div>
           {emailDirty && emailError && (
             <div style={{ color: 'red' }}>{emailError}</div>
           )}
@@ -158,8 +165,8 @@ export const Registration = () => {
             placeholder="Email"
           />
         </div>
-        <div className="row">
-          <div className="title-input"> Логин </div>
+        <div className={b('row')}>
+          <div className={b('title-input')}>Логин</div>
           {loginDirty && loginError && (
             <div style={{ color: 'red' }}>{loginError}</div>
           )}
@@ -172,8 +179,8 @@ export const Registration = () => {
             placeholder="Логин"
           />
         </div>
-        <div className="row">
-          <div className="title-input"> Имя </div>
+        <div className={b('row')}>
+          <div className={b('title-input')}>Имя</div>
           {nameDirty && nameError && (
             <div style={{ color: 'red' }}>{nameError}</div>
           )}
@@ -186,8 +193,8 @@ export const Registration = () => {
             placeholder="Имя"
           />
         </div>
-        <div className="row">
-          <div className="title-input"> Пароль </div>
+        <div className={b('row')}>
+          <div className={b('title-input')}>Пароль</div>
           {passwordDirty && passwordError && (
             <div style={{ color: 'red' }}>{passwordError}</div>
           )}
@@ -201,8 +208,8 @@ export const Registration = () => {
             placeholder="Пароль"
           />
         </div>
-        <div className="row">
-          <div className="title-input"> Пароль (еще раз) </div>
+        <div className={b('row')}>
+          <div className={b('title-input')}>Пароль (еще раз)</div>
           {passwordConfirmDirty && passwordConfirmError && (
             <div style={{ color: 'red' }}>{passwordConfirmError}</div>
           )}
@@ -216,7 +223,7 @@ export const Registration = () => {
             placeholder="Пароль (еще раз)"
           />
         </div>
-        <div className="row-button">
+        <div className={b('row-button')}>
           <Button
             disabled={!formValid}
             type="submit"
