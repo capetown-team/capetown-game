@@ -1,5 +1,12 @@
+export enum DirectionType {
+  right = 0,
+  left = 2,
+  up = 3,
+  down = 1
+}
+
 export class Direction {
-  direction: number;
+  direction: DirectionType;
   angle1: number;
   angle2: number;
   dirX: number;

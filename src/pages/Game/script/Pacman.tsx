@@ -6,17 +6,17 @@ export class Pacman {
   radius = 20;
   posX = 0;
   posY = 0;
-  speed = 3;
+  speed = 1;
   stepMounth = 12;
   isMouthOpen = false;
-  angle1 = 4;
-  angle2 = 1.75;
+  angle1 = right.angle1;
+  angle2 = right.angle2;
   dirX = right.dirX;
   dirY = right.dirY;
   frozen = false;
   initParameters: InitParameters;
   directionWatcher = new DirectionWatch();
-  direction = 0;
+  direction = right.direction;
 
   constructor(initParameters: InitParameters) {
     this.initParameters = initParameters;
@@ -53,17 +53,19 @@ export class Pacman {
       this.posX += this.speed * this.dirX;
       this.posY += this.speed * this.dirY;
 
+      // начальная точка откуда будет появляться персонаж
+      const startLoop = 1;
       if (this.posX >= this.initParameters.width - this.radius) {
-        this.posX = 5 - this.radius;
+        this.posX = startLoop - this.radius;
       }
       if (this.posX <= 0 - this.radius) {
-        this.posX = this.initParameters.width - 5 - this.radius;
+        this.posX = this.initParameters.width - startLoop - this.radius;
       }
       if (this.posY >= this.initParameters.height - this.radius) {
-        this.posY = 5 - this.radius;
+        this.posY = startLoop - this.radius;
       }
       if (this.posY <= 0 - this.radius) {
-        this.posY = this.initParameters.height - 5 - this.radius;
+        this.posY = this.initParameters.height - startLoop - this.radius;
       }
     }
   }

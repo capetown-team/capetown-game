@@ -1,5 +1,5 @@
 import { InitParameters } from '@/pages/Game/script/Types';
-import { Pacman } from '@/pages/Game/script/Pocman';
+import { Pacman } from '@/pages/Game/script/Pacman';
 import { right, left, up, down } from '@/pages/Game/script/constants';
 
 export class Engine {
