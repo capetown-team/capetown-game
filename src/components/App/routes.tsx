@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Leaders } from '@/pages/Leaders';
 import { Forum } from '@/pages/Forum';
+import { ItemForum } from '@/pages/ItemForum';
 import { SomeError } from '@/components/SomeError';
 import { Autorization } from '@/pages/Autorization';
 import { Registration } from '@/pages/Registration';
@@ -23,6 +24,13 @@ export const routes = [
   {
     path: '/forum',
     component: Forum,
+    exact: true,
+    isPrivate: true
+  },
+  {
+    path: '/forum/:id',
+    component: ItemForum,
+    exact: true,
     isPrivate: true
   },
   {
