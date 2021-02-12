@@ -1,0 +1,22 @@
+@import '../../styles/layout/colors';
+
+.button {
+    background: $light-blue;
+    text-align: center;
+    display: block;
+
+    &_size_s {
+        width: 280px;
+        height: 38px;
+    }
+
+    &_size_m {
+        width: 308px;
+        height: 42px;
+    }
+
+    &_size_l {
+        width: 336px;
+        height: 46px;
+    }
+}

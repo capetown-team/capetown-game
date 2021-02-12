@@ -1,0 +1,19 @@
+@import '../../styles/common/login';
+
+.form {
+    &__title {
+        margin-top: 48px;
+    }
+
+    &__row {
+        margin-top: 12px;
+    }
+
+    &__row-button {
+        margin-top: 12px;
+        margin-bottom: 30px;
+        text-align: center;
+        display: flex;
+        justify-content: center;
+    }
+}

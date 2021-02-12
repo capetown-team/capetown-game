@@ -4,6 +4,8 @@ import { Leaders } from '@/pages/Leaders';
 import { Forum } from '@/pages/Forum';
 import { ItemForum } from '@/pages/ItemForum';
 import { SomeError } from '@/components/SomeError';
+import { Autorization } from '@/pages/Autorization';
+import { Registration } from '@/pages/Registration';
 
 const Test = () => <h1>Capetown Game</h1>;
 
@@ -30,6 +32,18 @@ export const routes = [
     component: ItemForum,
     exact: true,
     isPrivate: true
+  },
+  {
+    path: '/autorization',
+    component: Autorization,
+    isPrivate: false,
+    exact: true
+  },
+  {
+    path: '/registration',
+    component: Registration,
+    isPrivate: false,
+    exact: true
   },
   {
     path: '/error',
