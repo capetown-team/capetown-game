@@ -16,9 +16,6 @@ const Game = () => {
 
   useEffect(() => {
     setEngine(new Engine(canvasRef.current));
-    // setEngine({ test: null });
-    // const engine2 = new Engine(canvasRef.current);
-    // engine2.startGame();
   }, []);
 
   const handlerStart = useCallback(() => {

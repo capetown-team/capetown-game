@@ -52,17 +52,16 @@ export class Engine {
     this.gameOver = true;
     this.started = false;
     this.pause = false;
-    console.log('finish');
   }
 
   newGame() {
     this.pacman.reset();
+    this.pacman.directionWatcher.set(right);
     this.startGame();
   }
 
   startGame() {
     if (this.started && this.pause !== true) {
-      console.log('reset');
       this.pacman.reset();
 
       return;
@@ -89,6 +88,7 @@ export class Engine {
       this.ctx.beginPath();
 
       if (this.pacman.isMouthOpen) {
+        console.log('this.pacman.direction ', this.pacman.direction);
         const deltaRadians = (this.pacman.direction * Math.PI) / 2;
         this.ctx.arc(
           this.pacman.posX + this.pacman.radius,
@@ -141,7 +141,6 @@ export class Engine {
         this.pacman.directionWatcher.set(right);
         break;
       default:
-        console.log('nothing');
     }
   }
 }

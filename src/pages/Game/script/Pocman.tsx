@@ -5,7 +5,7 @@ import { DirectionWatch } from '@/pages/Game/Direction/DirectionWatch';
 export class Pacman {
   radius = 20;
   posX = 0;
-  posY = 6 * 2 * this.radius;
+  posY = 0;
   speed = 3;
   stepMounth = 12;
   isMouthOpen = false;
@@ -20,6 +20,7 @@ export class Pacman {
 
   constructor(initParameters: InitParameters) {
     this.initParameters = initParameters;
+    this.posY = this.initParameters.height / 2 - this.radius;
   }
 
   checkDirectionChange() {
@@ -74,7 +75,7 @@ export class Pacman {
 
   reset() {
     this.posX = 0;
-    this.posY = 6 * 2 * this.radius;
+    this.posY = this.initParameters.height / 2 - this.radius;
 
     this.setDirection(right);
   }
