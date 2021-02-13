@@ -17,7 +17,7 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error) {
-    this.setState({ error: true });
+    this.setState({ error: !!error });
   }
 
   render() {
