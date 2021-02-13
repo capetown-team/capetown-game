@@ -1,4 +1,4 @@
-import { Direction } from '@/pages/Game/Direction/Direction';
+import { Direction } from '@/pages/Game/script/Direction/Direction';
 
 type Props = {
   direction: number;

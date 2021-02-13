@@ -1,6 +1,6 @@
 import { right } from '@/pages/Game/script/constants';
 import { InitParameters } from '@/pages/Game/script/Types';
-import { DirectionWatch } from '@/pages/Game/Direction/DirectionWatch';
+import { DirectionWatch } from '@/pages/Game/script/Direction/DirectionWatch';
 
 export class Pacman {
   radius = 20;

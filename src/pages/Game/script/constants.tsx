@@ -1,4 +1,7 @@
-import { Direction, DirectionType } from '@/pages/Game/Direction/Direction';
+import {
+  Direction,
+  DirectionType
+} from '@/pages/Game/script/Direction/Direction';
 
 export const right = new Direction(DirectionType.right, 4, 1.75, 1, 0);
 export const left = new Direction(DirectionType.left, 1.25, 0.75, -1, 0);
