@@ -1,4 +1,6 @@
+@import '../../styles/layout/variables';
+@import '../../styles/layout/mixins';
+
 .app {
-  margin: 0 auto;
-  width: 1200px;
+  @include wrap;
 }

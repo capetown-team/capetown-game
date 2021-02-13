@@ -1,0 +1,59 @@
+@import '../../styles/layout/colors';
+@import '../../styles/layout/variables';
+@import '../../styles/layout/mixins';
+
+.header {
+  background-color: $light-grey;
+
+  &__wrap {
+    height: $headerHeight;
+    padding: 0 1em;
+    display: flex;
+    align-items: center;
+
+    @include wrap;
+  }
+
+  &__logo {
+    display: block;
+    border: 2px solid $white;
+    border-radius: 3px;
+    color: $black;
+    padding: 5px 15px;
+    font-size: 1.5em;
+    transition: border .7s, color .5s;
+    font-family: 'Cabin Sketch', cursive;
+
+    &:hover {
+      border-color: rgba($light-blue, .4);
+      color: $light-blue;
+    }
+  }
+
+  &__nav {
+    margin-left: auto;
+    display: flex;
+    list-style-type: none;
+  }
+
+  &__list {
+    margin-left: 2em;
+  }
+
+  &__link {
+    &:after {
+      content: '';
+      display: block;
+      height: 1px;
+      width: 0;
+      background-color: $black;
+      transition: width .1s;
+    }
+
+    &:hover {
+      &:after {
+        width: 100%;
+      }
+    }
+  }
+}
