@@ -1,5 +1,6 @@
 import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
 import block from 'bem-cn-lite';
+import { withErrorBoundary } from '@/components/ErrorBoundary';
 import { Topping } from '@/components/Topping';
 import { Engine } from '@/pages/Game/script/Game';
 
@@ -67,6 +68,6 @@ const Game = () => {
   );
 };
 
-const WrappedGame = memo(Game);
+const WrappedGame = withErrorBoundary(memo(Game));
 
 export { WrappedGame as Game };
