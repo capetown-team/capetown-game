@@ -2,7 +2,7 @@
 @import '../../styles/layout/variables';
 
 .error {
-  height: calc(100vh - #{$headerHeight});
+  min-height: calc(100vh - #{$headerHeight});
   display: flex;
   align-items: center;
   margin: 0 auto;

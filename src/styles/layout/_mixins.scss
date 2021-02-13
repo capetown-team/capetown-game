@@ -1,5 +1,13 @@
+@import 'variables';
+
 @mixin centered() {
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
+}
+
+@mixin wrap() {
+  margin: 0 auto;
+  max-width: 1200px;
+  min-width: $minWidthContainer;
 }

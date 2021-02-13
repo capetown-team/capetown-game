@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { withErrorBoundary } from 'react-error-boundary';
 
 import { PrivateRoute } from '@/components/PrivateRoute';
+import { Header } from '@/components/Header';
 import { routes } from './routes';
 
 import './App.scss';
@@ -20,8 +21,9 @@ export const useAuth = () => {
 };
 
 export const App = () => (
-  <div className="app">
-    <Router>
+  <Router>
+    <Header />
+    <div className="app">
       <Switch>
         {routes.map(({ path, component, isPrivate, ...rest }) => {
           const RouteComponent = isPrivate ? PrivateRoute : Route;
@@ -40,6 +42,6 @@ export const App = () => (
           );
         })}
       </Switch>
-    </Router>
-  </div>
+    </div>
+  </Router>
 );
