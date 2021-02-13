@@ -15,11 +15,12 @@ type Props = {
 };
 
 const Button: FC<Props> = ({ size, children, onClick, disabled }) => {
+  const className = b({ size });
   return (
     <button
       disabled={disabled}
       type="submit"
-      className={b({ size })}
+      className={className}
       onClick={onClick}
     >
       {children}

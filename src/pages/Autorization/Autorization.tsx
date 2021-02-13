@@ -6,14 +6,13 @@ import React, {
   ChangeEvent
 } from 'react';
 
+import './Autorization.scss';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { isValidLogin, isValidPassword } from '@/modules/validation';
 import { isAutorizied } from '@/api/login';
 import block from 'bem-cn-lite';
 import { Link } from 'react-router-dom';
-
-import './Autorization.scss';
 
 const b = block('form');
 
@@ -70,7 +69,6 @@ export const Autorization = () => {
       password
     };
 
-    console.log(user);
     const isSignIn = await isAutorizied(user);
 
     if (isSignIn) {

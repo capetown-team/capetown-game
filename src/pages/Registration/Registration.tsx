@@ -90,7 +90,6 @@ export const Registration = () => {
       name
     };
 
-    console.log(user);
     const isSignUp = await isRegistrationSuccess(user);
 
     if (isSignUp) {
