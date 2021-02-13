@@ -5,6 +5,7 @@ import React, {
   ChangeEvent,
   MouseEvent
 } from 'react';
+import { useHistory } from 'react-router-dom';
 
 import './Registration.scss';
 import { Button } from '@/components/Button';
@@ -22,6 +23,7 @@ import block from 'bem-cn-lite';
 const b = block('form');
 
 export const Registration = () => {
+  const history = useHistory();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -93,7 +95,7 @@ export const Registration = () => {
     const isSignUp = await isRegistrationSuccess(user);
 
     if (isSignUp) {
-      console.log('Переход на страницу игры');
+      history.replace('/game');
     } else {
       setPasswordError('Что-то пошло не так');
     }

@@ -11,8 +11,11 @@ type User = {
 const host = 'https://ya-praktikum.tech/api/v2';
 
 export const isAutorizied = async (user: User) => {
-  return axios
-    .post(`${host}/auth/signin`, user)
+  return axios(`${host}/auth/signin`, {
+    method: 'post',
+    data: user,
+    withCredentials: true
+  })
     .then((response: AxiosResponse) => {
       console.log(response);
       return true;
@@ -33,8 +36,11 @@ export const isRegistrationSuccess = (user: User) => {
     password: user.password
   };
 
-  return axios
-    .post(`${host}/auth/signup`, data)
+  return axios(`${host}/auth/signup`, {
+    method: 'post',
+    data,
+    withCredentials: true
+  })
     .then((response: AxiosResponse) => {
       console.log(response);
       return true;

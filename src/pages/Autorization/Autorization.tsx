@@ -5,6 +5,7 @@ import React, {
   FocusEvent,
   ChangeEvent
 } from 'react';
+import { useHistory, Link } from 'react-router-dom';
 
 import './Autorization.scss';
 import { Button } from '@/components/Button';
@@ -12,11 +13,11 @@ import { Input } from '@/components/Input';
 import { isValidLogin, isValidPassword } from '@/modules/validation';
 import { isAutorizied } from '@/api/login';
 import block from 'bem-cn-lite';
-import { Link } from 'react-router-dom';
 
 const b = block('form');
 
 export const Autorization = () => {
+  const history = useHistory();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [loginDirty, setLoginDirty] = useState(false);
@@ -72,7 +73,7 @@ export const Autorization = () => {
     const isSignIn = await isAutorizied(user);
 
     if (isSignIn) {
-      console.log('Переход на страницу игры');
+      history.replace('/game');
     } else {
       setPasswordError('Неверный логин или пароль');
     }
