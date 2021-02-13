@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 type User = {
   email?: string;
@@ -17,7 +17,7 @@ export const isAutorizied = async (user: User) => {
       console.log(response);
       return true;
     })
-    .catch(function (error) {
+    .catch((error) => {
       console.log(error);
       return false;
     });
@@ -35,11 +35,11 @@ export const isRegistrationSuccess = (user: User) => {
 
   return axios
     .post(`${host}/auth/signup`, data)
-    .then(function (response) {
+    .then(function (response: AxiosResponse<any>) {
       console.log(response);
       return true;
     })
-    .catch(function (error) {
+    .catch((error: Error) => {
       console.log(error);
       return false;
     });

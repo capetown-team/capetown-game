@@ -15,78 +15,68 @@ const typeValidErrors = {
 };
 
 export const isValidEmail = (email: string) => {
-  let result = '';
-
   if (email.length < 5) {
-    result = 'Длина не может быть меньше 5';
+    return 'Длина не может быть меньше 5';
   }
   if (!REXP_EMAIL.test(email)) {
-    result = typeValidErrors.FORMAT_ERROR;
+    return typeValidErrors.FORMAT_ERROR;
   }
   if (email.search(REXP_GAP) >= 0) {
-    result = typeValidErrors.GAP_ERROR;
+    return typeValidErrors.GAP_ERROR;
   }
 
-  return result;
+  return '';
 };
 
 export const isValidLogin = (login: string) => {
-  let result = '';
-
   if (login.length < 5) {
-    result = 'Длина не может быть меньше 5';
+    return 'Длина не может быть меньше 5';
   }
   if (!REXP_LOGIN.test(login)) {
-    result = typeValidErrors.FORMAT_ERROR;
+    return typeValidErrors.FORMAT_ERROR;
   }
   if (login.search(REXP_GAP) >= 0) {
-    result = typeValidErrors.GAP_ERROR;
+    return typeValidErrors.GAP_ERROR;
   }
 
-  return result;
+  return '';
 };
 
 export const isValidName = (name: string) => {
-  let result = '';
-
   if (name.length < 5) {
-    result = 'Длина не может быть меньше 5';
+    return 'Длина не может быть меньше 5';
   }
   if (name.search(REXP_GAP) >= 0) {
-    result = typeValidErrors.GAP_ERROR;
+    return typeValidErrors.GAP_ERROR;
   }
 
-  return result;
+  return '';
 };
 
 export const isValidPassword = (password: string) => {
-  let result = '';
-
   if (password.length < 8) {
-    result = 'Длина не может быть меньше 8';
+    return 'Длина не может быть меньше 8';
   }
   if (password.search(REXP_GAP) >= 0) {
-    result = typeValidErrors.GAP_ERROR;
+    return typeValidErrors.GAP_ERROR;
   }
   if (password.search(REXP_LITERAL) < 0) {
-    result = typeValidErrors.LITERAL_ERROR;
+    return typeValidErrors.LITERAL_ERROR;
   }
   if (password.search(REXP_NUMERAL) < 0) {
-    result = typeValidErrors.NUMERAL_ERROR;
+    return typeValidErrors.NUMERAL_ERROR;
   }
 
-  return result;
+  return '';
 };
 
 export const isValidPasswordConfirm = (
   password: string,
   passwordConfirm: string | undefined = undefined
 ) => {
-  let result = '';
-
   if (passwordConfirm !== undefined && !(password === passwordConfirm)) {
-    result = typeValidErrors.PWDR_ERROR;
+    return typeValidErrors.PWDR_ERROR;
   }
 
-  return result;
+  return '';
 };

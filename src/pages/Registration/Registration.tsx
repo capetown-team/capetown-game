@@ -81,25 +81,16 @@ export const Registration = () => {
     }
   };
 
-  function getUser() {
-    const elementLogin = document.getElementById('login') as HTMLInputElement;
-    const elementPassword = document.getElementById(
-      'password'
-    ) as HTMLInputElement;
-    const elementEmail = document.getElementById('email') as HTMLInputElement;
-    const elementName = document.getElementById('name') as HTMLInputElement;
-
-    return {
-      login: elementLogin.value,
-      password: elementPassword.value,
-      email: elementEmail.value,
-      name: elementName.value
-    };
-  }
-
   const submitHandler = async (e: MouseEvent<Element>) => {
     e.preventDefault();
-    const user = getUser();
+    const user = {
+      login,
+      password,
+      email,
+      name
+    };
+
+    console.log(user);
     const isSignUp = await isRegistrationSuccess(user);
 
     if (isSignUp) {

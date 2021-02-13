@@ -6,13 +6,14 @@ import React, {
   ChangeEvent
 } from 'react';
 
-import './Autorization.scss';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { isValidLogin, isValidPassword } from '@/modules/validation';
 import { isAutorizied } from '@/api/login';
 import block from 'bem-cn-lite';
 import { Link } from 'react-router-dom';
+
+import './Autorization.scss';
 
 const b = block('form');
 
@@ -34,18 +35,6 @@ export const Autorization = () => {
       setFormValid(true);
     }
   }, [loginError, passwordError]);
-
-  function getUser() {
-    const elementLogin = document.getElementById('login') as HTMLInputElement;
-    const elementPassword = document.getElementById(
-      'password'
-    ) as HTMLInputElement;
-
-    return {
-      login: elementLogin.value,
-      password: elementPassword.value
-    };
-  }
 
   const blurHandler = (e: FocusEvent<Element>) => {
     const { name } = e.target as HTMLInputElement;
@@ -76,7 +65,12 @@ export const Autorization = () => {
 
   const submitHandler = async (e: MouseEvent) => {
     e.preventDefault();
-    const user = getUser();
+    const user = {
+      login,
+      password
+    };
+
+    console.log(user);
     const isSignIn = await isAutorizied(user);
 
     if (isSignIn) {
