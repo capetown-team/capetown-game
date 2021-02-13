@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 type User = {
   email?: string;
@@ -13,11 +13,11 @@ const host = 'https://ya-praktikum.tech/api/v2';
 export const isAutorizied = async (user: User) => {
   return axios
     .post(`${host}/auth/signin`, user)
-    .then((response) => {
+    .then((response: AxiosResponse) => {
       console.log(response);
       return true;
     })
-    .catch((error) => {
+    .catch((error: Error) => {
       console.log(error);
       return false;
     });
@@ -35,11 +35,11 @@ export const isRegistrationSuccess = (user: User) => {
 
   return axios
     .post(`${host}/auth/signup`, data)
-    .then((response) => {
+    .then((response: AxiosResponse) => {
       console.log(response);
       return true;
     })
-    .catch((error) => {
+    .catch((error: Error) => {
       console.log(error);
       return false;
     });

@@ -116,10 +116,7 @@ export const Registration = () => {
   const passwordConfirmHandler = (e: ChangeEvent<Element>) => {
     const text = (e.target as HTMLInputElement).value;
     setpasswordConfirm(text);
-    const elementPassword = document.getElementById(
-      'password'
-    ) as HTMLInputElement;
-    const passwordErr = isValidPasswordConfirm(text, elementPassword.value);
+    const passwordErr = isValidPasswordConfirm(text, passwordConfirm);
     setPasswordConfirmError(passwordErr);
   };
 
