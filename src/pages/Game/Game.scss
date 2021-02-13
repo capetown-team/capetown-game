@@ -1,0 +1,36 @@
+@import '../../styles/layout/colors';
+@import '../../styles/layout/variables';
+
+.game {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+
+  &__header {
+    margin-bottom: 1em;
+  }
+
+  &__button {
+    background-color: $light-blue;
+    border-radius: 3px;
+    border: none;
+    color: $white;
+    padding: 7px 15px;
+    margin-left: 10px;
+    text-transform: capitalize;
+
+    &:hover {
+      background-color: $light-blue;
+    }
+
+    &:disabled {
+      background-color: $grey;
+    }
+  }
+
+  &__canvas {
+    display: block;
+    outline: 1px solid black;
+    margin: 0 auto;
+  }
+}
