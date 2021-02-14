@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { withErrorBoundary } from 'react-error-boundary';
 
+import { withErrorBoundary } from '@/components/ErrorBoundary';
 import { PrivateRoute } from '@/components/PrivateRoute';
 import { Header } from '@/components/Header';
 import { routes } from './routes';
 
 import './App.scss';
-
-const ErrorComponent = () => <h1>Error Boundary</h1>;
 
 export const useAuth = () => {
   const [isAuthorized, setAuth] = useState(true);
@@ -34,9 +32,7 @@ export const App = () => (
               key={path}
               path={path}
               isAuthorized={isAuthorized}
-              component={withErrorBoundary(component, {
-                fallbackRender: ErrorComponent
-              })}
+              component={withErrorBoundary(component)}
               {...rest}
             />
           );
