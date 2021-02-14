@@ -1,5 +1,7 @@
 FROM node:13
 
+WORKDIR /usr/app
+
 COPY . .
 
 RUN npm install && npm run build
