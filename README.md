@@ -43,7 +43,7 @@
 -----------------------------------------------------------------------------
 ## **Примеры использования**
 
-На <a href='https://gentle-sea-17255.herokuapp.com/'> https://gentle-sea-17255.herokuapp.com/ </a> пример для ознакомления
+На <a href='https://warm-anchorage-94393.herokuapp.com/'> https://warm-anchorage-94393.herokuapp.com/ </a> пример для ознакомления
 
 
 ## Что сделано
