@@ -1,17 +1,68 @@
 ## Описание
+[![reactjs](https://img.shields.io/badge/reactjs-%23239120.svg?&style=for-the-badge&logo=css3&logoColor=white)](https://reactjs.org)
+[![scss](https://img.shields.io/badge/scss-%23239120.svg?&style=for-the-badge&logo=css3&logoColor=white)](https://sass-scss.ru/)
+[![Docker](https://img.shields.io/badge/Docker-%23239120.svg?&style=for-the-badge&logo=css3&logoColor=white)](https://www.docker.com)
+[![heroku](https://img.shields.io/badge/heroku-%23239120.svg?&style=for-the-badge&logo=css3&logoColor=white)](https://help.heroku.com)
 
-Игра пакман
+Браузерная игра в жанре Pac-Man, в которой необходимо собрать все монеты и обойти монстров
 
+## PacMan
+![PacMan](https://prnt.sc/zhfhh1)
 ## Установка
 
-git clone git@github.com:capetown-team/capetown-game.git
-npm install
-npm run build
+-----------------------------------------------------------------------------
+1. Клонировать репозиторий
 
+  git clone git@github.com:capetown-team/capetown-game.git
+
+-----------------------------------------------------------------------------
+2. Скачать пакеты
+
+  npm install
+
+-----------------------------------------------------------------------------
+3. Запустить локальный сервер
+
+  npm run dev
+
+-----------------------------------------------------------------------------
+4. Собрать проект
+
+  npm run build
+
+-----------------------------------------------------------------------------
+5. Линтинг кода
+
+  npm run lint
+
+-----------------------------------------------------------------------------
+6. Линтинг стилей
+
+  npm run lint:style
+
+-----------------------------------------------------------------------------
 ## **Примеры использования**
 
-На сайте https://gentle-sea-17255.herokuapp.com/ пример для ознакомления
+На <a href="https://gentle-sea-17255.herokuapp.com/'> сайте </a> пример для ознакомления
 
-### **Команда**
+
+## Что сделано
+- Приложение написано на : `React, TypeScript`, `БЭМ` и библиотеки `bem-cn-lite`;
+- Настроен Webpack:
+  - html: `HtmlWebpackPlugin`;
+  - обработка css: `css-loader`, `style-loader`, `sass-loader`, `mini-css-extract-plugin`;
+  - сборка TS/JS: `babel`, `ts-loader`;
+- Код стайлинг: `prettier`, `eslint`;
+- Создана механика игры игры.;
+- Реализованы страницы:
+  - Главная;
+  - Игра;
+  - Лидеры;
+  - Форум;
+  - Авторизация;
+  - Регистрация;
+  - Профиль;
+  - Страницы (404, 500);
+## **Команда**
 
 Команда "Кейптаун"
