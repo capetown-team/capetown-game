@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import { useHistory } from 'react-router-dom';
 
-import './Registration.scss';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import {
@@ -17,10 +16,9 @@ import {
   isValidPassword,
   isValidPasswordConfirm
 } from '@/modules/validation';
-import { authApi } from '@/api';
+import { signUp } from '@/api';
 import block from 'bem-cn-lite';
-
-const { signUp } = authApi();
+import './Registration.scss';
 
 const b = block('form');
 
@@ -49,6 +47,7 @@ export const Registration = () => {
   );
 
   const [formValid, setFormValid] = useState(false);
+  const [regValid, setRegValid] = useState(true);
 
   useEffect(() => {
     if (
@@ -85,7 +84,7 @@ export const Registration = () => {
     }
   };
 
-  const submitHandler = (e: MouseEvent<Element>) => {
+  const submitHandler = async (e: MouseEvent<Element>) => {
     e.preventDefault();
     const user = {
       first_name: name,
@@ -96,12 +95,11 @@ export const Registration = () => {
       password
     };
 
-    const isSignUp = signUp(user);
-
-    if (isSignUp) {
+    try {
+      await signUp(user);
       history.replace('/game');
-    } else {
-      setPasswordError('Что-то пошло не так');
+    } catch (err) {
+      setRegValid(false);
     }
   };
 
@@ -216,6 +214,9 @@ export const Registration = () => {
             placeholder="Пароль (еще раз)"
           />
         </div>
+        {!regValid && (
+          <div style={{ color: 'red' }}>Такой пользователь уже существует</div>
+        )}
         <div className={b('row-button')}>
           <Button
             disabled={!formValid}
