@@ -17,8 +17,10 @@ import {
   isValidPassword,
   isValidPasswordConfirm
 } from '@/modules/validation';
-import { isRegistrationSuccess } from '@/api/login';
+import { authApi } from '@/api';
 import block from 'bem-cn-lite';
+
+const { signUp } = authApi();
 
 const b = block('form');
 
@@ -83,16 +85,18 @@ export const Registration = () => {
     }
   };
 
-  const submitHandler = async (e: MouseEvent<Element>) => {
+  const submitHandler = (e: MouseEvent<Element>) => {
     e.preventDefault();
     const user = {
+      first_name: name,
+      second_name: name,
       login,
-      password,
       email,
-      name
+      phone: '+79191234567',
+      password
     };
 
-    const isSignUp = await isRegistrationSuccess(user);
+    const isSignUp = signUp(user);
 
     if (isSignUp) {
       history.replace('/game');

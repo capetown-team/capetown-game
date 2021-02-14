@@ -11,7 +11,6 @@ import './Autorization.scss';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { isValidLogin, isValidPassword } from '@/modules/validation';
-import { isAutorizied } from '@/api/login';
 import block from 'bem-cn-lite';
 
 const b = block('form');
