@@ -1,7 +1,9 @@
 import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
+import { Prompt } from 'react-router-dom';
 import block from 'bem-cn-lite';
 import { Topping } from '@/components/Topping';
-import { Engine } from '@/pages/Game/script/Game';
+import { Button } from '@/components/Button';
+import { Engine } from '@/pages/Game/script/Engine';
 
 import './Game.scss';
 
@@ -13,10 +15,6 @@ const Game = () => {
   const [isStart, setStart] = useState(false);
   const [isPause, setPause] = useState(false);
   const [pauseText, setPauseText] = useState('Пауза');
-
-  useEffect(() => {
-    setEngine(new Engine(canvasRef.current));
-  }, []);
 
   const handlerStart = useCallback(() => {
     if (isStart) {
@@ -41,27 +39,66 @@ const Game = () => {
     }
   }, [engine, isPause]);
 
+  const handleStop = useCallback(() => {
+    if (engine) {
+      (engine as Engine).finishGame();
+    }
+
+    setStart(false);
+    setPause(false);
+    setPauseText('Пауза');
+  }, [engine, isPause]);
+
+  const preventReload = useCallback((event) => {
+    event.preventDefault();
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+      const engine = new Engine(canvas, ctx);
+      setEngine(engine);
+      // --
+      // (engine as Engine).startGame();
+      // setStart(true);
+
+      if (preventReload) {
+        if (engine) {
+          (engine as Engine).pauseGame();
+        }
+        window.addEventListener('beforeunload', preventReload);
+      }
+    }
+  }, []);
+
   return (
     <div className={b()}>
+      <Prompt
+        when={isStart}
+        message="Вы действительно хотите завершить игру?"
+      />
       <Topping title="Игра Pac-Man" />
       <div className={b('header')}>
-        <button className={b('button')} type="button" onClick={handlerStart}>
+        <Button onClick={handlerStart} size="small game__button">
           Начть заново
-        </button>
-        <button
+        </Button>
+        <Button
           disabled={!isStart}
-          className={b('button')}
-          type="button"
           onClick={handlerPause}
+          size="small game__button"
         >
           {pauseText}
-        </button>
+        </Button>
+        <Button disabled={!isStart} onClick={handleStop} size="small">
+          Заверишить
+        </Button>
       </div>
       <canvas
         className={b('canvas')}
         ref={canvasRef}
-        width={700}
-        height={400}
+        width={800}
+        height={500}
       />
     </div>
   );

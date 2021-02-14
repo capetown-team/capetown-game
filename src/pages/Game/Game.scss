@@ -11,26 +11,12 @@
   }
 
   &__button {
-    background-color: $light-blue;
-    border-radius: 3px;
-    border: none;
-    color: $white;
-    padding: 7px 15px;
-    margin-left: 10px;
+    margin-right: 10px;
     text-transform: capitalize;
-
-    &:hover {
-      background-color: $light-blue;
-    }
-
-    &:disabled {
-      background-color: $grey;
-    }
   }
 
   &__canvas {
     display: block;
-    outline: 1px solid black;
     margin: 0 auto;
   }
 }
