@@ -1,5 +1,4 @@
 import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
-import { Prompt } from 'react-router-dom';
 import block from 'bem-cn-lite';
 import { Topping } from '@/components/Topping';
 import { Button } from '@/components/Button';
@@ -49,35 +48,17 @@ const Game = () => {
     setPauseText('Пауза');
   }, [engine, isPause]);
 
-  const preventReload = useCallback((event) => {
-    event.preventDefault();
-  }, []);
-
   useEffect(() => {
     const canvas = canvasRef.current;
     if (canvas) {
       const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
       const engine = new Engine(canvas, ctx);
       setEngine(engine);
-      // --
-      // (engine as Engine).startGame();
-      // setStart(true);
-
-      if (preventReload) {
-        if (engine) {
-          (engine as Engine).pauseGame();
-        }
-        window.addEventListener('beforeunload', preventReload);
-      }
     }
   }, []);
 
   return (
     <div className={b()}>
-      <Prompt
-        when={isStart}
-        message="Вы действительно хотите завершить игру?"
-      />
       <Topping title="Игра Pac-Man" />
       <div className={b('header')}>
         <Button onClick={handlerStart} size="small game__button">
