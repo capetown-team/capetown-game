@@ -11,26 +11,18 @@ type User = {
 const client = makeApi();
 const path = `https://ya-praktikum.tech/api/v2`;
 
-export const authApi = () => {
-  const signUp = (user: User) => {
-    return client.post<User>(`${path}/auth/signup`, user, {
-      withCredentials: true
-    });
-  };
+export const signUp = async (user: User) => {
+  return client.post<User>(`${path}/auth/signup`, user, {
+    withCredentials: true
+  });
+};
 
-  const signIn = (user: User) => {
-    return client.post<User>(`${path}/auth/signin`, user, {
-      withCredentials: true
-    });
-  };
+export const signIn = async (user: User) => {
+  return client.post<User>(`${path}/auth/signin`, user, {
+    withCredentials: true
+  });
+};
 
-  const logout = () => {
-    return client.post(`${path}/logout`, {}, { withCredentials: true });
-  };
-
-  return {
-    signUp,
-    signIn,
-    logout
-  };
+export const logout = async () => {
+  return client.post(`${path}/auth/logout`, {}, { withCredentials: true });
 };

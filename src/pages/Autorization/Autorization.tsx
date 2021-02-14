@@ -7,11 +7,12 @@ import React, {
 } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 
-import './Autorization.scss';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { isValidLogin, isValidPassword } from '@/modules/validation';
 import block from 'bem-cn-lite';
+import { signIn } from '@/api';
+import './Autorization.scss';
 
 const b = block('form');
 
@@ -26,6 +27,7 @@ export const Autorization = () => {
     'Пароль не может быть пустым'
   );
   const [formValid, setFormValid] = useState(false);
+  const [regValid, setRegValid] = useState(true);
 
   useEffect(() => {
     if (loginError || passwordError) {
@@ -69,12 +71,11 @@ export const Autorization = () => {
       password
     };
 
-    const isSignIn = await isAutorizied(user);
-
-    if (isSignIn) {
+    try {
+      await signIn(user);
       history.replace('/game');
-    } else {
-      setPasswordError('Неверный логин или пароль');
+    } catch (err) {
+      setRegValid(false);
     }
   };
 
@@ -112,6 +113,9 @@ export const Autorization = () => {
               placeholder="Пароль"
             />
           </div>
+          {!regValid && (
+            <div style={{ color: 'red' }}>Логин или пароль не верный</div>
+          )}
           <div className={b('row-button')}>
             <Button
               disabled={!formValid}
