@@ -8,10 +8,9 @@ export class Engine {
   gameOver = false;
 
   level = 1;
-  game = {
-    width: 100,
-    height: 100
-  };
+  hearts = 3;
+
+  steps = 0;
 
   requestId = 0;
 
@@ -20,9 +19,9 @@ export class Engine {
 
   readonly initParameters!: InitParameters;
 
-  constructor(canvas: HTMLCanvasElement | null) {
+  constructor(canvas: HTMLCanvasElement | null, ctx: CanvasRenderingContext2D) {
     if (canvas) {
-      this.ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
+      this.ctx = ctx;
       this.initParameters = {
         width: canvas.width,
         height: canvas.height
@@ -31,8 +30,12 @@ export class Engine {
   }
 
   reset() {
+    this.gameOver = true;
+    this.started = false;
     this.pause = false;
-    this.gameOver = false;
+
+    this.pacman.reset();
+    this.blank('white');
   }
 
   pauseGame() {
@@ -49,9 +52,12 @@ export class Engine {
   }
 
   finishGame() {
-    this.gameOver = true;
-    this.started = false;
-    this.pause = false;
+    this.reset();
+
+    if (this.requestId) {
+      window.cancelAnimationFrame(this.requestId);
+      this.requestId = 0;
+    }
   }
 
   newGame() {
@@ -66,6 +72,7 @@ export class Engine {
 
       return;
     }
+
     this.pause = false;
     this.started = true;
 
@@ -73,56 +80,59 @@ export class Engine {
       this.pacman = new Pacman(this.initParameters);
     }
     this.pacman.stop();
-    let steps = 0;
+    this.steps = 0;
 
-    const gameLoop = () => {
-      this.ctx.fillStyle = 'Gold';
-      this.ctx.strokeStyle = 'Gold';
-
-      this.ctx.clearRect(
-        0,
-        0,
-        this.initParameters.width,
-        this.initParameters.height
-      );
-      this.ctx.beginPath();
-
-      if (this.pacman.isMouthOpen) {
-        const deltaRadians = (this.pacman.direction * Math.PI) / 2;
-        this.ctx.arc(
-          this.pacman.posX + this.pacman.radius,
-          this.pacman.posY + this.pacman.radius,
-          this.pacman.radius,
-          deltaRadians + Math.PI / this.pacman.angle1,
-          deltaRadians + this.pacman.angle2 * Math.PI
-        );
-        this.ctx.lineTo(
-          this.pacman.posX + this.pacman.radius,
-          this.pacman.posY + this.pacman.radius
-        );
-      } else {
-        this.ctx.arc(
-          this.pacman.posX + this.pacman.radius,
-          this.pacman.posY + this.pacman.radius,
-          this.pacman.radius,
-          0,
-          2 * Math.PI
-        );
-      }
-      this.pacman.move();
-      this.pacman.checkDirectionChange();
-      this.ctx.fill();
-
-      steps += 1;
-      if (steps % this.pacman.stepMounth === 0) {
-        this.pacman.isMouthOpen = !this.pacman.isMouthOpen;
-      }
-      this.requestId = window.requestAnimationFrame(gameLoop);
-    };
+    this.gameLoop();
 
     window.addEventListener('keydown', (event) => this.doKeyDown(event));
+  }
 
-    gameLoop();
+  blank(color = '#f3f4f7') {
+    this.ctx.fillStyle = color;
+    this.ctx.fillRect(
+      0,
+      0,
+      this.initParameters.width,
+      this.initParameters.height
+    );
+  }
+
+  gameLoop() {
+    this.blank();
+    this.ctx.fillStyle = 'Gold';
+    this.ctx.beginPath();
+
+    if (this.pacman.isMouthOpen) {
+      const deltaRadians = (this.pacman.direction * Math.PI) / 2;
+      this.ctx.arc(
+        this.pacman.posX + this.pacman.radius,
+        this.pacman.posY + this.pacman.radius,
+        this.pacman.radius,
+        deltaRadians + Math.PI / this.pacman.angle1,
+        deltaRadians + this.pacman.angle2 * Math.PI
+      );
+      this.ctx.lineTo(
+        this.pacman.posX + this.pacman.radius,
+        this.pacman.posY + this.pacman.radius
+      );
+    } else {
+      this.ctx.arc(
+        this.pacman.posX + this.pacman.radius,
+        this.pacman.posY + this.pacman.radius,
+        this.pacman.radius,
+        0,
+        2 * Math.PI
+      );
+    }
+    this.pacman.move();
+    this.pacman.checkDirectionChange();
+    this.ctx.fill();
+
+    this.steps += 1;
+    if (this.steps % this.pacman.stepMounth === 0) {
+      this.pacman.isMouthOpen = !this.pacman.isMouthOpen;
+    }
+    this.requestId = window.requestAnimationFrame(this.gameLoop.bind(this));
   }
 
   doKeyDown(evt: { keyCode: number }) {

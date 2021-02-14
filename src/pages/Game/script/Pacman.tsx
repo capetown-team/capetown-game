@@ -6,7 +6,7 @@ export class Pacman {
   radius = 20;
   posX = 0;
   posY = 0;
-  speed = 1;
+  speed = 3;
   stepMounth = 12;
   isMouthOpen = false;
   angle1 = right.angle1;

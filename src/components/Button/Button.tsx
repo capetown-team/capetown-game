@@ -1,5 +1,7 @@
-import React, { memo, FC, MouseEvent, ReactNode } from 'react';
+import React, { memo, FC, ButtonHTMLAttributes } from 'react';
 import block from 'bem-cn-lite';
+
+import { ClickType } from '@/types.d';
 
 import './Button.scss';
 
@@ -7,12 +9,11 @@ const b = block('button');
 
 type Props = {
   placeholder?: string;
-  onClick?: (event: MouseEvent) => void;
+  onClick?: ClickType;
   size: string;
   type?: string;
-  children: ReactNode | string;
   disabled?: boolean;
-};
+} & ButtonHTMLAttributes<HTMLButtonElement>;
 
 const Button: FC<Props> = ({ size, children, onClick, disabled }) => {
   const className = b({ size });
