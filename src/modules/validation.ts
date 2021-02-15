@@ -38,8 +38,8 @@ export const isValidPhone = (phone: string) => {
 };
 
 export const isValidLogin = (login: string) => {
-  if (login.length < 5) {
-    return 'Длина не может быть меньше 5';
+  if (login.length < 4) {
+    return 'Длина не может быть меньше 4';
   }
   if (!REXP_LOGIN.test(login)) {
     return typeValidErrors.FORMAT_ERROR;
@@ -52,9 +52,10 @@ export const isValidLogin = (login: string) => {
 };
 
 export const isValidName = (name: string) => {
-  if (name.length < 5) {
-    return 'Длина не может быть меньше 5';
+  if (name.length < 2) {
+    return 'Длина не может быть меньше 2';
   }
+
   if (name.search(REXP_GAP) >= 0) {
     return typeValidErrors.GAP_ERROR;
   }
