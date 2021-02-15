@@ -1,4 +1,4 @@
-import React, { memo, FC, ButtonHTMLAttributes } from 'react';
+import React, { memo, FC, ButtonHTMLAttributes, ReactNode } from 'react';
 import block from 'bem-cn-lite';
 
 import { ClickType } from '@/types.d';
@@ -11,16 +11,17 @@ type Props = {
   placeholder?: string;
   onClick?: ClickType;
   size: string;
-  type?: string;
+  type?: 'submit' | 'button';
+  children: ReactNode | string;
   disabled?: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
-const Button: FC<Props> = ({ size, children, onClick, disabled }) => {
+const Button: FC<Props> = ({ size, children, onClick, disabled, type }) => {
   const className = b({ size });
   return (
     <button
       disabled={disabled}
-      type="submit"
+      type={type === 'button' ? 'button' : 'submit'}
       className={className}
       onClick={onClick}
     >

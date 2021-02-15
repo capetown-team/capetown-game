@@ -3,7 +3,8 @@ import {
   REXP_LOGIN,
   REXP_LITERAL,
   REXP_NUMERAL,
-  REXP_GAP
+  REXP_GAP,
+  REXP_PHONE
 } from './regExps';
 
 const typeValidErrors = {
@@ -23,6 +24,14 @@ export const isValidEmail = (email: string) => {
   }
   if (email.search(REXP_GAP) >= 0) {
     return typeValidErrors.GAP_ERROR;
+  }
+
+  return '';
+};
+
+export const isValidPhone = (phone: string) => {
+  if (!REXP_PHONE.test(phone)) {
+    return typeValidErrors.FORMAT_ERROR;
   }
 
   return '';
