@@ -46,7 +46,8 @@
     "arrow-body-style": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "lines-between-class-members": "off",
-    "no-shadow": "off"
+    "no-shadow": "off",
+    "jsx-a11y/label-has-associated-control": "off"
   },
   "settings": {
     "import/resolver": {

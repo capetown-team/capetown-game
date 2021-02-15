@@ -10,6 +10,7 @@ type InputProps = {
   onBlur?: (event: FocusEvent) => void;
   value?: string;
   id?: string;
+  disabled?: boolean;
 };
 
 export const Input: FC<InputProps> = ({
@@ -19,7 +20,8 @@ export const Input: FC<InputProps> = ({
   onBlur,
   placeholder,
   onChange,
-  id
+  id,
+  disabled
 }) => {
   return (
     <input
@@ -31,6 +33,7 @@ export const Input: FC<InputProps> = ({
       className="input"
       placeholder={placeholder}
       onChange={onChange}
+      disabled={disabled}
     />
   );
 };

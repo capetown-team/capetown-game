@@ -3,6 +3,7 @@ import React from 'react';
 import { Leaders } from '@/pages/Leaders';
 import { Forum } from '@/pages/Forum';
 import { ItemForum } from '@/pages/ItemForum';
+import { Profile } from '@/pages/Profile';
 import { SomeError } from '@/components/SomeError';
 import { Autorization } from '@/pages/Autorization';
 import { Registration } from '@/pages/Registration';
@@ -50,6 +51,11 @@ export const routes = [
     component: Registration,
     isPrivate: false,
     exact: true
+  },
+  {
+    path: '/profile',
+    component: Profile,
+    isPrivate: true
   },
   {
     path: '/error',
