@@ -12,11 +12,11 @@ import { Input } from '@/components/Input';
 import { isValidLogin, isValidPassword } from '@/modules/validation';
 import block from 'bem-cn-lite';
 import { signIn } from '@/api';
-import './Autorization.scss';
+import './Authorization.scss';
 
 const b = block('form');
 
-export const Autorization = () => {
+export const Authorization = () => {
   const history = useHistory();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
@@ -64,7 +64,7 @@ export const Autorization = () => {
     setPasswordError(passwordErr);
   };
 
-  const submitHandler = async (e: MouseEvent) => {
+  const submitHandler = async (e: MouseEvent<Element>) => {
     e.preventDefault();
     const user = {
       login,
@@ -121,7 +121,9 @@ export const Autorization = () => {
               disabled={!formValid}
               type="submit"
               size="s"
-              onClick={(e) => submitHandler(e)}
+              onClick={(e: React.MouseEvent<Element, globalThis.MouseEvent>) =>
+                submitHandler(e)
+              }
             >
               Вход
             </Button>

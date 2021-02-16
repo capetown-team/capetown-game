@@ -9,9 +9,13 @@
         margin-top: 12px;
     }
 
+    &__link {
+        vertical-align: bottom;
+    }
+
     &__row-button {
         margin-top: 12px;
-        margin-bottom: 30px;
+        margin-bottom: 10px;
         text-align: center;
         display: flex;
         justify-content: center;

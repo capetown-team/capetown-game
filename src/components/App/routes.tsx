@@ -1,21 +1,18 @@
-import React from 'react';
-
 import { Leaders } from '@/pages/Leaders';
 import { Forum } from '@/pages/Forum';
 import { ItemForum } from '@/pages/ItemForum';
 import { Profile } from '@/pages/Profile';
 import { SomeError } from '@/components/SomeError';
-import { Autorization } from '@/pages/Autorization';
+import { Authorization } from '@/pages/Authorization';
 import { Registration } from '@/pages/Registration';
 import { Game } from '@/pages/Game';
-
-const Test = () => <h1>Capetown Game</h1>;
+import { Landing } from '@/pages/Landing';
 
 export const routes = [
   {
     path: '/',
-    component: Test,
-    isPrivate: true,
+    component: Landing,
+    isPrivate: false,
     exact: true
   },
   {
@@ -41,8 +38,8 @@ export const routes = [
     isPrivate: true
   },
   {
-    path: '/autorization',
-    component: Autorization,
+    path: '/authorization',
+    component: Authorization,
     isPrivate: false,
     exact: true
   },
