@@ -62,7 +62,7 @@ const Game = () => {
       <Topping title="Игра Pac-Man" />
       <div className={b('header')}>
         <Button onClick={handlerStart} size="small game__button">
-          Начть заново
+          Начать заново
         </Button>
         <Button
           disabled={!isStart}

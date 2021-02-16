@@ -12,11 +12,11 @@ import { Input } from '@/components/Input';
 import { isValidLogin, isValidPassword } from '@/modules/validation';
 import block from 'bem-cn-lite';
 import { signIn } from '@/api';
-import './Autorization.scss';
+import './Authorization.scss';
 
 const b = block('form');
 
-export const Autorization = () => {
+export const Authorization = () => {
   const history = useHistory();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');

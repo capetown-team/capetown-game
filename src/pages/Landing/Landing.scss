@@ -1,0 +1,22 @@
+@import '../../styles/layout/colors';
+.landing {
+  &__wrapper {
+    text-align: center;
+    justify-content: center;
+  }
+
+  &__link {
+    color: $light-blue;
+  }
+
+  &__row {
+    height: 30px;
+    margin-top: 10px;
+  }
+
+  &__main {
+    margin-top: 10px;
+    text-align: justify;
+    line-height: 150%;
+  }
+}

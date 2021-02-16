@@ -228,7 +228,7 @@ export const Registration = () => {
           </Button>
         </div>
         <div className={b('row')}>
-          <Link className={b('link')} to="/autorization">
+          <Link className={b('link')} to="/authorization">
             Есть аккаунт?
           </Link>
         </div>

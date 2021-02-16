@@ -1,1 +1,0 @@
-export { Autorization } from './Autorization';
