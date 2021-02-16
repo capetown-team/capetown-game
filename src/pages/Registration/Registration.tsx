@@ -5,7 +5,7 @@ import React, {
   ChangeEvent,
   MouseEvent
 } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
@@ -226,6 +226,11 @@ export const Registration = () => {
           >
             Зарегистрироваться
           </Button>
+        </div>
+        <div className={b('row')}>
+          <Link className={b('link')} to="/autorization">
+            Есть аккаунт?
+          </Link>
         </div>
       </form>
     </div>

@@ -30,5 +30,17 @@ export const userLinks: LinkType[] = [
   {
     name: 'Форум',
     linkTo: '/forum'
+  },
+  {
+    name: 'Профиль',
+    linkTo: '/profile'
+  },
+  {
+    name: 'Авторизация',
+    linkTo: '/autorization'
+  },
+  {
+    name: 'Регистрация',
+    linkTo: '/registration'
   }
 ];
