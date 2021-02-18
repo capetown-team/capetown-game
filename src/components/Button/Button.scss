@@ -1,0 +1,45 @@
+@import '../../styles/layout/colors';
+
+.button {
+    background-color: $light-blue;
+    color: $white;
+    text-align: center;
+    border-radius: 3px;
+    border: none;
+
+    &_size {
+        &_small {
+            padding: 7px 15px;
+        }
+
+        &_s {
+            display: block;
+            width: 280px;
+            height: 38px;
+        }
+
+        &_m {
+            display: block;
+            width: 308px;
+            height: 42px;
+        }
+
+        &_l {
+            display: block;
+            width: 336px;
+            height: 46px;
+        }
+    }
+
+    &:hover {
+        background-color: rgba($light-blue, .9);
+    }
+
+    &:active {
+        box-shadow: inset 0 3px 5px rgba($black, .3);
+    }
+
+    &:disabled {
+        background-color: $grey;
+    }
+}

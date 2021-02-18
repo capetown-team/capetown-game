@@ -1,0 +1,76 @@
+{
+  "name": "capetown-game",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.tsx",
+  "scripts": {
+    "dev": "webpack serve",
+    "build": "webpack --mode production",
+    "lint:style": "stylelint --fix ./src",
+    "lint": "./node_modules/.bin/eslint ./src --ext .tsx,.ts,.js"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run lint"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/capetown-team/capetown-game.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/capetown-team/capetown-game/issues"
+  },
+  "homepage": "https://github.com/capetown-team/capetown-game#readme",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "devDependencies": {
+    "@types/react-router-dom": "5.1.7",
+    "@typescript-eslint/eslint-plugin": "4.14.2",
+    "@typescript-eslint/parser": "4.14.2",
+    "clean-webpack-plugin": "3.0.0",
+    "css-loader": "5.0.1",
+    "eslint": "7.19.0",
+    "eslint-config-airbnb": "18.2.1",
+    "eslint-config-prettier": "7.2.0",
+    "eslint-import-resolver-alias": "1.1.2",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-jest": "24.1.3",
+    "eslint-plugin-jsx-a11y": "6.4.1",
+    "eslint-plugin-prettier": "3.3.1",
+    "eslint-plugin-react": "7.22.0",
+    "eslint-plugin-react-hooks": "4.2.0",
+    "file-loader": "6.2.0",
+    "html-webpack-plugin": "5.0.0",
+    "husky": "4.3.8",
+    "jest": "26.6.3",
+    "mini-css-extract-plugin": "1.3.5",
+    "node-sass": "5.0.0",
+    "prettier": "2.2.1",
+    "react-test-renderer": "17.0.1",
+    "sass-loader": "10.1.1",
+    "stylelint": "13.9.0",
+    "stylelint-config-standard": "20.0.0",
+    "ts-loader": "8.0.14",
+    "typescript": "4.1.3",
+    "webpack": "5.20.1",
+    "webpack-cli": "4.5.0",
+    "webpack-dev-server": "3.11.2",
+    "webpackbar": "5.0.0-3"
+  },
+  "dependencies": {
+    "@types/react": "17.0.1",
+    "@types/react-dom": "17.0.0",
+    "axios": "^0.21.1",
+    "bem-cn-lite": "^4.0.0",
+    "express": "^4.17.1",
+    "react": "17.0.1",
+    "react-dom": "17.0.1",
+    "react-router-dom": "5.2.0"
+  }
+}

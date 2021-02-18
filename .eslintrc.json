@@ -1,0 +1,62 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "airbnb",
+    "plugin:prettier/recommended",
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:jest/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 12,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": [
+    "prettier",
+    "jest",
+    "react",
+    "react-hooks",
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "no-underscore-dangle": ["error", { "allowAfterThis": true }],
+    "no-use-before-define": "off",
+    "@typescript-eslint/no-use-before-define": ["error"],
+    "comma-dangle": ["error", "never"],
+    "react/jsx-filename-extension": [1, { "extensions": [".tsx"] }],
+    "import/prefer-default-export": "off",
+    "import/extensions": "off",
+    "object-curly-newline": "off",
+    "react/jsx-props-no-spreading": ["error", { "custom": "ignore" }],
+    "react/display-name": "off",
+    "react/jsx-curly-newline": "off",
+    "prettier/prettier": ["error", {"endOfLine": "auto"}],
+    "linebreak-style": 0,
+    "no-multi-assign": "off",
+    "react/prop-types": "off",
+    "no-unused-vars": "off",
+    "arrow-body-style": "off",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "lines-between-class-members": "off",
+    "no-shadow": "off",
+    "jsx-a11y/label-has-associated-control": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["@", "./src"]
+        ],
+        "extensions": [".js", ".ts", ".tsx", ".scss"]
+      }
+    }
+  }
+}

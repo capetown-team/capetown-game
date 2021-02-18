@@ -1,0 +1,75 @@
+@import '../../styles/layout/colors';
+@import '../../styles/layout/mixins';
+
+.loading {
+  position: fixed;
+  min-height: calc(100vh - #{$headerHeight});
+  width: 100%;
+  z-index: 2;
+  background-color: rgba($white, .7);
+
+  --secondary: #{$light-blue};
+
+  @include wrap;
+
+  &__svg {
+    position: absolute;
+
+    @include centered;
+  }
+
+  &__bag {
+    transform-origin: top center;
+    transform: rotate(3deg);
+    animation: swing 2s infinite;
+  }
+
+  &__steam {
+    &_l {
+      stroke-dasharray: 13;
+      stroke-dashoffset: 13;
+      animation: steamLarge 2s infinite;
+    }
+
+    &_r {
+      stroke-dasharray: 9;
+      stroke-dashoffset: 9;
+      animation: steamSmall 2s infinite;
+    }
+  }
+}
+
+@keyframes swing {
+  50% {
+    transform: rotate(-3deg);
+  }
+}
+
+@keyframes steamLarge {
+  0% {
+    stroke-dashoffset: 13;
+    opacity: .6;
+  }
+
+  100% {
+    stroke-dashoffset: 39;
+    opacity: 0;
+  }
+}
+
+@keyframes steamSmall {
+  10% {
+    stroke-dashoffset: 9;
+    opacity: .6;
+  }
+
+  80% {
+    stroke-dashoffset: 27;
+    opacity: 0;
+  }
+
+  100% {
+    stroke-dashoffset: 27;
+    opacity: 0;
+  }
+}

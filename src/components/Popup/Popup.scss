@@ -1,0 +1,101 @@
+.popup {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, .5);
+  //transition: background-color .25s;
+  animation: bg .25s none ease-in-out;
+  overflow: hidden;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &__wrap {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 50%;
+    min-width: 550px;
+    max-width: 700px;
+    margin: 0;
+    padding: 2.5rem;
+    background-color: white;
+    border-radius: 3px;
+    box-shadow: 0 0 2.5em rgba(0, 0, 0, .5);
+    transition: .64s ease-in-out;
+    animation: show .45s none ease-in-out;
+  }
+
+  &__title {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 1.25em;
+  }
+
+  &__close {
+    position: relative;
+    float: right;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border: none;
+    background-color: transparent;
+    font-size: 1.5rem;
+    transition: 0.25s linear;
+    padding: 0;
+
+    &:before {
+      position: absolute;
+      content: '';
+      width: 15px;
+      height: 1px;
+      background-color: black;
+      transform: rotate(-45deg);
+    }
+
+    &:after {
+      position: absolute;
+      content: '';
+      width: 15px;
+      height: 1px;
+      background-color: black;
+      transform: rotate(45deg);
+    }
+  }
+
+  &__button {
+    margin-right: 1em;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+
+@keyframes show {
+  from {
+    bottom: -100vw;
+    right: 100vh;
+  }
+
+  to {
+    bottom: 0;
+    right: 0;
+  }
+}
+
+@keyframes bg {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  to {
+    background-color: rgba(0, 0, 0, .5);
+  }
+}
