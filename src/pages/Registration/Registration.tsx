@@ -1,41 +1,142 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { useAuth } from '@/hooks/useAuth';
+import React, {
+  useEffect,
+  useState,
+  FocusEvent,
+  ChangeEvent,
+  MouseEvent
+} from 'react';
+import { useHistory, Link } from 'react-router-dom';
+
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
-
+import {
+  isValidLogin,
+  isValidName,
+  isValidEmail,
+  isValidPassword,
+  isValidPasswordConfirm
+} from '@/modules/validation';
+import { signUp } from '@/api';
 import block from 'bem-cn-lite';
 import './Registration.scss';
 
 const b = block('form');
 
 export const Registration = () => {
-  const {
-    blurHandler,
-    loginHandler,
-    passwordHandler,
-    passwordConfirmHandler,
-    emailHandler,
-    nameHandler,
-    submitHandler,
-    login,
-    password,
-    passwordConfirm,
-    name,
-    email,
-    loginError,
-    passwordError,
-    passwordConfirmError,
-    nameError,
-    emailError,
-    loginDirty,
-    passwordDirty,
-    passwordConfirmDirty,
-    nameDirty,
-    emailDirty,
-    formValid,
-    regValid
-  } = useAuth('registration');
+  const history = useHistory();
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [passwordConfirm, setpasswordConfirm] = useState('');
+
+  const [loginDirty, setLoginDirty] = useState(false);
+  const [passwordDirty, setPasswordDirty] = useState(false);
+  const [emailDirty, setEmailDirty] = useState(false);
+  const [nameDirty, setNameDirty] = useState(false);
+  const [passwordConfirmDirty, setPasswordConfirmDirty] = useState(false);
+
+  const [loginError, setLoginError] = useState('Логин не может быть пустым');
+  const [passwordError, setPasswordError] = useState(
+    'Пароль не может быть пустым'
+  );
+  const [emailError, setEmailError] = useState('Email не может быть пустым');
+  const [nameError, setNameError] = useState('Имя не может быть пустым');
+  const [passwordConfirmError, setPasswordConfirmError] = useState(
+    'Пароль не может быть пустым'
+  );
+
+  const [formValid, setFormValid] = useState(false);
+  const [regValid, setRegValid] = useState(true);
+
+  useEffect(() => {
+    if (
+      loginError ||
+      passwordError ||
+      emailError ||
+      nameError ||
+      passwordConfirmError
+    ) {
+      setFormValid(false);
+    } else {
+      setFormValid(true);
+    }
+  }, [loginError, passwordError, passwordConfirmError, emailError, nameError]);
+
+  const blurHandler = (e: FocusEvent<Element>) => {
+    switch ((e.target as HTMLInputElement).name) {
+      case 'login':
+        setLoginDirty(true);
+        break;
+      case 'password':
+        setPasswordDirty(true);
+        break;
+      case 'passwordConfirm':
+        setPasswordConfirmDirty(true);
+        break;
+      case 'email':
+        setEmailDirty(true);
+        break;
+      case 'name':
+        setNameDirty(true);
+        break;
+      default:
+    }
+  };
+
+  const submitHandler = async (e: MouseEvent<Element>) => {
+    e.preventDefault();
+    const user = {
+      first_name: name,
+      second_name: name,
+      login,
+      email,
+      phone: '+79191234567',
+      password
+    };
+
+    try {
+      await signUp(user);
+      history.replace('/game');
+    } catch (err) {
+      setRegValid(false);
+    }
+  };
+
+  const loginHandler = (e: ChangeEvent<Element>) => {
+    const text = (e.target as HTMLInputElement).value;
+    setLogin(text);
+    const loginErr = isValidLogin(text);
+    setLoginError(loginErr);
+  };
+
+  const passwordHandler = (e: ChangeEvent<Element>) => {
+    const text = (e.target as HTMLInputElement).value;
+    setPassword(text);
+    const passwordErr = isValidPassword(text);
+    setPasswordError(passwordErr);
+  };
+
+  const passwordConfirmHandler = (e: ChangeEvent<Element>) => {
+    const text = (e.target as HTMLInputElement).value;
+    setpasswordConfirm(text);
+    const passwordErr = isValidPasswordConfirm(text, password);
+    setPasswordConfirmError(passwordErr);
+  };
+
+  const emailHandler = (e: ChangeEvent<Element>) => {
+    const text = (e.target as HTMLInputElement).value;
+    setEmail(text);
+    const emailErr = isValidEmail(text);
+    setEmailError(emailErr);
+  };
+
+  const nameHandler = (e: ChangeEvent<Element>) => {
+    const text = (e.target as HTMLInputElement).value;
+    setName(text);
+    const nameErr = isValidName(text);
+    setNameError(nameErr);
+  };
 
   return (
     <div className={b('wrapper')}>
