@@ -8,6 +8,7 @@ import './Button.scss';
 const b = block('button');
 
 type Props = {
+  id?: string;
   placeholder?: string;
   onClick?: ClickType;
   size: string;
@@ -16,10 +17,11 @@ type Props = {
   disabled?: boolean;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
-const Button: FC<Props> = ({ size, children, onClick, disabled, type }) => {
+const Button: FC<Props> = ({ id, size, children, onClick, disabled, type }) => {
   const className = b({ size });
   return (
     <button
+      id={id}
       disabled={disabled}
       type={type === 'button' ? 'button' : 'submit'}
       className={className}
