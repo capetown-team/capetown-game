@@ -1,83 +1,29 @@
-import React, {
-  useEffect,
-  useState,
-  MouseEvent,
-  FocusEvent,
-  ChangeEvent
-} from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
-import { isValidLogin, isValidPassword } from '@/modules/validation';
 import block from 'bem-cn-lite';
-import { signIn } from '@/api';
 import './Authorization.scss';
+import { useAuth } from '@/hooks/useAuth';
 
 const b = block('form');
 
 export const Authorization = () => {
-  const history = useHistory();
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
-  const [loginDirty, setLoginDirty] = useState(false);
-  const [passwordDirty, setPasswordDirty] = useState(false);
-  const [loginError, setLoginError] = useState('Email не может быть пустым');
-  const [passwordError, setPasswordError] = useState(
-    'Пароль не может быть пустым'
-  );
-  const [formValid, setFormValid] = useState(false);
-  const [regValid, setRegValid] = useState(true);
-
-  useEffect(() => {
-    if (loginError || passwordError) {
-      setFormValid(false);
-    } else {
-      setFormValid(true);
-    }
-  }, [loginError, passwordError]);
-
-  const blurHandler = (e: FocusEvent<Element>) => {
-    const { name } = e.target as HTMLInputElement;
-    switch (name) {
-      case 'login':
-        setLoginDirty(true);
-        break;
-      case 'password':
-        setPasswordDirty(true);
-        break;
-      default:
-    }
-  };
-
-  const loginHandler = (e: ChangeEvent<Element>) => {
-    const text = (e.target as HTMLInputElement).value;
-    setLogin(text);
-    const loginErr = isValidLogin(text);
-    setLoginError(loginErr);
-  };
-
-  const passwordHandler = (e: ChangeEvent<Element>) => {
-    const text = (e.target as HTMLInputElement).value;
-    setPassword(text);
-    const passwordErr = isValidPassword(text);
-    setPasswordError(passwordErr);
-  };
-
-  const submitHandler = async (e: MouseEvent<Element>) => {
-    e.preventDefault();
-    const user = {
-      login,
-      password
-    };
-
-    try {
-      await signIn(user);
-      history.replace('/game');
-    } catch (err) {
-      setRegValid(false);
-    }
-  };
+  const {
+    login,
+    password,
+    loginHandler,
+    passwordHandler,
+    loginDirty,
+    passwordDirty,
+    regValid,
+    loginError,
+    passwordError,
+    formValid,
+    blurHandler,
+    submitHandler
+  } = useAuth('authorization');
 
   return (
     <div className={b('wrapper')}>
