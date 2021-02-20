@@ -1,4 +1,4 @@
-import { Direction } from '@/pages/Game/script/Direction/Direction';
+import { Direction } from '@game/script/Direction/Direction';
 
 type Props = {
   direction: number;
@@ -11,7 +11,7 @@ type Props = {
 export class DirectionWatch {
   dir: Props | null = null;
 
-  set(dir: Direction) {
+  set(dir: Direction | null) {
     this.dir = dir;
   }
 
