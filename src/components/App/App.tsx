@@ -4,6 +4,9 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { withErrorBoundary } from '@/components/ErrorBoundary';
 import { PrivateRoute } from '@/components/PrivateRoute';
 import { Header } from '@/components/Header';
+
+import { Provider } from 'react-redux';
+import configureStore from '@/redux/store/store.ts';
 import { routes } from './routes';
 
 import './App.scss';
