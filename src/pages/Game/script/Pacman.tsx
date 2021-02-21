@@ -21,6 +21,9 @@ export class Pacman {
   direction = right.direction;
 
   map = dataMap;
+  row = 12;
+  col = 20;
+
   score = 0;
 
   constructor(initParameters: InitParameters) {
@@ -38,15 +41,7 @@ export class Pacman {
   }
 
   getType(x: number, y: number): string {
-    if (
-      this.map.posY[y] &&
-      this.map.posY[y].posX[x] &&
-      this.map.posY[y].posX[x].type
-    ) {
-      return this.map.posY[y].posX[x].type;
-    }
-
-    return '';
+    return this.map?.posY[y]?.posX[x]?.type || '';
   }
 
   checkCollisions(): void {
@@ -58,8 +53,8 @@ export class Pacman {
 
       const field = this.getType(gridX, gridY);
 
-      if (this.dirX === 1 && gridAheadX < 19) gridAheadX += 1;
-      if (this.dirY === 1 && gridAheadY < 12) gridAheadY += 1;
+      if (this.dirX === 1 && gridAheadX < this.col) gridAheadX += 1;
+      if (this.dirY === 1 && gridAheadY < this.row) gridAheadY += 1;
       const fieldAhead = this.getType(gridAheadX, gridAheadY);
 
       const rad = 10;
@@ -103,7 +98,7 @@ export class Pacman {
         const x = this.getGridPosX() + dir.dirX;
         const y = this.getGridPosY() + dir.dirY;
 
-        if (x < 19 && x >= 0 && y < 12 && y >= 0) {
+        if (x < this.col && x >= 0 && y < this.row && y >= 0) {
           const nextTile = this.map.posY[y].posX[x].type;
 
           if (nextTile !== 'wall' && dir) {

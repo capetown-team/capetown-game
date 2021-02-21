@@ -19,9 +19,16 @@ export class Header {
     this.initParameters = initParameters;
     this.pacman = pacman;
   }
-  //
+
+  drawText(text: string, size: string, color: string, x: number, y: number) {
+    const textScore = text;
+    this.ctx.font = `${size}pt Source Sans Pro`;
+    this.ctx.fillStyle = color;
+    this.ctx.fillText(textScore, x, y);
+  }
+
   drawHeader() {
-    this.ctx.fillStyle = ColorType.white;
+    this.ctx.fillStyle = ColorType.White;
     this.ctx.fillRect(
       0,
       0,
@@ -29,40 +36,66 @@ export class Header {
       this.initParameters.head
     );
 
-    const textScore = `Очков: ${this.pacman.score}`;
-    const textLevel = `Уровень: ${this.level}`;
-    this.ctx.font = '15pt Source Sans Pro';
-    this.ctx.fillStyle = 'black';
-    this.ctx.fillText(textScore, this.initParameters.width / 2 - 50, 20);
-    this.ctx.font = '12pt Source Sans Pro';
-    this.ctx.fillText(textLevel, 30, 20);
+    this.drawText(
+      `Очков: ${this.pacman.score}`,
+      '15',
+      ColorType.Black,
+      this.initParameters.width / 2 - 50,
+      20
+    );
+    this.drawText(`Уровень: ${this.level}`, '12', ColorType.Black, 30, 20);
 
     for (let i = 0; i < this.hearts; i += 1) {
-      this.drawHearts(this.initParameters.width - 100 + 30 * i, 2);
+      this.drawHearts(this.initParameters.width - 100 + 30 * i, 5);
     }
   }
 
   drawHearts(left: number, top: number) {
     this.ctx.beginPath();
-    this.ctx.fillStyle = 'red';
+    this.ctx.fillStyle = ColorType.Red;
 
-    const d = 20 + 5 * Math.cos(2);
-    const k = top + 2.5 * Math.sin(2);
+    const radius = 20 + 5 * Math.cos(2);
+    const position = top + 2 * Math.sin(2);
 
-    this.ctx.moveTo(k + left, k + d / 4);
-    this.ctx.quadraticCurveTo(k + left, k, k + left + d / 4, k);
-    this.ctx.quadraticCurveTo(k + left + d / 2, k, k + left + d / 2, k + d / 4);
-    this.ctx.quadraticCurveTo(k + left + d / 2, k, k + left + (d * 3) / 4, k);
-    this.ctx.quadraticCurveTo(k + left + d, k, k + left + d, k + d / 4);
+    this.ctx.moveTo(position + left, position + radius / 4);
     this.ctx.quadraticCurveTo(
-      k + left + d,
-      k + d / 2,
-      k + left + (d * 3) / 4,
-      k + (d * 3) / 4
+      position + left,
+      position,
+      position + left + radius / 4,
+      position
     );
-    this.ctx.lineTo(k + left + d / 2, k + d);
-    this.ctx.lineTo(k + left + d / 4, k + (d * 3) / 4);
-    this.ctx.quadraticCurveTo(k + left, k + d / 2, k + left, k + d / 4);
+    this.ctx.quadraticCurveTo(
+      position + left + radius / 2,
+      position,
+      position + left + radius / 2,
+      position + radius / 4
+    );
+    this.ctx.quadraticCurveTo(
+      position + left + radius / 2,
+      position,
+      position + left + (radius * 3) / 4,
+      position
+    );
+    this.ctx.quadraticCurveTo(
+      position + left + radius,
+      position,
+      position + left + radius,
+      position + radius / 4
+    );
+    this.ctx.quadraticCurveTo(
+      position + left + radius,
+      position + radius / 2,
+      position + left + (radius * 3) / 4,
+      position + (radius * 3) / 4
+    );
+    this.ctx.lineTo(position + left + radius / 2, position + radius);
+    this.ctx.lineTo(position + left + radius / 4, position + (radius * 3) / 4);
+    this.ctx.quadraticCurveTo(
+      position + left,
+      position + radius / 2,
+      position + left,
+      position + radius / 4
+    );
 
     this.ctx.fill();
   }

@@ -23,7 +23,7 @@ export class Figure {
   }
 
   drawWalls() {
-    this.ctx.fillStyle = ColorType.gray;
+    this.ctx.fillStyle = ColorType.Gray;
 
     // Верхняя преграда
     buildWall(
@@ -100,7 +100,7 @@ export class Figure {
 
   drawCoins() {
     let posY = 0;
-    this.ctx.fillStyle = ColorType.gold;
+    this.ctx.fillStyle = ColorType.Gold;
     this.ctx.beginPath();
 
     if (this.map && this.map.posY && this.map.posY.length > 0) {

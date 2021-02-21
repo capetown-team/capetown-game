@@ -64,7 +64,7 @@ export class Engine {
   finishGame() {
     this.reset();
     this.figure.updateCoins();
-    this.blank(ColorType.white);
+    this.blank(ColorType.White);
     if (this.requestId) {
       window.cancelAnimationFrame(this.requestId);
       this.requestId = 0;
@@ -74,6 +74,7 @@ export class Engine {
   }
 
   newGame() {
+    this.header.hearts = 3;
     this.figure.updateCoins();
     this.pacman.reset();
     this.pacman.directionWatcher.set(right);
@@ -111,7 +112,7 @@ export class Engine {
     }
   }
 
-  blank(color = ColorType.lightGrey) {
+  blank(color = ColorType.LightGrey) {
     this.ctx.fillStyle = color;
     this.ctx.fillRect(
       0,
@@ -127,7 +128,7 @@ export class Engine {
     this.figure.drawWalls();
     this.figure.drawCoins();
     this.ghost.drawGhost();
-    this.ctx.fillStyle = ColorType.gold;
+    this.ctx.fillStyle = ColorType.Gold;
     this.ctx.beginPath();
 
     if (this.pacman.isMouthOpen) {

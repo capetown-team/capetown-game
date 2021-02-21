@@ -15,18 +15,18 @@ const Game = () => {
   const [isPause, setPause] = useState(false);
 
   const handlerStart = useCallback(() => {
-    if (isStart) {
-      (engine as Engine).newGame();
+    if (isStart && engine) {
+      engine.newGame();
       setPause(false);
-    } else {
-      (engine as Engine).startGame();
+    } else if (engine) {
+      engine.startGame();
       setStart(true);
     }
-  }, [engine, isStart, isPause]);
+  }, [engine, isStart]);
 
   const handlerPause = useCallback(() => {
     if (engine) {
-      (engine as Engine).pauseGame();
+      engine.pauseGame();
     }
 
     if (isPause) {
@@ -55,8 +55,8 @@ const Game = () => {
     // engine.startGame();
 
     return () => {
-      if (engine && (engine as Engine).started) {
-        (engine as Engine).finishGame();
+      if (engine && engine.started) {
+        engine.finishGame();
       }
     };
   }, []);
@@ -76,7 +76,7 @@ const Game = () => {
           {isPause ? 'Продолжить' : 'Пауза'}
         </Button>
         <Button disabled={!isStart} onClick={handleStop} size="small">
-          Заверишить
+          Завершить
         </Button>
       </div>
       <canvas
