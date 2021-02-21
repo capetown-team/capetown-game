@@ -53,7 +53,8 @@
     "import/resolver": {
       "alias": {
         "map": [
-          ["@", "./src"]
+          ["@", "./src"],
+          ["@game", "./src/pages/Game"]
         ],
         "extensions": [".js", ".ts", ".tsx", ".scss"]
       }

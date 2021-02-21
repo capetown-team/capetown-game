@@ -10,30 +10,28 @@ const b = block('game');
 
 const Game = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [engine, setEngine] = useState({});
+  const [engine, setEngine] = useState<Engine | null>(null);
   const [isStart, setStart] = useState(false);
   const [isPause, setPause] = useState(false);
-  const [pauseText, setPauseText] = useState('Пауза');
 
   const handlerStart = useCallback(() => {
-    if (isStart) {
-      (engine as Engine).newGame();
-    } else {
-      (engine as Engine).startGame();
+    if (isStart && engine) {
+      engine.newGame();
+      setPause(false);
+    } else if (engine) {
+      engine.startGame();
       setStart(true);
     }
   }, [engine, isStart]);
 
   const handlerPause = useCallback(() => {
     if (engine) {
-      (engine as Engine).pauseGame();
+      engine.pauseGame();
     }
 
     if (isPause) {
-      setPauseText('Пауза');
       setPause(false);
     } else {
-      setPauseText('Продолжить');
       setPause(true);
     }
   }, [engine, isPause]);
@@ -45,16 +43,22 @@ const Game = () => {
 
     setStart(false);
     setPause(false);
-    setPauseText('Пауза');
   }, [engine, isPause]);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (canvas) {
-      const ctx = canvas.getContext('2d') as CanvasRenderingContext2D;
-      const engine = new Engine(canvas, ctx);
-      setEngine(engine);
-    }
+    const canvas = canvasRef.current as HTMLCanvasElement;
+    const engine = new Engine(
+      canvas,
+      canvas.getContext('2d') as CanvasRenderingContext2D
+    );
+    setEngine(engine);
+    // engine.startGame();
+
+    return () => {
+      if (engine && engine.started) {
+        engine.finishGame();
+      }
+    };
   }, []);
 
   return (
@@ -62,17 +66,17 @@ const Game = () => {
       <Topping title="Игра Pac-Man" />
       <div className={b('header')}>
         <Button onClick={handlerStart} size="small game__button">
-          Начать заново
+          Новая игра
         </Button>
         <Button
           disabled={!isStart}
           onClick={handlerPause}
           size="small game__button"
         >
-          {pauseText}
+          {isPause ? 'Продолжить' : 'Пауза'}
         </Button>
         <Button disabled={!isStart} onClick={handleStop} size="small">
-          Заверишить
+          Завершить
         </Button>
       </div>
       <canvas
