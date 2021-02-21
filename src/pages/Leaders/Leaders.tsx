@@ -7,6 +7,7 @@ import React, {
   useCallback
 } from 'react';
 import block from 'bem-cn-lite';
+
 import { Pagination } from '@/components/Pagination';
 import { SearchType } from '@/types.d';
 import { usersData } from '@/pages/Leaders/data';

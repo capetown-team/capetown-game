@@ -1,0 +1,3 @@
+export const AUTH = 'AUTHORIZE';
+export const AUTHORIZE_CHECK = 'AUTHORIZE_CHECK';
+export const PENDING_AUTHORIZE = 'PENDING_AUTHORIZE';
