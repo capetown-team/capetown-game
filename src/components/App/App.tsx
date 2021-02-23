@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
-import { withAuth } from '@/hocs/withPreloading';
+import { withAuth } from '@/hocs/withAuth';
 import { withErrorBoundary } from '@/components/ErrorBoundary';
 import { PrivateRoute } from '@/components/PrivateRoute';
 import { Header } from '@/components/Header';
