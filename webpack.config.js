@@ -8,10 +8,13 @@ const isDev = process.env.NODE_ENV === 'development';
 
 module.exports = {
   mode: 'development',
-  entry: './src/index.tsx',
+  entry: {
+    app: './src/index.tsx',
+    sw: './sw.js'
+  },
   output: {
     path: path.join(__dirname, '/dist'),
-    filename: 'bundle.[contenthash].js',
+    filename: '[name].js',
     publicPath: '/'
   },
   resolve: {
@@ -41,10 +44,12 @@ module.exports = {
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
-      template: './public/index.html'
+      template: './public/index.html',
+      excludeChunks: ['sw'],
+      hash: true
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].[contenthash].css'
+      filename: '[name].css'
     }),
     new WebpackBar()
   ],
