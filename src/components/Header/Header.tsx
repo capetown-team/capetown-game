@@ -1,7 +1,14 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo, useEffect, useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
-import { Link } from 'react-router-dom';
+import { Link, NavLink, useHistory } from 'react-router-dom';
 
+import { getAuth, getUser } from '@/reducer/user/selectors';
+import { logout } from '@/reducer/user/actions';
+import { logOut } from '@/api';
+import { Dropdown } from '@/components/Dropdown';
+import { DropNavType } from '@/components/Dropdown/Dropdown';
+import { ROUTES } from '@/constants';
 import { overLinks, userLinks } from './data';
 
 import './Header.scss';
@@ -9,14 +16,43 @@ import './Header.scss';
 const b = block('header');
 
 const Header = () => {
-  const [isAuth, setAuth] = useState(false);
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const isAuth = useSelector(getAuth);
+  const user = useSelector(getUser);
   const [links, setLinks] = useState(overLinks);
 
-  useEffect(() => {
-    setAuth(true);
+  const handlerLogout = useCallback(() => {
+    logOut()
+      .then(() => {
+        dispatch(logout());
+        history.replace(ROUTES.SIGNIN);
+      })
+      .catch((error) => {
+        const logError = (error.response && error.response.data) || {};
 
+        // временно alert
+        alert(logError.error || error.message);
+      });
+  }, []);
+
+  const dropLists: DropNavType[] = [
+    {
+      redirect: '/profile',
+      name: 'Профиль'
+    },
+    {
+      handler: handlerLogout,
+      name: 'Выйти'
+    }
+  ];
+
+  useEffect(() => {
     if (isAuth) {
       setLinks(userLinks);
+    } else {
+      setLinks(overLinks);
     }
   }, [isAuth]);
 
@@ -27,14 +63,27 @@ const Header = () => {
           Pac-Man
         </Link>
         <nav className={b('nav')}>
-          {links.map(({ name, linkTo }) => (
+          {links.map(({ exact, name, linkTo }) => (
             <li key={name} className={b('list')}>
-              <Link className={b('link')} to={linkTo}>
+              <NavLink
+                exact={!!exact}
+                activeClassName={b('link', { active: true })}
+                className={b('link')}
+                to={linkTo}
+              >
                 {name}
-              </Link>
+              </NavLink>
             </li>
           ))}
         </nav>
+
+        {isAuth && (
+          <Dropdown
+            name={user.first_name}
+            avatar={user.avatar}
+            nav={dropLists}
+          />
+        )}
       </div>
     </header>
   );

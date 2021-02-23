@@ -25,7 +25,7 @@ type UserPassword = {
   newPassword: string;
 };
 
-const client = makeApi();
+export const client = makeApi();
 const path = `https://ya-praktikum.tech/api/v2`;
 
 export const signUp = async (user: User) => {

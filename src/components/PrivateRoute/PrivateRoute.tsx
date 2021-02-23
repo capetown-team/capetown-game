@@ -1,15 +1,13 @@
 import React from 'react';
 import { Route, Redirect, RouteProps } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
-type Props = {
-  isAuthorized: boolean;
-};
+import { ROUTES } from '@/constants';
+import { getAuth } from '@/reducer/user/selectors';
 
-const PrivateRoute = ({
-  isAuthorized,
-  component: Component,
-  ...rest
-}: Props & RouteProps) => {
+const PrivateRoute = ({ component: Component, ...rest }: RouteProps) => {
+  const isAuth = useSelector(getAuth);
+
   if (!Component) {
     throw new Error('Component is required in PrivateRoute');
   }
@@ -18,10 +16,10 @@ const PrivateRoute = ({
     <Route
       {...rest}
       render={(routeProps) => {
-        return isAuthorized ? (
+        return isAuth ? (
           <Component {...routeProps} />
         ) : (
-          <Redirect to="/signin" />
+          <Redirect to={ROUTES.SIGNIN} />
         );
       }}
     />

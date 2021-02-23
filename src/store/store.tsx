@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 
 import { makeApi } from '@/api/api';
-import reducer from '@/reducer';
+import { reducer } from '@/reducer';
 
 const api = makeApi();
 

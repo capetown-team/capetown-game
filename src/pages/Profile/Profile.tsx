@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import block from 'bem-cn-lite';
 
-import { getUserInfo, changeProfileAvatar } from '@/api';
+import { baseUrl } from '@/constants';
+import { changeProfileAvatar, getUserInfo } from '@/api';
 import { FilePopup } from '@/components/FilePopup';
 import { ProfileForm } from './ProfileForm';
 import { ProfilePasswordForm } from './ProfilePasswordForm';
@@ -62,10 +63,7 @@ export const Profile = () => {
           <div className={b('avatar')}>
             <div className={b('avatar-img')}>
               {state.avatar ? (
-                <img
-                  src={`https://ya-praktikum.tech${state.avatar}`}
-                  alt="avatar"
-                />
+                <img src={`${baseUrl}${state.avatar}`} alt="avatar" />
               ) : (
                 <span>М</span>
               )}

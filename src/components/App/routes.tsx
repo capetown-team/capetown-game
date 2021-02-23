@@ -7,50 +7,51 @@ import { Authorization } from '@/pages/Authorization';
 import { Registration } from '@/pages/Registration';
 import { Game } from '@/pages/Game';
 import { Landing } from '@/pages/Landing';
+import { ROUTES } from '@/constants';
 
 export const routes = [
   {
-    path: '/',
+    path: ROUTES.ROOT,
     component: Landing,
     isPrivate: false,
     exact: true
   },
   {
-    path: '/leaders',
+    path: ROUTES.LEADERBOARD,
     component: Leaders,
     isPrivate: true
   },
   {
-    path: '/forum',
+    path: ROUTES.FORUM,
     component: Forum,
     exact: true,
     isPrivate: true
   },
   {
-    path: '/forum/:id',
+    path: ROUTES.FORUM_ITEM,
     component: ItemForum,
     exact: true,
     isPrivate: true
   },
   {
-    path: '/game',
+    path: ROUTES.GAME,
     component: Game,
     isPrivate: true
   },
   {
-    path: '/authorization',
+    path: ROUTES.SIGNIN,
     component: Authorization,
     isPrivate: false,
     exact: true
   },
   {
-    path: '/registration',
+    path: ROUTES.SIGNUP,
     component: Registration,
     isPrivate: false,
     exact: true
   },
   {
-    path: '/profile',
+    path: ROUTES.PROFILE,
     component: Profile,
     isPrivate: true
   },

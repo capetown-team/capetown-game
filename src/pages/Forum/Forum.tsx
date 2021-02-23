@@ -1,5 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import block from 'bem-cn-lite';
+
 import { data as DataForum } from '@/pages/Forum/data';
 import { usePagination } from '@/hooks/usePagination';
 import { Topping } from '@/components/Topping';

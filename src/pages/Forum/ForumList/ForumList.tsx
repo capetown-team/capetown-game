@@ -1,7 +1,9 @@
 import React, { FC, memo } from 'react';
 import { Link } from 'react-router-dom';
 import block from 'bem-cn-lite';
+
 import { Props } from '@/pages/Forum/Forum';
+import { ROUTES } from '@/constants';
 
 const b = block('table');
 
@@ -11,7 +13,7 @@ const ForumList: FC<Props> = ({ id, title, message }) => (
       <div className={b('page')} />
     </div>
     <div className={b('item', { main: true })}>
-      <Link to={`/forum/${id}`}>{title}</Link>
+      <Link to={`${ROUTES.FORUM}/${id}`}>{title}</Link>
     </div>
     <div className={b('item', { message: true })}>{message}</div>
   </li>

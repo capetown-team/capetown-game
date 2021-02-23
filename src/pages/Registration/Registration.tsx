@@ -6,6 +6,7 @@ import React, {
   MouseEvent
 } from 'react';
 import { useHistory, Link } from 'react-router-dom';
+import block from 'bem-cn-lite';
 
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
@@ -17,7 +18,8 @@ import {
   isValidPasswordConfirm
 } from '@/modules/validation';
 import { signUp } from '@/api';
-import block from 'bem-cn-lite';
+import { ROUTES } from '@/constants';
+
 import './Registration.scss';
 
 const b = block('form');
@@ -97,7 +99,7 @@ export const Registration = () => {
 
     try {
       await signUp(user);
-      history.replace('/game');
+      history.replace(ROUTES.GAME);
     } catch (err) {
       setRegValid(false);
     }
@@ -228,7 +230,7 @@ export const Registration = () => {
           </Button>
         </div>
         <div className={b('row')}>
-          <Link className={b('link')} to="/authorization">
+          <Link className={b('link')} to={ROUTES.SIGNIN}>
             Есть аккаунт?
           </Link>
         </div>
