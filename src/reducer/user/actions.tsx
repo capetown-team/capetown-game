@@ -71,7 +71,7 @@ export const checkAuth = () => {
           dispatch(authorize(user));
         }
       })
-      .catch((error) => {
+      .catch(() => {
         dispatch(authCheckFailure());
       });
   };

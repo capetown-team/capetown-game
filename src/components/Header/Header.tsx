@@ -33,6 +33,7 @@ const Header = () => {
         const logError = (error.response && error.response.data) || {};
 
         // временно alert
+        // eslint-disable-next-line no-alert
         alert(logError.error || error.message);
       });
   }, []);
