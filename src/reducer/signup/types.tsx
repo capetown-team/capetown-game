@@ -1,0 +1,2 @@
+export const SIGNUP_PENDING = 'SIGNUP_PENDING';
+export const SIGNUP_ERROR = 'SIGNUP_ERROR';

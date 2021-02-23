@@ -196,7 +196,8 @@ export class Engine {
         evt.preventDefault();
         this.pacman.directionWatcher.set(right);
         break;
-      default:
+
+      // no default
     }
   }
 }
