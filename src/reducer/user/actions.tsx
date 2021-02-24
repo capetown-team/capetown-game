@@ -1,6 +1,8 @@
-import { Dispatch } from 'redux';
+import { Dispatch, Action } from 'redux';
+import { AxiosInstance } from 'axios';
+import { ThunkAction } from 'redux-thunk';
+import { path } from '@/api';
 
-import { getUserInfo } from '@/api';
 import {
   AUTH_REQUEST,
   AUTH_SUCCESS,
@@ -46,12 +48,6 @@ const authCheckFailure = () => {
   };
 };
 
-export const logout = () => {
-  return {
-    type: LOGOUT
-  };
-};
-
 export const authFailure = (error: string) => {
   return {
     type: USER_FAILURE,
@@ -61,10 +57,16 @@ export const authFailure = (error: string) => {
   };
 };
 
-export const checkAuth = () => {
-  return async (dispatch: Dispatch) => {
+export const checkAuth = <S,>(): ThunkAction<
+  void,
+  () => S,
+  AxiosInstance,
+  Action<string>
+> => {
+  return async (dispatch: Dispatch, getState, api): Promise<void> => {
     dispatch(authRequest());
-    getUserInfo()
+    api
+      .get(`${path}/auth/user`, { withCredentials: true })
       .then((response) => {
         if (response.data) {
           const user: { user: UserType } = { user: response.data };
@@ -73,6 +75,32 @@ export const checkAuth = () => {
       })
       .catch(() => {
         dispatch(authCheckFailure());
+      });
+  };
+};
+
+export const logout = <S,>(): ThunkAction<
+  void,
+  () => S,
+  AxiosInstance,
+  Action<string>
+> => {
+  return async (dispatch: Dispatch, getState, api): Promise<void> => {
+    api
+      .post(
+        `${path}/auth/logout`,
+        {},
+        {
+          withCredentials: true
+        }
+      )
+      .then(() => {
+        dispatch({
+          type: LOGOUT
+        });
+      })
+      .catch((error) => {
+        dispatch(authFailure(error));
       });
   };
 };

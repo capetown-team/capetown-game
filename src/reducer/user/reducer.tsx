@@ -27,14 +27,7 @@ export const userReducer = (state = initialState, action: ActionType) => {
       return {
         ...state,
         user: {
-          id: action.payload.user?.id,
-          first_name: action.payload?.user?.first_name ?? '',
-          second_name: action.payload?.user?.second_name ?? '',
-          display_name: action.payload?.user?.display_name ?? '',
-          login: action.payload?.user?.login ?? '',
-          email: action.payload?.user?.email ?? '',
-          phone: action.payload?.user?.phone ?? '',
-          avatar: action.payload?.user?.avatar ?? ''
+          ...action.payload.user
         },
         isAuth: true,
         pending: false,

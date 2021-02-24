@@ -3,12 +3,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 import { Link, NavLink, useHistory } from 'react-router-dom';
 
-import { getAuth, getUser } from '@/reducer/user/selectors';
+import { authSelector, userSelector } from '@/reducer/user/selectors';
 import { logout } from '@/reducer/user/actions';
-import { logOut } from '@/api';
 import { Dropdown } from '@/components/Dropdown';
 import { DropNavType } from '@/components/Dropdown/Dropdown';
 import { ROUTES } from '@/constants';
+import { AppState } from '@/reducer';
 import { overLinks, userLinks } from './data';
 
 import './Header.scss';
@@ -19,23 +19,21 @@ const Header = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const isAuth = useSelector(getAuth);
-  const user = useSelector(getUser);
+  const { isAuth, user } = useSelector((state: AppState) => {
+    return {
+      isAuth: authSelector(state),
+      user: userSelector(state)
+    };
+  });
+
   const [links, setLinks] = useState(overLinks);
 
   const handlerLogout = useCallback(() => {
-    logOut()
-      .then(() => {
-        dispatch(logout());
-        history.replace(ROUTES.SIGNIN);
-      })
-      .catch((error) => {
-        const logError = (error.response && error.response.data) || {};
+    dispatch(logout());
 
-        // временно alert
-        // eslint-disable-next-line no-alert
-        alert(logError.error || error.message);
-      });
+    if (!isAuth) {
+      history.replace(ROUTES.SIGNIN);
+    }
   }, []);
 
   const dropLists: DropNavType[] = [

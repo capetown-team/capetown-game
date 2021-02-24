@@ -26,7 +26,7 @@ type UserPassword = {
 };
 
 export const client = makeApi();
-const path = `https://ya-praktikum.tech/api/v2`;
+export const path = `https://ya-praktikum.tech/api/v2`;
 
 export const signUp = async (user: User) => {
   return client.post<User>(`${path}/auth/signup`, user, {
