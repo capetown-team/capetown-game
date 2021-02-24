@@ -1,9 +1,4 @@
-export enum DirectionType {
-  right = 0,
-  left = 2,
-  up = 3,
-  down = 1
-}
+import { DirectionType } from '@game/script/helpers/constants';
 
 export class Direction {
   direction: DirectionType;

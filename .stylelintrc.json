@@ -11,7 +11,6 @@
     "selector-pseudo-element-colon-notation": null
   },
   "ignoreFiles": [
-    "dist/*",
-    "src/assets/**"
+    "dist/*"
   ]
 }
