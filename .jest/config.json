@@ -1,0 +1,28 @@
+{
+  "rootDir": "../src",
+  "setupFiles": ["../.jest/register-context.js"],
+  "moduleNameMapper": {
+    "@components/([^\\.]*)$": ["<rootDir>/components/$1"],
+    "@components/atoms": ["<rootDir>/components/atoms/index.ts"],
+    "@components/molecules": ["<rootDir>/components/molecules/index.ts"],
+    "@components/organisms": ["<rootDir>/components/organisms/index.ts"],
+    "@components/templates": ["<rootDir>/components/templates/index.ts"],
+    "@pages": ["<rootDir>/pages/index.ts"],
+    "@config": ["<rootDir>/config.ts"],
+    "@hocs": ["<rootDir>/HOCs/index.ts"],
+    "@images": ["<rootDir>/images/index.ts"],
+    "@api": ["<rootDir>/api/index.ts"],
+    "@game/@types": ["<rootDir>/game/@types/index.ts"],
+    "@game/entities": ["<rootDir>/game/entities/index.ts"],
+    "@game/controllers": ["<rootDir>/game/controllers/index.ts"],
+    "@hooks": ["<rootDir>/hooks/index.ts"],
+    "@types": ["<rootDir>/types/index.ts"]
+  },
+  "setupFilesAfterEnv": ["../.jest/setupTests.js"],
+  "transform": {
+    "^.+\\.(j|t)sx?$": "babel-jest",
+    "^.+\\.svg$": "jest-svg-transformer",
+    ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub"
+  },
+  "transformIgnorePatterns": ["/node_modules/(?!register-service-worker).+\\.js$"]
+}

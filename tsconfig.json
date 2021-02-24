@@ -20,13 +20,29 @@
     "baseUrl": ".",
     "outDir": "./dist",
     "paths": {
-      "@/*": ["./src/*"]
+      "@components/*": ["./src/components/*"],
+      "@components/atoms": ["./src/components/atoms/index.ts"],
+      "@components/molecules": ["./src/components/molecules/index.ts"],
+      "@components/organisms": ["./src/components/organisms/index.ts"],
+      "@components/templates": ["./src/components/templates/index.ts"],
+      "@pages": ["./src/pages/index.ts"],
+      "@config": ["./src/config.ts"],
+      "@hocs": ["./src/HOCs/index.ts"],
+      "@images": ["./src/images/index.ts"],
+      "@api": ["./src/api/index.ts"],
+      "@game/@types": ["./src/game/@types/index.ts"],
+      "@game/entities": ["./src/game/entities/index.ts"],
+      "@game/controllers": ["./src/game/controllers/index.ts"],
+      "@hooks": ["./src/hooks/index.ts"],
+      "@types": ["./src/types/index.ts"],
     },
-    "typeRoots": ["typings/**/*.d.ts", "node_modules/@types"],
+    "typeRoots": [
+      "node_modules/@types"
+    ]
   },
   "include": [
     "src",
-    "typings/**/*.d.ts",
+    "src/custom.d.ts",
     "./node_modules/@types"
   ],
   "exclude": [
