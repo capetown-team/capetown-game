@@ -1,0 +1,15 @@
+{
+  "rootDir": "../src",
+  "setupFiles": ["../.jest/register-context.js"],
+  "moduleNameMapper": {
+    "@/(.*)$": "<rootDir>/$1",
+    "components(.*)$": "<rootDir>/components/$1"
+  },
+  "setupFilesAfterEnv": ["../.jest/setupTests.js"],
+  "transform": {
+    "^.+\\.(j|t)sx?$": "babel-jest",
+    "^.+\\.svg$": "jest-svg-transformer",
+    ".+\\.(css|styl|less|sass|scss|png|jpg|ttf|woff|woff2)$": "jest-transform-stub"
+  },
+  "transformIgnorePatterns": ["/node_modules/(?!register-service-worker).+\\.js$"]
+}
