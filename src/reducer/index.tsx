@@ -19,7 +19,7 @@ export type AppState = {
 };
 
 export const reducer = combineReducers({
-  user: userReducer,
+  auth: userReducer,
   forum: formReducer,
   loader: leadersReducer,
   signin: signinReducer,
