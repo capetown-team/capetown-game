@@ -7,6 +7,7 @@ import React, {
   MouseEvent
 } from 'react';
 import block from 'bem-cn-lite';
+
 import { Topping } from '@/components/Topping';
 import { Button } from '@/components/Button';
 import { Engine } from '@/pages/Game/script/Engine';
@@ -93,7 +94,11 @@ const Game = () => {
       <Topping title="Игра Pac-Man" />
       <div className={b('game')} ref={gameRef}>
         <div className={b('header')}>
-          <Button onClick={handlerStart} size="small game__button">
+          <Button
+            // disabled={isStart}
+            onClick={handlerStart}
+            size="small game__button"
+          >
             Новая игра
           </Button>
           <Button

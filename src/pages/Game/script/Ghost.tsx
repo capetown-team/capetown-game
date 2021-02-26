@@ -1,5 +1,6 @@
 import { FigureType } from '@game/script/Types';
 import { between } from '@game/script/helpers/action';
+import img from '@game/script/images/ghost-right.png';
 
 export class Ghost {
   ghost = {
@@ -16,8 +17,7 @@ export class Ghost {
   }
 
   drawGhost() {
-    this.ghost.image.src =
-      'https://w7.pngwing.com/pngs/65/666/png-transparent-ghost-ghost-word-art-vertebrate-owl-fictional-character.png';
+    this.ghost.image.src = img;
 
     this.ctx.drawImage(
       this.ghost.image,

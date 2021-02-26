@@ -35,7 +35,19 @@ export class Engine {
       this.pacman = new Pacman(this.initParameters);
       this.figure = new Figure(this.ctx, this.initParameters, this.pacman);
       this.ghost = new Ghost(this.ctx);
-      this.header = new Header(this.ctx, this.initParameters, this.pacman);
+      this.header = new Header(
+        this.ctx,
+        this.initParameters,
+        this.pacman,
+        this.figure
+      );
+    }
+  }
+
+  stopAnimation() {
+    if (this.requestId) {
+      window.cancelAnimationFrame(this.requestId);
+      this.requestId = 0;
     }
   }
 
@@ -46,34 +58,45 @@ export class Engine {
     this.header.hearts = 3;
 
     this.pacman.reset();
+    this.stopAnimation();
+
+    window.removeEventListener('keydown', this.doKeyDown);
   }
 
   pauseGame() {
     if (!this.pause) {
       this.pause = true;
-
-      if (this.requestId) {
-        window.cancelAnimationFrame(this.requestId);
-        this.requestId = 0;
-      }
+      this.stopAnimation();
     } else {
       this.startGame();
     }
   }
 
   finishGame() {
-    this.reset();
-    this.figure.updateCoins();
-    this.blank(ColorType.White);
-    if (this.requestId) {
-      window.cancelAnimationFrame(this.requestId);
-      this.requestId = 0;
-
-      window.removeEventListener('keydown', this.doKeyDown);
+    this.blank(ColorType.LightGrey);
+    this.figure.drawText(
+      'Вы завериши игру',
+      '17',
+      ColorType.Black,
+      this.initParameters.width / 2 - 85,
+      this.initParameters.height / 2 - 50
+    );
+    if (this.pacman.score > 0) {
+      const textScore = `Ваш счет ${this.pacman.score} очков`;
+      this.figure.drawText(
+        textScore,
+        '15',
+        ColorType.Black,
+        this.initParameters.width / 2 - textScore.length * 4.4,
+        this.initParameters.height / 2 - 20
+      );
     }
+
+    this.reset();
   }
 
   newGame() {
+    this.reset();
     this.header.hearts = 3;
     this.figure.updateCoins();
     this.pacman.reset();
@@ -105,11 +128,25 @@ export class Engine {
   }
 
   endGame() {
-    this.reset();
-    if (this.requestId) {
-      window.cancelAnimationFrame(this.requestId);
-      this.requestId = 0;
-    }
+    setTimeout(() => {
+      this.stopAnimation();
+      this.blank(ColorType.LightGrey);
+      this.figure.drawText(
+        'Игра окончена',
+        '17',
+        ColorType.Black,
+        this.initParameters.width / 2 - 70,
+        this.initParameters.height / 2 - 50
+      );
+      const textScore = `Ваш счет ${this.pacman.score} очков`;
+      this.figure.drawText(
+        textScore,
+        '15',
+        ColorType.Black,
+        this.initParameters.width / 2 - textScore.length * 4.4,
+        this.initParameters.height / 2 - 20
+      );
+    });
   }
 
   blank(color = ColorType.LightGrey) {

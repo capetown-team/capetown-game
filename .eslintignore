@@ -1,0 +1,9 @@
+node_modules
+.vscode
+.idea
+.git
+build
+**/*.test.ts
+**/template.ts
+webpack.config.js
+server.js

@@ -22,6 +22,13 @@ export class Figure {
     this.pacman = pacman;
   }
 
+  drawText(text: string, size: string, color: string, x: number, y: number) {
+    const textScore = text;
+    this.ctx.font = `${size}pt Source Sans Pro`;
+    this.ctx.fillStyle = color;
+    this.ctx.fillText(textScore, x, y);
+  }
+
   drawWalls() {
     this.ctx.fillStyle = ColorType.Gray;
 
@@ -115,7 +122,7 @@ export class Figure {
                 this.pacman.radius / 2 +
                 this.initParameters.head,
               this.radiusCount,
-              0 * Math.PI,
+              0,
               2 * Math.PI
             );
             this.ctx.moveTo(toPixelPos(column.col - 1), toPixelPos(posY - 1));

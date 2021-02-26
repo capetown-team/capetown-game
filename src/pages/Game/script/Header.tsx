@@ -1,6 +1,7 @@
 import { ColorType } from '@game/script/helpers/constants';
 import { InitParameters } from '@game/script/Types';
 import { Pacman } from '@game/script/Pacman';
+import { Figure } from '@game/script/Figure';
 
 export class Header {
   level = 1;
@@ -9,22 +10,18 @@ export class Header {
   initParameters: InitParameters;
   public ctx!: CanvasRenderingContext2D;
   public pacman!: Pacman;
+  public figure!: Figure;
 
   constructor(
     ctx: CanvasRenderingContext2D,
     initParameters: InitParameters,
-    pacman: Pacman
+    pacman: Pacman,
+    figure: Figure
   ) {
     this.ctx = ctx;
     this.initParameters = initParameters;
     this.pacman = pacman;
-  }
-
-  drawText(text: string, size: string, color: string, x: number, y: number) {
-    const textScore = text;
-    this.ctx.font = `${size}pt Source Sans Pro`;
-    this.ctx.fillStyle = color;
-    this.ctx.fillText(textScore, x, y);
+    this.figure = figure;
   }
 
   drawHeader() {
@@ -36,14 +33,20 @@ export class Header {
       this.initParameters.head
     );
 
-    this.drawText(
+    this.figure.drawText(
       `Очков: ${this.pacman.score}`,
       '15',
       ColorType.Black,
       this.initParameters.width / 2 - 50,
       20
     );
-    this.drawText(`Уровень: ${this.level}`, '12', ColorType.Black, 30, 20);
+    this.figure.drawText(
+      `Уровень: ${this.level}`,
+      '12',
+      ColorType.Black,
+      30,
+      20
+    );
 
     for (let i = 0; i < this.hearts; i += 1) {
       this.drawHearts(this.initParameters.width - 100 + 30 * i, 5);
