@@ -24,7 +24,7 @@ const b = block('game');
 const Game = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gameRef = useRef<HTMLElementFullScreen>(null);
-  
+
   const [engine, setEngine] = useState<Engine | null>(null);
   const [isStart, setStart] = useState(false);
   const [isPause, setPause] = useState(false);
