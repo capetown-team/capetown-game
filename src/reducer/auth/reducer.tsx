@@ -1,15 +1,15 @@
-import { UserState } from '@/reducer/user/actions';
+import { AuthState } from '@/reducer/auth/actions';
 import {
   AUTH_REQUEST,
   AUTH_SUCCESS,
   AUTH_CHECK_FAILURE,
-  AUTH_FAILURE,
+  LOGOUT_FAILURE,
   LOGOUT
 } from './types';
 
 export type ActionType = {
   type: string;
-  payload: UserState;
+  payload: AuthState;
 };
 
 const initialState = {
@@ -38,7 +38,7 @@ export const userReducer = (state = initialState, action: ActionType) => {
       return { ...state, pending: false, isAuth: false };
     case LOGOUT:
       return { ...state, pending: false, isAuth: false };
-    case AUTH_FAILURE:
+    case LOGOUT_FAILURE:
       return { ...state, error: action.payload.error, isAuth: false };
     // no default
   }

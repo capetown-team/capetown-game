@@ -3,8 +3,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 import { Link, NavLink, useHistory } from 'react-router-dom';
 
-import { authSelector, userSelector } from '@/reducer/user/selectors';
-import { logout } from '@/reducer/user/actions';
+import { authSelector, userSelector } from '@/reducer/auth/selectors';
+import { logout } from '@/reducer/auth/actions';
 import { Dropdown } from '@/components/Dropdown';
 import { DropNavType } from '@/components/Dropdown/Dropdown';
 import { ROUTES } from '@/constants';

@@ -1,17 +1,19 @@
 import { combineReducers } from 'redux';
-import { userReducer } from '@/reducer/user/reducer';
+import { userReducer } from '@/reducer/auth/reducer';
 import { formReducer } from '@/reducer/forum/reducer';
 import { leadersReducer } from '@/reducer/leaders/reducer';
 import { signinReducer } from '@/reducer/signin/reducer';
 import { signupReducer } from '@/reducer/signup/reducer';
+import { profileReducer } from '@/reducer/profile/reducer';
 
 import { ActionProps } from '@/types.d';
-import { UserState } from '@/reducer/user/actions';
+import { AuthState } from '@/reducer/auth/actions';
 
 export type AppState = {
-  user: UserState;
+  auth: AuthState;
   signin: ActionProps;
   signup: ActionProps;
+  profile: ActionProps;
   userSettings: ActionProps;
   leaders: ActionProps;
 };
@@ -21,5 +23,6 @@ export const reducer = combineReducers({
   forum: formReducer,
   loader: leadersReducer,
   signin: signinReducer,
-  singup: signupReducer
+  singup: signupReducer,
+  profile: profileReducer
 });

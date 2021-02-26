@@ -8,21 +8,16 @@ import {
   AUTH_SUCCESS,
   AUTH_CHECK_FAILURE,
   LOGOUT,
-  USER_FAILURE
+  LOGOUT_FAILURE
 } from './types';
 
 export type UserType = {
   login: string;
   avatar: string | null;
-  id: number | undefined;
   first_name: string;
-  second_name: string;
-  display_name: string;
-  email: string;
-  phone: string;
 };
 
-export type UserState = {
+export type AuthState = {
   isAuth: boolean;
   pending: boolean;
   error: boolean;
@@ -50,7 +45,7 @@ const authCheckFailure = () => {
 
 export const authFailure = (error: string) => {
   return {
-    type: USER_FAILURE,
+    type: LOGOUT_FAILURE,
     payload: {
       error
     }
