@@ -8,6 +8,7 @@ export class Ghost {
     radius: 40,
     image: new Image()
   };
+
   public ctx!: CanvasRenderingContext2D;
 
   constructor(ctx: CanvasRenderingContext2D) {

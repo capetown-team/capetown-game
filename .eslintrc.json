@@ -47,7 +47,8 @@
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "lines-between-class-members": "off",
     "no-shadow": "off",
-    "jsx-a11y/label-has-associated-control": "off"
+    "jsx-a11y/label-has-associated-control": "off",
+    "camelcase": ["error", {"allow": ["first_name", "second_name", "display_name"]}]
   },
   "settings": {
     "import/resolver": {

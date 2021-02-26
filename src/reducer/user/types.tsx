@@ -1,2 +1,0 @@
-export const AVATAR_PENDING = 'AVATAR_PENDING';
-export const AVATAR_ERROR = 'AVATAR_ERROR';

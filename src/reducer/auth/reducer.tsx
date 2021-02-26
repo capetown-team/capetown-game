@@ -1,33 +1,45 @@
-import { AUTH, AUTHORIZE_CHECK, PENDING_AUTHORIZE } from './types';
+import { AuthState } from '@/reducer/auth/actions';
+import {
+  AUTH_REQUEST,
+  AUTH_SUCCESS,
+  AUTH_CHECK_FAILURE,
+  LOGOUT_FAILURE,
+  LOGOUT
+} from './types';
 
-interface IUserInfoStateType {
-  login: string;
-  avatar: string;
-  checkAuthorize: boolean;
-  isAuthorized: boolean;
-}
-
-type ActionType = {
+export type ActionType = {
   type: string;
-  payload: IUserInfoStateType;
+  payload: AuthState;
 };
 
 const initialState = {
   isAuth: false,
-  login: '',
-  avatar: '',
-  checkAuthorize: false
+  pending: false,
+  user: null,
+  error: null
 };
 
-export const authReducer = (state = initialState, action: ActionType) => {
+export const userReducer = (state = initialState, action: ActionType) => {
   switch (action.type) {
-    case AUTH: {
-      return { ...state, ...action.payload, isAuth: true };
+    case AUTH_REQUEST:
+      return { ...state, error: null, pending: true };
+    case AUTH_SUCCESS: {
+      return {
+        ...state,
+        user: {
+          ...action.payload.user
+        },
+        isAuth: true,
+        pending: false,
+        error: false
+      };
     }
-    case AUTHORIZE_CHECK:
-      return { ...state, checkingAuthorize: false };
-    case PENDING_AUTHORIZE:
-      return { ...state, checkingAuthorize: true };
+    case AUTH_CHECK_FAILURE:
+      return { ...state, pending: false, isAuth: false };
+    case LOGOUT:
+      return { ...state, pending: false, isAuth: false };
+    case LOGOUT_FAILURE:
+      return { ...state, error: action.payload.error, isAuth: false };
     // no default
   }
 

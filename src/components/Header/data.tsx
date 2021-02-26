@@ -1,4 +1,7 @@
+import { ROUTES } from '@/constants';
+
 export type LinkType = {
+  exact?: boolean;
   name: string;
   linkTo: string;
 };
@@ -6,29 +9,30 @@ export type LinkType = {
 export const overLinks: LinkType[] = [
   {
     name: 'Авторизация',
-    linkTo: '/autorization'
+    linkTo: ROUTES.SIGNIN
   },
   {
     name: 'Регистрация',
-    linkTo: '/registration'
+    linkTo: ROUTES.SIGNUP
   }
 ];
 
 export const userLinks: LinkType[] = [
   {
+    exact: true,
     name: 'Главная',
-    linkTo: '/'
+    linkTo: ROUTES.ROOT
   },
   {
     name: 'Игра',
-    linkTo: '/game'
+    linkTo: ROUTES.GAME
   },
   {
     name: 'Лидеры',
-    linkTo: '/leaders'
+    linkTo: ROUTES.LEADERBOARD
   },
   {
     name: 'Форум',
-    linkTo: '/forum'
+    linkTo: ROUTES.FORUM
   }
 ];

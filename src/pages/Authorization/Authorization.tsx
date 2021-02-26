@@ -6,12 +6,14 @@ import React, {
   ChangeEvent
 } from 'react';
 import { useHistory, Link } from 'react-router-dom';
+import block from 'bem-cn-lite';
 
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { isValidLogin, isValidPassword } from '@/modules/validation';
-import block from 'bem-cn-lite';
 import { signIn } from '@/api';
+import { ROUTES } from '@/constants';
+
 import './Authorization.scss';
 
 const b = block('form');
@@ -73,7 +75,7 @@ export const Authorization = () => {
 
     try {
       await signIn(user);
-      history.replace('/game');
+      history.replace(ROUTES.GAME);
     } catch (err) {
       setRegValid(false);
     }
@@ -129,7 +131,7 @@ export const Authorization = () => {
             </Button>
           </div>
           <div className={b('row')}>
-            <Link className={b('link')} to="/registration">
+            <Link className={b('link')} to={ROUTES.SIGNUP}>
               Регистрация
             </Link>
           </div>

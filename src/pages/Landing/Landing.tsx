@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import block from 'bem-cn-lite';
 
 import { Topping } from '@/components/Topping';
@@ -26,28 +25,6 @@ export const Landing = () => {
         всех точек начинается новый уровень в том же лабиринте. По бокам
         лабиринта находятся два входа в один туннель, при вхождении в который
         Пакман и призраки выходят с другой стороны лабиринта.
-      </p>
-      <p className={b('row')}>
-        <Link className={b('link')} to="/authorization">
-          Авторизация
-        </Link>
-      </p>
-
-      <p className={b('row')}>
-        <Link className={b('link')} to="/registration">
-          Регистрация
-        </Link>
-      </p>
-
-      <p className={b('row')}>
-        <Link className={b('link')} to="/profile">
-          Профиль
-        </Link>
-      </p>
-      <p className={b('row')}>
-        <Link className={b('link')} to="/error">
-          Страница ошибки
-        </Link>
       </p>
     </div>
   );
