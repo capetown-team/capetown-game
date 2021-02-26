@@ -17,8 +17,10 @@ import {
   isValidPassword,
   isValidPasswordConfirm
 } from '@/modules/validation';
-import { signUp } from '@/api';
 import { ROUTES } from '@/constants';
+import { useDispatch } from 'react-redux';
+import { checkSignUp } from '@/reducer/signup/actions';
+import { authorize } from '@/reducer/auth/actions';
 
 import './Registration.scss';
 
@@ -97,8 +99,16 @@ export const Registration = () => {
       password
     };
 
+    const userAuth = {
+      login,
+      avatar: '',
+      first_name: name
+    };
+
     try {
-      await signUp(user);
+      const dispatch = useDispatch();
+      await dispatch(checkSignUp(user));
+      await dispatch(authorize({ user: userAuth }));
       history.replace(ROUTES.GAME);
     } catch (err) {
       setRegValid(false);

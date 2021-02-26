@@ -11,8 +11,9 @@ import block from 'bem-cn-lite';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { isValidLogin, isValidPassword } from '@/modules/validation';
-import { signIn } from '@/api';
 import { ROUTES } from '@/constants';
+import { useDispatch } from 'react-redux';
+import { checkSignIn } from '@/reducer/signin/actions';
 
 import './Authorization.scss';
 
@@ -74,7 +75,9 @@ export const Authorization = () => {
     };
 
     try {
-      await signIn(user);
+      const dispatch = useDispatch();
+      await dispatch(checkSignIn(user));
+
       history.replace(ROUTES.GAME);
     } catch (err) {
       setRegValid(false);

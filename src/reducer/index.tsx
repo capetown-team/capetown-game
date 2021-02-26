@@ -8,11 +8,13 @@ import { profileReducer } from '@/reducer/profile/reducer';
 
 import { ActionProps } from '@/types.d';
 import { AuthState } from '@/reducer/auth/actions';
+import { SignInState } from '@/reducer/signin/actions';
+import { SignUpState } from '@/reducer/signup/actions';
 
 export type AppState = {
   auth: AuthState;
-  signin: ActionProps;
-  signup: ActionProps;
+  signin: SignInState;
+  signup: SignUpState;
   profile: ActionProps;
   userSettings: ActionProps;
   leaders: ActionProps;
