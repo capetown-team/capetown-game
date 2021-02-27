@@ -1,4 +1,4 @@
-import { right, between, toPixelPos } from '@game/script/helpers/action';
+import { right, down, between, toPixelPos } from '@game/script/helpers/action';
 import { step } from '@game/script/helpers/constants';
 import { dataMap } from '@game/script/helpers/data';
 import { InitParameters } from '@game/script/Types';
@@ -34,12 +34,10 @@ export class Pacman {
 
   freeze() {
     this.frozen = true;
-    this.isMouthOpen = false;
   }
 
   unfreeze() {
     this.frozen = false;
-    this.isMouthOpen = true;
   }
 
   getType(x: number, y: number): string {
@@ -55,8 +53,12 @@ export class Pacman {
 
       const field = this.getType(gridX, gridY);
 
-      if (this.dirX === 1 && gridAheadX < this.col) gridAheadX += 1;
-      if (this.dirY === 1 && gridAheadY < this.row) gridAheadY += 1;
+      if (this.dirX === right.dirX && gridAheadX < this.col) {
+        gridAheadX += 1;
+      }
+      if (this.dirY === down.dirY && gridAheadY <= this.row) {
+        gridAheadY += 1;
+      }
       const fieldAhead = this.getType(gridAheadX, gridAheadY);
 
       const rad = 10;
@@ -87,7 +89,7 @@ export class Pacman {
       }
 
       if (fieldAhead === 'wall') {
-        this.freeze();
+        this.stop();
       }
     }
   }
@@ -100,10 +102,14 @@ export class Pacman {
         const x = this.getGridPosX() + dir.dirX;
         const y = this.getGridPosY() + dir.dirY;
 
-        if (x < this.col && x >= 0 && y < this.row && y >= 0) {
-          const nextTile = this.map.posY[y].posX[x].type;
+        if (x < this.col && x >= 0 && y < this.row && y >= 1) {
+          // const nextTile = this.map.posY[y].posX[x].type;
+          // console.log('xy', x, y);
+          // console.log('nextTile', nextTile);
 
-          if (nextTile !== 'wall' && dir) {
+          // if (nextTile !== 'wall' && dir) {
+          if (dir) {
+            // console.log('xy', x, y, nextTile);
             this.dirX = dir.dirX;
             this.dirY = dir.dirY;
             this.direction = dir.direction;
@@ -152,16 +158,55 @@ export class Pacman {
     }
   }
 
+  stop(): void {
+    this.dirX = 0;
+    this.dirY = 0;
+  }
+
+  moveRight() {
+    if (
+      this.posY <
+        this.initParameters.head + this.initParameters.borderWalls * 2 &&
+      this.dirY === 0 &&
+      this.dirX === 0
+    ) {
+      this.dirY += 1;
+      this.dirX += 1;
+    }
+  }
+
+  moveLeft() {
+    if (
+      this.posY <
+        this.initParameters.head + this.initParameters.borderWalls * 2 &&
+      this.dirY === 0 &&
+      this.dirX === 0
+    ) {
+      this.dirY += 1;
+      this.dirX -= 1;
+    }
+  }
+
+  moveDown() {
+    if (this.posX < step && this.dirY === 0 && this.dirX === 0) {
+      this.dirY += 1;
+      this.dirX += 1;
+    }
+  }
+
+  moveUp() {
+    if (this.posX < step && this.dirY === 0 && this.dirX === 0) {
+      this.dirY -= 1;
+      this.dirX += 1;
+    }
+  }
+
   getGridPosX(): number {
     return (this.posX - (this.posX % step)) / step;
   }
+
   getGridPosY(): number {
     return (this.posY - (this.posY % step)) / step;
-  }
-
-  stop(): void {
-    this.dirX = right.dirX;
-    this.dirY = right.dirY;
   }
 
   startPosition() {
@@ -173,8 +218,8 @@ export class Pacman {
   }
 
   reset(): void {
-    this.freeze();
     this.startPosition();
+    this.freeze();
 
     this.isMouthOpen = true;
     this.score = 0;

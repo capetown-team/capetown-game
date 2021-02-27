@@ -107,7 +107,8 @@ export class Figure {
 
   drawCoins() {
     let posY = 0;
-    this.ctx.fillStyle = ColorType.Gold;
+    this.ctx.strokeStyle = ColorType.Yellow;
+    this.ctx.fillStyle = ColorType.Yellow;
     this.ctx.beginPath();
 
     if (this.map && this.map.posY && this.map.posY.length > 0) {

@@ -29,7 +29,7 @@ export class Engine {
       this.initParameters = {
         width: canvas.width,
         height: canvas.height,
-        head: 30,
+        head: 25,
         borderWalls: 10
       };
       this.pacman = new Pacman(this.initParameters);
@@ -64,15 +64,16 @@ export class Engine {
   }
 
   pauseGame() {
-    if (!this.pause) {
+    if (!this.pause && !this.gameOver) {
       this.pause = true;
       this.stopAnimation();
-    } else {
+    } else if (!this.gameOver) {
       this.startGame();
     }
   }
 
   finishGame() {
+    this.gameOver = true;
     this.blank(ColorType.LightGrey);
     this.figure.drawText(
       'Вы завериши игру',
@@ -97,6 +98,7 @@ export class Engine {
 
   newGame() {
     this.reset();
+    this.gameOver = false;
     this.header.hearts = 3;
     this.figure.updateCoins();
     this.pacman.reset();
@@ -114,6 +116,9 @@ export class Engine {
 
     this.pause = false;
     this.started = true;
+    this.gameOver = false;
+
+    this.figure.updateCoins();
 
     if (!this.pacman) {
       this.pacman = new Pacman(this.initParameters);
@@ -131,6 +136,7 @@ export class Engine {
     setTimeout(() => {
       this.stopAnimation();
       this.blank(ColorType.LightGrey);
+      this.gameOver = true;
       this.figure.drawText(
         'Игра окончена',
         '17',
@@ -219,18 +225,27 @@ export class Engine {
     switch (evt.keyCode) {
       case 38:
         evt.preventDefault();
+        this.pacman.moveUp();
+
         this.pacman.directionWatcher.set(up);
         break;
       case 40:
         evt.preventDefault();
+        this.pacman.moveDown();
+
         this.pacman.directionWatcher.set(down);
         break;
         evt.preventDefault();
       case 37:
+        evt.preventDefault();
+        this.pacman.moveLeft();
+
         this.pacman.directionWatcher.set(left);
         break;
       case 39:
         evt.preventDefault();
+        this.pacman.moveRight();
+
         this.pacman.directionWatcher.set(right);
         break;
 

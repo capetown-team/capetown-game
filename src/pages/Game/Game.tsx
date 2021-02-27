@@ -43,24 +43,25 @@ const Game = () => {
   }, [engine, isStart]);
 
   const handlerPause = useCallback(() => {
-    if (engine) {
+    if (engine && !engine.gameOver) {
       engine.pauseGame();
-    }
 
-    if (isPause) {
-      setPause(false);
-    } else {
-      setPause(true);
+      if (isPause) {
+        setPause(false);
+      } else {
+        setPause(true);
+      }
     }
   }, [engine, isPause]);
 
   const handlerInfo = useCallback(() => {
-    if (engine) {
+    if (engine && isStart && !isPause) {
+      setPause(true);
       engine.pauseGame();
     }
 
     setInfo(true);
-  }, [engine, isPause]);
+  }, [engine, isPause, isStart]);
 
   const handlerClosePopup = useCallback(() => {
     setInfo(false);
@@ -103,24 +104,40 @@ const Game = () => {
     };
   }, []);
 
-  // const body = () => (
-  //   <div>
-  //     <p>body</p>
-  //     <p>paragrath</p>
-  //   </div>
-  // );
+  const bodyPopup = () => (
+    <div>
+      <p>Управление персонажем происходит через стрелки:</p>
+      <p>&larr; &nbsp; &uarr; &nbsp; &rarr; &nbsp; &darr;</p>
+      <p>
+        Игрок управляет Пакманом через лабиринт, поедая пак-точки во время
+        движения.
+      </p>
+      <p>
+        Когда все точки съедены, Pac-Man переходит к следующему этапу (все тот
+        же лабиринт) с повышенным уровнем сложности.
+      </p>
+      <p>
+        Призраки бродят по лабиринту, все время пытаясь поймать Пак-Мэна. Если
+        призрак касается Pac-Man, жизнь потеряна. Когда все жизни потеряны,
+        неудивительно, что игра заканчивается.
+      </p>
+    </div>
+  );
 
   return (
     <div className={b()}>
-      {isInfo && <Popup message="text" onCancel={handlerClosePopup} />}
+      {isInfo && (
+        <Popup
+          title="Правила игры"
+          component={bodyPopup}
+          size="a"
+          onCancel={handlerClosePopup}
+        />
+      )}
       <Topping title="Игра Pac-Man" />
       <div className={b('game')} ref={gameRef}>
         <div className={b('header')}>
-          <Button
-            // disabled={isStart}
-            onClick={handlerStart}
-            size="small game__button"
-          >
+          <Button onClick={handlerStart} size="small game__button">
             Новая игра
           </Button>
           <Button size="small game__button" onClick={handlerFS}>
