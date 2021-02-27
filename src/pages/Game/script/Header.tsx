@@ -37,19 +37,19 @@ export class Header {
       `Очков: ${this.pacman.score}`,
       '15',
       ColorType.Black,
-      this.initParameters.width / 2 - 50,
-      20
+      this.initParameters.width / 2 - 37,
+      15
     );
     this.figure.drawText(
       `Уровень: ${this.level}`,
       '12',
       ColorType.Black,
       30,
-      20
+      15
     );
 
     for (let i = 0; i < this.hearts; i += 1) {
-      this.drawHearts(this.initParameters.width - 100 + 30 * i, 5);
+      this.drawHearts(this.initParameters.width - 100 + 30 * i, 0);
     }
   }
 
