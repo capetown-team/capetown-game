@@ -45,8 +45,7 @@ module.exports = {
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './public/index.html',
-      excludeChunks: ['sw'],
-      hash: true
+      excludeChunks: ['sw']
     }),
     new MiniCssExtractPlugin({
       filename: '[name].css'
