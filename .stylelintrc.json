@@ -8,24 +8,9 @@
     "string-quotes": "single",
     "at-rule-no-unknown": null,
     "no-descending-specificity": null,
-    "selector-pseudo-element-colon-notation": null,
-    "unit-no-unknown": null,
-    "selector-type-no-unknown": null,
-    "selector-pseudo-class-no-unknown": null,
-    "selector-pseudo-element-no-unknown": null,
-    "block-no-empty": null,
-    "selector-attribute-brackets-space-inside": null,
-    "selector-combinator-space-after": null,
-    "selector-combinator-space-before": null,
-    "selector-descendant-combinator-no-non-space": null,
-    "selector-pseudo-class-case": null,
-    "selector-pseudo-class-parentheses-space-inside": null,
-    "selector-pseudo-element-case": null,
-    "selector-type-case": null
+    "selector-pseudo-element-colon-notation": null
   },
   "ignoreFiles": [
-    "dist/*",
-    "**/images/*",
-    "src/pages/Game/script/*"
+    "dist/*"
   ]
 }

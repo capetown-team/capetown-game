@@ -34,10 +34,12 @@ export class Pacman {
 
   freeze() {
     this.frozen = true;
+    this.isMouthOpen = false;
   }
 
   unfreeze() {
     this.frozen = false;
+    this.isMouthOpen = true;
   }
 
   getType(x: number, y: number): string {

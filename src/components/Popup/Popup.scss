@@ -75,6 +75,10 @@
   &__footer {
     display: flex;
     justify-content: flex-end;
+
+    &_center {
+      justify-content: center;
+    }
   }
 }
 

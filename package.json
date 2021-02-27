@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "webpack serve",
     "build": "webpack --mode production",
-    "stylelint": "stylelint --fix ./src",
+    "stylelint": "stylelint --fix ./src/**/*.scss",
     "lint": "./node_modules/.bin/eslint ./src --ext .tsx,.ts,.js",
     "test": "jest --runInBand --config .jest/config.json"
   },

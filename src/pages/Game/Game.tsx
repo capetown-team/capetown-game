@@ -10,6 +10,7 @@ import block from 'bem-cn-lite';
 
 import { Topping } from '@/components/Topping';
 import { Button } from '@/components/Button';
+import { Popup } from '@/components/Popup';
 import { Engine } from '@/pages/Game/script/Engine';
 import {
   deactivateFullscreen,
@@ -29,6 +30,7 @@ const Game = () => {
   const [engine, setEngine] = useState<Engine | null>(null);
   const [isStart, setStart] = useState(false);
   const [isPause, setPause] = useState(false);
+  const [isInfo, setInfo] = useState(false);
 
   const handlerStart = useCallback(() => {
     if (isStart && engine) {
@@ -51,6 +53,18 @@ const Game = () => {
       setPause(true);
     }
   }, [engine, isPause]);
+
+  const handlerInfo = useCallback(() => {
+    if (engine) {
+      engine.pauseGame();
+    }
+
+    setInfo(true);
+  }, [engine, isPause]);
+
+  const handlerClosePopup = useCallback(() => {
+    setInfo(false);
+  }, []);
 
   const handleStop = useCallback(() => {
     if (engine) {
@@ -89,8 +103,16 @@ const Game = () => {
     };
   }, []);
 
+  // const body = () => (
+  //   <div>
+  //     <p>body</p>
+  //     <p>paragrath</p>
+  //   </div>
+  // );
+
   return (
     <div className={b()}>
+      {isInfo && <Popup message="text" onCancel={handlerClosePopup} />}
       <Topping title="Игра Pac-Man" />
       <div className={b('game')} ref={gameRef}>
         <div className={b('header')}>
@@ -100,6 +122,12 @@ const Game = () => {
             size="small game__button"
           >
             Новая игра
+          </Button>
+          <Button size="small game__button" onClick={handlerFS}>
+            На весь экран
+          </Button>
+          <Button onClick={handlerInfo} size="small game__button">
+            Правила
           </Button>
           <Button
             disabled={!isStart}
@@ -114,9 +142,6 @@ const Game = () => {
             size="small game__button"
           >
             Завершить
-          </Button>
-          <Button size="small game__button" onClick={handlerFS}>
-            На весь экран
           </Button>
         </div>
         <canvas

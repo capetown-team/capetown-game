@@ -1,4 +1,4 @@
-import React, { memo, FC } from 'react';
+import React, { memo, FC, Component } from 'react';
 import block from 'bem-cn-lite';
 
 import { ClickType } from '@/types.d';
@@ -9,28 +9,41 @@ import './Popup.scss';
 const b = block('popup');
 
 type Props = {
-  message: string;
+  message?: string;
+  component?: Component;
   onCancel: ClickType;
-  onConfirm: ClickType;
+  onConfirm?: ClickType;
 };
 
 const Popup: FC<Props> = ({ message, onCancel, onConfirm }) => {
+  // const Component = component;
   return (
     <div className={b()}>
       <div className={b('wrap')}>
         <header>
-          <button className={b('close')} type="button" onClick={onCancel}>
-            &nbsp;
-          </button>
+          {onConfirm && (
+            <button className={b('close')} type="button" onClick={onCancel}>
+              &nbsp;
+            </button>
+          )}
+
           <div className={b('title')}>{message}</div>
         </header>
-        <footer className={b('footer')}>
-          <Button size="small popup__button" onClick={onConfirm}>
-            Подтвердить
-          </Button>
-          <Button size="small" onClick={onCancel}>
-            Вернуться
-          </Button>
+        <footer className={b('footer', { center: !onConfirm })}>
+          {onConfirm ? (
+            <>
+              <Button size="small popup__button" onClick={onConfirm}>
+                Подтвердить
+              </Button>
+              <Button size="small" onClick={onCancel}>
+                Отмена
+              </Button>
+            </>
+          ) : (
+            <Button size="small" onClick={onCancel}>
+              Подтвердить
+            </Button>
+          )}
         </footer>
       </div>
     </div>
