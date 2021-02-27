@@ -27,6 +27,8 @@ import './Registration.scss';
 const b = block('form');
 
 export const Registration = () => {
+  const dispatch = useDispatch();
+
   const history = useHistory();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
@@ -106,12 +108,12 @@ export const Registration = () => {
     };
 
     try {
-      const dispatch = useDispatch();
       await dispatch(checkSignUp(user));
       await dispatch(authorize({ user: userAuth }));
       history.replace(ROUTES.GAME);
     } catch (err) {
       setRegValid(false);
+      console.log(err);
     }
   };
 

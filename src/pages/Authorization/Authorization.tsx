@@ -13,13 +13,18 @@ import { Input } from '@/components/Input';
 import { isValidLogin, isValidPassword } from '@/modules/validation';
 import { ROUTES } from '@/constants';
 import { useDispatch } from 'react-redux';
+// import { signInSelector } from '@/reducer/signin/selectors';
 import { checkSignIn } from '@/reducer/signin/actions';
+import { authorize } from '@/reducer/auth/actions';
+// import { AppState } from '@/reducer';
 
 import './Authorization.scss';
 
 const b = block('form');
 
 export const Authorization = () => {
+  const dispatch = useDispatch();
+
   const history = useHistory();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
@@ -74,13 +79,19 @@ export const Authorization = () => {
       password
     };
 
-    try {
-      const dispatch = useDispatch();
-      await dispatch(checkSignIn(user));
+    const userAuth = {
+      login,
+      avatar: '',
+      first_name: ''
+    };
 
+    try {
+      await dispatch(checkSignIn(user));
+      await dispatch(authorize({ user: userAuth }));
       history.replace(ROUTES.GAME);
     } catch (err) {
       setRegValid(false);
+      console.log(err);
     }
   };
 
