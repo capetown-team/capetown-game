@@ -103,13 +103,7 @@ export class Pacman {
         const y = this.getGridPosY() + dir.dirY;
 
         if (x < this.col && x >= 0 && y < this.row && y >= 1) {
-          // const nextTile = this.map.posY[y].posX[x].type;
-          // console.log('xy', x, y);
-          // console.log('nextTile', nextTile);
-
-          // if (nextTile !== 'wall' && dir) {
           if (dir) {
-            // console.log('xy', x, y, nextTile);
             this.dirX = dir.dirX;
             this.dirY = dir.dirY;
             this.direction = dir.direction;
@@ -163,7 +157,7 @@ export class Pacman {
     this.dirY = 0;
   }
 
-  moveRight() {
+  moveRightLeft() {
     if (
       this.posY <
         this.initParameters.head + this.initParameters.borderWalls * 2 &&
@@ -175,26 +169,7 @@ export class Pacman {
     }
   }
 
-  moveLeft() {
-    if (
-      this.posY <
-        this.initParameters.head + this.initParameters.borderWalls * 2 &&
-      this.dirY === 0 &&
-      this.dirX === 0
-    ) {
-      this.dirY += 1;
-      this.dirX -= 1;
-    }
-  }
-
-  moveDown() {
-    if (this.posX < step && this.dirY === 0 && this.dirX === 0) {
-      this.dirY += 1;
-      this.dirX += 1;
-    }
-  }
-
-  moveUp() {
+  moveUpDown() {
     if (this.posX < step && this.dirY === 0 && this.dirX === 0) {
       this.dirY -= 1;
       this.dirX += 1;

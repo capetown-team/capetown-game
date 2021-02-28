@@ -225,26 +225,26 @@ export class Engine {
     switch (evt.keyCode) {
       case 38:
         evt.preventDefault();
-        this.pacman.moveUp();
+        this.pacman.moveUpDown();
 
         this.pacman.directionWatcher.set(up);
         break;
       case 40:
         evt.preventDefault();
-        this.pacman.moveDown();
+        this.pacman.moveUpDown();
 
         this.pacman.directionWatcher.set(down);
         break;
         evt.preventDefault();
       case 37:
         evt.preventDefault();
-        this.pacman.moveLeft();
+        this.pacman.moveRightLeft();
 
         this.pacman.directionWatcher.set(left);
         break;
       case 39:
         evt.preventDefault();
-        this.pacman.moveRight();
+        this.pacman.moveRightLeft();
 
         this.pacman.directionWatcher.set(right);
         break;
