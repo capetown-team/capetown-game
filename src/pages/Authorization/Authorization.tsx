@@ -12,19 +12,16 @@ import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { isValidLogin, isValidPassword } from '@/modules/validation';
 import { ROUTES } from '@/constants';
-import { useDispatch } from 'react-redux';
-// import { signInSelector } from '@/reducer/signin/selectors';
+import { useSelector, useDispatch } from 'react-redux';
 import { checkSignIn } from '@/reducer/signin/actions';
-import { authorize } from '@/reducer/auth/actions';
-// import { AppState } from '@/reducer';
+import { AppState } from '@/reducer';
+import { signInSelector, errorSelector } from '@/reducer/signin/selectors';
 
 import './Authorization.scss';
 
 const b = block('form');
 
 export const Authorization = () => {
-  const dispatch = useDispatch();
-
   const history = useHistory();
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
@@ -44,6 +41,27 @@ export const Authorization = () => {
       setFormValid(true);
     }
   }, [loginError, passwordError]);
+
+  const dispatch = useDispatch();
+
+  const { isSignIn, error } = useSelector((state: AppState) => {
+    return {
+      isSignIn: signInSelector(state),
+      error: errorSelector(state)
+    };
+  });
+
+  useEffect(() => {
+    if (isSignIn) {
+      history.replace(ROUTES.GAME);
+    }
+  }, [isSignIn]);
+
+  useEffect(() => {
+    if (error) {
+      setRegValid(false);
+    }
+  }, [error]);
 
   const blurHandler = (e: FocusEvent<Element>) => {
     const { name } = e.target as HTMLInputElement;
@@ -79,20 +97,7 @@ export const Authorization = () => {
       password
     };
 
-    const userAuth = {
-      login,
-      avatar: '',
-      first_name: ''
-    };
-
-    try {
-      await dispatch(checkSignIn(user));
-      await dispatch(authorize({ user: userAuth }));
-      history.replace(ROUTES.GAME);
-    } catch (err) {
-      setRegValid(false);
-      console.log(err);
-    }
+    dispatch(checkSignIn(user));
   };
 
   return (

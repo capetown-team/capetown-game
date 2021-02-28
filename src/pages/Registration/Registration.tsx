@@ -18,10 +18,10 @@ import {
   isValidPasswordConfirm
 } from '@/modules/validation';
 import { ROUTES } from '@/constants';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { checkSignUp } from '@/reducer/signup/actions';
-import { authorize } from '@/reducer/auth/actions';
-
+import { AppState } from '@/reducer';
+import { signUpSelector, errorSelector } from '@/reducer/signup/selectors';
 import './Registration.scss';
 
 const b = block('form');
@@ -55,6 +55,13 @@ export const Registration = () => {
   const [formValid, setFormValid] = useState(false);
   const [regValid, setRegValid] = useState(true);
 
+  const { isSignUp, error } = useSelector((state: AppState) => {
+    return {
+      isSignUp: signUpSelector(state),
+      error: errorSelector(state)
+    };
+  });
+
   useEffect(() => {
     if (
       loginError ||
@@ -68,6 +75,18 @@ export const Registration = () => {
       setFormValid(true);
     }
   }, [loginError, passwordError, passwordConfirmError, emailError, nameError]);
+
+  useEffect(() => {
+    if (isSignUp) {
+      history.replace(ROUTES.GAME);
+    }
+  }, [isSignUp]);
+
+  useEffect(() => {
+    if (error) {
+      setRegValid(false);
+    }
+  }, [error]);
 
   const blurHandler = (e: FocusEvent<Element>) => {
     switch ((e.target as HTMLInputElement).name) {
@@ -101,20 +120,7 @@ export const Registration = () => {
       password
     };
 
-    const userAuth = {
-      login,
-      avatar: '',
-      first_name: name
-    };
-
-    try {
-      await dispatch(checkSignUp(user));
-      await dispatch(authorize({ user: userAuth }));
-      history.replace(ROUTES.GAME);
-    } catch (err) {
-      setRegValid(false);
-      console.log(err);
-    }
+    dispatch(checkSignUp(user));
   };
 
   const loginHandler = (e: ChangeEvent<Element>) => {

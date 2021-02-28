@@ -2,10 +2,11 @@ import { Dispatch, Action } from 'redux';
 import { AxiosInstance } from 'axios';
 import { ThunkAction } from 'redux-thunk';
 import { path } from '@/api';
+import { authorize, UserType } from '@/reducer/auth/actions';
 
 import { SIGNIN_REQUEST, SIGNIN_SUCCESS, SIGNIN_FAILURE } from './types';
 
-export type UserType = {
+export type UserTypeSign = {
   login: string;
   password: string;
 };
@@ -14,10 +15,10 @@ export type SignInState = {
   isSignIn: boolean;
   pending: boolean;
   error: boolean;
-  user: UserType;
+  user: UserTypeSign;
 };
 
-const signIn = (userInfo: { user: UserType }) => {
+const signIn = (userInfo: { user: UserTypeSign }) => {
   return {
     type: SIGNIN_SUCCESS,
     payload: userInfo
@@ -37,20 +38,27 @@ const signInFailure = () => {
 };
 
 export const checkSignIn = <S,>(
-  user: UserType
+  userSignin: UserTypeSign
 ): ThunkAction<void, () => S, AxiosInstance, Action<string>> => {
   return async (dispatch: Dispatch, getState, api): Promise<void> => {
     dispatch(signInRequest());
     api
-      .post(`${path}/auth/signin`, { withCredentials: true })
+      .post(`${path}/auth/signin`, userSignin, { withCredentials: true })
       .then((response) => {
         if (response.data) {
-          const user: { user: UserType } = { user: response.data };
+          const user: { user: UserTypeSign } = { user: response.data };
           dispatch(signIn(user));
+          const userAuth: UserType = {
+            login: userSignin.login,
+            avatar: '',
+            first_name: ''
+          };
+          authorize({ user: userAuth });
         }
       })
-      .catch(() => {
+      .catch((err) => {
         dispatch(signInFailure());
+        console.log(err);
       });
   };
 };

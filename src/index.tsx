@@ -6,11 +6,11 @@ import { App } from '@/components/App';
 
 import '@/styles/main.scss';
 
-if ('serviceWorker' in navigator) {
+/* if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.js');
   });
-}
+} */
 
 ReactDOM.render(
   <Provider store={store}>
