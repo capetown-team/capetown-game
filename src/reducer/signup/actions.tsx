@@ -63,7 +63,6 @@ export const checkSignUp = <S,>(
       })
       .catch((err) => {
         dispatch(signUpFailure());
-        console.log(err);
       });
   };
 };
