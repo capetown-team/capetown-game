@@ -60,9 +60,10 @@ module.exports = {
     new WebpackBar()
   ],
   devServer: {
-    contentBase: './dist',
-    historyApiFallback: true,
-    hot: isDev,
-    open: true
+  contentBase: './dist',
+  historyApiFallback: true,
+  hot: isDev,
+  open: true,
+  port: 8003
   }
 };
