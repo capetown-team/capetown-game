@@ -5,8 +5,11 @@ import React, {
   ChangeEvent,
   MouseEvent
 } from 'react';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
+import { AppState } from '@/reducer';
 import block from 'bem-cn-lite';
+import { ROUTES } from '@/constants';
 
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
@@ -17,19 +20,24 @@ import {
   isValidPassword,
   isValidPasswordConfirm
 } from '@/modules/validation';
-import { ROUTES } from '@/constants';
-import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+
 import { checkSignUp } from '@/reducer/signup/actions';
-import { AppState } from '@/reducer';
-import { signUpSelector, errorSelector } from '@/reducer/signup/selectors';
+import { authSelector, errorSignupSelector } from '@/reducer/auth/selectors';
 import './Registration.scss';
 
 const b = block('form');
 
 export const Registration = () => {
   const dispatch = useDispatch();
-
   const history = useHistory();
+
+  const { isAuth, error } = useSelector((state: AppState) => {
+    return {
+      isAuth: authSelector(state),
+      error: errorSignupSelector(state)
+    };
+  }, shallowEqual);
+
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -55,13 +63,6 @@ export const Registration = () => {
   const [formValid, setFormValid] = useState(false);
   const [regValid, setRegValid] = useState(true);
 
-  const { isSignUp, error } = useSelector((state: AppState) => {
-    return {
-      isSignUp: signUpSelector(state),
-      error: errorSelector(state)
-    };
-  }, shallowEqual);
-
   useEffect(() => {
     if (
       loginError ||
@@ -77,16 +78,16 @@ export const Registration = () => {
   }, [loginError, passwordError, passwordConfirmError, emailError, nameError]);
 
   useEffect(() => {
-    if (isSignUp) {
+    if (isAuth) {
       history.replace(ROUTES.GAME);
     }
-  }, [isSignUp]);
+  }, [isAuth]);
 
   useEffect(() => {
     if (error) {
       setRegValid(false);
     }
-  }, [error]);
+  });
 
   const blurHandler = (e: FocusEvent<Element>) => {
     switch ((e.target as HTMLInputElement).name) {
@@ -107,20 +108,6 @@ export const Registration = () => {
         break;
       default:
     }
-  };
-
-  const submitHandler = async (e: MouseEvent<Element>) => {
-    e.preventDefault();
-    const user = {
-      first_name: name,
-      second_name: name,
-      login,
-      email,
-      phone: '+79191234567',
-      password
-    };
-
-    dispatch(checkSignUp(user));
   };
 
   const loginHandler = (e: ChangeEvent<Element>) => {
@@ -156,6 +143,20 @@ export const Registration = () => {
     setName(text);
     const nameErr = isValidName(text);
     setNameError(nameErr);
+  };
+
+  const submitHandler = async (e: MouseEvent<Element>) => {
+    e.preventDefault();
+    const user = {
+      first_name: name,
+      second_name: name,
+      login,
+      email,
+      phone: '+79191234567',
+      password
+    };
+
+    dispatch(checkSignUp(user));
   };
 
   return (
