@@ -22,9 +22,6 @@ export const signinReducer = (state = initialState, action: ActionType) => {
     case SIGNIN_SUCCESS: {
       return {
         ...state,
-        user: {
-          ...action.payload.user
-        },
         isSignIn: true,
         pending: false,
         error: false

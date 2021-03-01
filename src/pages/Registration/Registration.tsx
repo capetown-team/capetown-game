@@ -22,7 +22,7 @@ import {
 } from '@/modules/validation';
 
 import { checkSignUp } from '@/reducer/signup/actions';
-import { authSelector, errorSignupSelector } from '@/reducer/auth/selectors';
+import { signUpSelector, errorSelector } from '@/reducer/signup/selectors';
 import './Registration.scss';
 
 const b = block('form');
@@ -31,10 +31,10 @@ export const Registration = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { isAuth, error } = useSelector((state: AppState) => {
+  const { isSignUp, error } = useSelector((state: AppState) => {
     return {
-      isAuth: authSelector(state),
-      error: errorSignupSelector(state)
+      isSignUp: signUpSelector(state),
+      error: errorSelector(state)
     };
   }, shallowEqual);
 
@@ -78,10 +78,10 @@ export const Registration = () => {
   }, [loginError, passwordError, passwordConfirmError, emailError, nameError]);
 
   useEffect(() => {
-    if (isAuth) {
+    if (isSignUp) {
       history.replace(ROUTES.GAME);
     }
-  }, [isAuth]);
+  }, [isSignUp]);
 
   useEffect(() => {
     if (error) {

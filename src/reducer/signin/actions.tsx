@@ -18,10 +18,9 @@ export type SignInState = {
   user: UserType;
 };
 
-const signIn = (userInfo: { user: UserType }) => {
+const signIn = () => {
   return {
-    type: SIGNIN_SUCCESS,
-    payload: userInfo
+    type: SIGNIN_SUCCESS
   };
 };
 
@@ -44,16 +43,20 @@ export const checkSignIn = <S,>(
     dispatch(signInRequest());
     await api
       .post(`${path}/auth/signin`, userSignin, { withCredentials: true })
-      .then((response) => {
+      .then(async (response) => {
         if (response.data) {
-          const user: { user: UserType } = {
-            user: { login: userSignin.login, avatar: '', first_name: '' }
-          };
-          dispatch(signIn(user));
-          dispatch(authorize(user));
+          await api
+            .get(`${path}/auth/user`, { withCredentials: true })
+            .then((response) => {
+              if (response.data) {
+                const user: { user: UserType } = { user: response.data };
+                dispatch(authorize(user));
+                dispatch(signIn());
+              }
+            });
         }
       })
-      .catch((err) => {
+      .catch(() => {
         dispatch(signInFailure());
       });
   };

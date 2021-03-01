@@ -15,8 +15,9 @@ import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { isValidLogin, isValidPassword } from '@/modules/validation';
 
-import { checkSignIn } from '@/reducer/auth/actions';
-import { authSelector, errorSigninSelector } from '@/reducer/auth/selectors';
+import { checkSignIn } from '@/reducer/signin/actions';
+import { errorSelector } from '@/reducer/signin/selectors';
+import { authSelector } from '@/reducer/auth/selectors';
 
 import './Authorization.scss';
 
@@ -26,10 +27,15 @@ export const Authorization = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { isAuth, error } = useSelector((state: AppState) => {
+  const { error } = useSelector((state: AppState) => {
     return {
-      isAuth: authSelector(state),
-      error: errorSigninSelector(state)
+      error: errorSelector(state)
+    };
+  }, shallowEqual);
+
+  const { isAuth } = useSelector((state: AppState) => {
+    return {
+      isAuth: authSelector(state)
     };
   }, shallowEqual);
 
