@@ -3,7 +3,7 @@ import { Pacman } from '@game/script/Pacman';
 import { Figure } from '@game/script/Figure';
 import { Ghost } from '@game/script/Ghost';
 import { Header } from '@game/script/Header';
-import { down, left, right, up } from '@game/script/helpers/action';
+import { down, left, right, up, drawText } from '@game/script/helpers/action';
 import { ColorType } from '@game/script/helpers/constants';
 
 export class Engine {
@@ -29,13 +29,25 @@ export class Engine {
       this.initParameters = {
         width: canvas.width,
         height: canvas.height,
-        head: 30,
+        head: 25,
         borderWalls: 10
       };
       this.pacman = new Pacman(this.initParameters);
       this.figure = new Figure(this.ctx, this.initParameters, this.pacman);
       this.ghost = new Ghost(this.ctx);
-      this.header = new Header(this.ctx, this.initParameters, this.pacman);
+      this.header = new Header(
+        this.ctx,
+        this.initParameters,
+        this.pacman,
+        this.figure
+      );
+    }
+  }
+
+  stopAnimation() {
+    if (this.requestId) {
+      window.cancelAnimationFrame(this.requestId);
+      this.requestId = 0;
     }
   }
 
@@ -46,34 +58,49 @@ export class Engine {
     this.header.hearts = 3;
 
     this.pacman.reset();
+    this.stopAnimation();
+
+    window.removeEventListener('keydown', this.doKeyDown);
   }
 
   pauseGame() {
-    if (!this.pause) {
+    if (!this.pause && !this.gameOver) {
       this.pause = true;
-
-      if (this.requestId) {
-        window.cancelAnimationFrame(this.requestId);
-        this.requestId = 0;
-      }
-    } else {
+      this.stopAnimation();
+    } else if (!this.gameOver) {
       this.startGame();
     }
   }
 
   finishGame() {
-    this.reset();
-    this.figure.updateCoins();
-    this.blank(ColorType.White);
-    if (this.requestId) {
-      window.cancelAnimationFrame(this.requestId);
-      this.requestId = 0;
-
-      window.removeEventListener('keydown', this.doKeyDown);
+    this.gameOver = true;
+    this.blank(ColorType.LightGrey);
+    drawText(
+      this.ctx,
+      'Вы завериши игру',
+      '17',
+      ColorType.Black,
+      this.initParameters.width / 2 - 85,
+      this.initParameters.height / 2 - 50
+    );
+    if (this.pacman.score > 0) {
+      const textScore = `Ваш счет ${this.pacman.score} очков`;
+      drawText(
+        this.ctx,
+        textScore,
+        '15',
+        ColorType.Black,
+        this.initParameters.width / 2 - textScore.length * 4.4,
+        this.initParameters.height / 2 - 20
+      );
     }
+
+    this.reset();
   }
 
   newGame() {
+    this.reset();
+    this.gameOver = false;
     this.header.hearts = 3;
     this.figure.updateCoins();
     this.pacman.reset();
@@ -91,6 +118,9 @@ export class Engine {
 
     this.pause = false;
     this.started = true;
+    this.gameOver = false;
+
+    this.figure.updateCoins();
 
     if (!this.pacman) {
       this.pacman = new Pacman(this.initParameters);
@@ -105,11 +135,28 @@ export class Engine {
   }
 
   endGame() {
-    this.reset();
-    if (this.requestId) {
-      window.cancelAnimationFrame(this.requestId);
-      this.requestId = 0;
-    }
+    setTimeout(() => {
+      this.stopAnimation();
+      this.blank(ColorType.LightGrey);
+      this.gameOver = true;
+      drawText(
+        this.ctx,
+        'Игра окончена',
+        '17',
+        ColorType.Black,
+        this.initParameters.width / 2 - 70,
+        this.initParameters.height / 2 - 50
+      );
+      const textScore = `Ваш счет ${this.pacman.score} очков`;
+      drawText(
+        this.ctx,
+        textScore,
+        '15',
+        ColorType.Black,
+        this.initParameters.width / 2 - textScore.length * 4.4,
+        this.initParameters.height / 2 - 20
+      );
+    });
   }
 
   blank(color = ColorType.LightGrey) {
@@ -182,18 +229,27 @@ export class Engine {
     switch (evt.keyCode) {
       case 38:
         evt.preventDefault();
+        this.pacman.moveUpDown();
+
         this.pacman.directionWatcher.set(up);
         break;
       case 40:
         evt.preventDefault();
+        this.pacman.moveUpDown();
+
         this.pacman.directionWatcher.set(down);
         break;
         evt.preventDefault();
       case 37:
+        evt.preventDefault();
+        this.pacman.moveRightLeft();
+
         this.pacman.directionWatcher.set(left);
         break;
       case 39:
         evt.preventDefault();
+        this.pacman.moveRightLeft();
+
         this.pacman.directionWatcher.set(right);
         break;
 

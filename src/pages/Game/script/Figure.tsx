@@ -100,7 +100,8 @@ export class Figure {
 
   drawCoins() {
     let posY = 0;
-    this.ctx.fillStyle = ColorType.Gold;
+    this.ctx.strokeStyle = ColorType.Yellow;
+    this.ctx.fillStyle = ColorType.Yellow;
     this.ctx.beginPath();
 
     if (this.map && this.map.posY && this.map.posY.length > 0) {
@@ -115,7 +116,7 @@ export class Figure {
                 this.pacman.radius / 2 +
                 this.initParameters.head,
               this.radiusCount,
-              0 * Math.PI,
+              0,
               2 * Math.PI
             );
             this.ctx.moveTo(toPixelPos(column.col - 1), toPixelPos(posY - 1));
