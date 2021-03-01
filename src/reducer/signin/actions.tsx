@@ -15,10 +15,10 @@ export type SignInState = {
   isSignIn: boolean;
   pending: boolean;
   error: boolean;
-  user: UserTypeSign;
+  user: UserType;
 };
 
-const signIn = (userInfo: { user: UserTypeSign }) => {
+const signIn = (userInfo: { user: UserType }) => {
   return {
     type: SIGNIN_SUCCESS,
     payload: userInfo
@@ -42,23 +42,19 @@ export const checkSignIn = <S,>(
 ): ThunkAction<void, () => S, AxiosInstance, Action<string>> => {
   return async (dispatch: Dispatch, getState, api): Promise<void> => {
     dispatch(signInRequest());
-    api
+    await api
       .post(`${path}/auth/signin`, userSignin, { withCredentials: true })
       .then((response) => {
         if (response.data) {
-          const user: { user: UserTypeSign } = { user: response.data };
-          dispatch(signIn(user));
-          const userAuth: UserType = {
-            login: userSignin.login,
-            avatar: '',
-            first_name: ''
+          const user: { user: UserType } = {
+            user: { login: userSignin.login, avatar: '', first_name: '' }
           };
-          authorize({ user: userAuth });
+          dispatch(signIn(user));
+          dispatch(authorize(user));
         }
       })
       .catch((err) => {
         dispatch(signInFailure());
-        console.log(err);
       });
   };
 };

@@ -12,10 +12,11 @@ import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { isValidLogin, isValidPassword } from '@/modules/validation';
 import { ROUTES } from '@/constants';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { checkSignIn } from '@/reducer/signin/actions';
 import { AppState } from '@/reducer';
-import { signInSelector, errorSelector } from '@/reducer/signin/selectors';
+import { errorSelector } from '@/reducer/signin/selectors';
+import { authSelector } from '@/reducer/auth/selectors';
 
 import './Authorization.scss';
 
@@ -44,20 +45,27 @@ export const Authorization = () => {
 
   const dispatch = useDispatch();
 
-  const { isSignIn, error } = useSelector((state: AppState) => {
+  const { error } = useSelector((state: AppState) => {
     return {
-      isSignIn: signInSelector(state),
       error: errorSelector(state)
+    };
+  }, shallowEqual);
+
+  const { isAuth } = useSelector((state: AppState) => {
+    return {
+      isAuth: authSelector(state)
     };
   });
 
   useEffect(() => {
-    if (isSignIn) {
+    console.log(isAuth);
+    if (isAuth) {
       history.replace(ROUTES.GAME);
     }
-  }, [isSignIn]);
+  }, [isAuth]);
 
   useEffect(() => {
+    console.log(error);
     if (error) {
       setRegValid(false);
     }
@@ -98,6 +106,12 @@ export const Authorization = () => {
     };
 
     dispatch(checkSignIn(user));
+
+    /* console.log(isAuth)
+    if (isAuth)
+      {
+        history.replace(ROUTES.GAME);
+      } */
   };
 
   return (

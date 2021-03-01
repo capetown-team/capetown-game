@@ -18,7 +18,7 @@ import {
   isValidPasswordConfirm
 } from '@/modules/validation';
 import { ROUTES } from '@/constants';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { checkSignUp } from '@/reducer/signup/actions';
 import { AppState } from '@/reducer';
 import { signUpSelector, errorSelector } from '@/reducer/signup/selectors';
@@ -60,7 +60,7 @@ export const Registration = () => {
       isSignUp: signUpSelector(state),
       error: errorSelector(state)
     };
-  });
+  }, shallowEqual);
 
   useEffect(() => {
     if (

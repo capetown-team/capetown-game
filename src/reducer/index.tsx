@@ -25,6 +25,6 @@ export const reducer = combineReducers({
   forum: formReducer,
   loader: leadersReducer,
   signin: signinReducer,
-  singup: signupReducer,
+  signup: signupReducer,
   profile: profileReducer
 });
