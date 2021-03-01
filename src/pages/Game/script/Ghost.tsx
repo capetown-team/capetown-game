@@ -1,6 +1,6 @@
 import { FigureType } from '@game/script/Types';
 import { between } from '@game/script/helpers/action';
-import img from '@game/script/images/ghost-right.png';
+import ghostIcon from '@game/script/images/ghost-right.png';
 
 export class Ghost {
   ghost = {
@@ -17,7 +17,7 @@ export class Ghost {
   }
 
   drawGhost() {
-    this.ghost.image.src = img;
+    this.ghost.image.src = ghostIcon;
 
     this.ctx.drawImage(
       this.ghost.image,

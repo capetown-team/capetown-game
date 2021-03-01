@@ -3,7 +3,7 @@ import { Pacman } from '@game/script/Pacman';
 import { Figure } from '@game/script/Figure';
 import { Ghost } from '@game/script/Ghost';
 import { Header } from '@game/script/Header';
-import { down, left, right, up } from '@game/script/helpers/action';
+import { down, left, right, up, drawText } from '@game/script/helpers/action';
 import { ColorType } from '@game/script/helpers/constants';
 
 export class Engine {
@@ -75,7 +75,8 @@ export class Engine {
   finishGame() {
     this.gameOver = true;
     this.blank(ColorType.LightGrey);
-    this.figure.drawText(
+    drawText(
+      this.ctx,
       'Вы завериши игру',
       '17',
       ColorType.Black,
@@ -84,7 +85,8 @@ export class Engine {
     );
     if (this.pacman.score > 0) {
       const textScore = `Ваш счет ${this.pacman.score} очков`;
-      this.figure.drawText(
+      drawText(
+        this.ctx,
         textScore,
         '15',
         ColorType.Black,
@@ -137,7 +139,8 @@ export class Engine {
       this.stopAnimation();
       this.blank(ColorType.LightGrey);
       this.gameOver = true;
-      this.figure.drawText(
+      drawText(
+        this.ctx,
         'Игра окончена',
         '17',
         ColorType.Black,
@@ -145,7 +148,8 @@ export class Engine {
         this.initParameters.height / 2 - 50
       );
       const textScore = `Ваш счет ${this.pacman.score} очков`;
-      this.figure.drawText(
+      drawText(
+        this.ctx,
         textScore,
         '15',
         ColorType.Black,

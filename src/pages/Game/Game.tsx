@@ -10,7 +10,8 @@ import block from 'bem-cn-lite';
 
 import { Topping } from '@/components/Topping';
 import { Button } from '@/components/Button';
-import { Popup } from '@/components/Popup';
+import { Popup } from '@/components/Notification';
+import { BodyNotification } from '@game/BodyNotification';
 import { Engine } from '@/pages/Game/script/Engine';
 import {
   deactivateFullscreen,
@@ -104,32 +105,12 @@ const Game = () => {
     };
   }, []);
 
-  const bodyPopup = () => (
-    <div>
-      <p>Управление персонажем происходит через стрелки:</p>
-      <p>&larr; &nbsp; &uarr; &nbsp; &rarr; &nbsp; &darr;</p>
-      <p>
-        Игрок управляет Пакманом через лабиринт, поедая пак-точки во время
-        движения.
-      </p>
-      <p>
-        Когда все точки съедены, Pac-Man переходит к следующему этапу (все тот
-        же лабиринт) с повышенным уровнем сложности.
-      </p>
-      <p>
-        Призраки бродят по лабиринту, все время пытаясь поймать Пак-Мэна. Если
-        призрак касается Pac-Man, жизнь потеряна. Когда все жизни потеряны,
-        неудивительно, что игра заканчивается.
-      </p>
-    </div>
-  );
-
   return (
     <div className={b()}>
       {isInfo && (
         <Popup
           title="Правила игры"
-          component={bodyPopup}
+          component={BodyNotification}
           size="a"
           onCancel={handlerClosePopup}
         />

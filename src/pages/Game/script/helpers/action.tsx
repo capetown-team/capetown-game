@@ -23,3 +23,17 @@ export const buildWall = (
 ) => {
   context.fillRect(gridX, gridY, width, height);
 };
+
+export const drawText = (
+  context: CanvasRenderingContext2D,
+  text: string,
+  size: string,
+  color: string,
+  x: number,
+  y: number
+) => {
+  const textScore = text;
+  context.font = `${size}pt Source Sans Pro`;
+  context.fillStyle = color;
+  context.fillText(textScore, x, y);
+};

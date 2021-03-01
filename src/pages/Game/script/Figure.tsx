@@ -22,13 +22,6 @@ export class Figure {
     this.pacman = pacman;
   }
 
-  drawText(text: string, size: string, color: string, x: number, y: number) {
-    const textScore = text;
-    this.ctx.font = `${size}pt Source Sans Pro`;
-    this.ctx.fillStyle = color;
-    this.ctx.fillText(textScore, x, y);
-  }
-
   drawWalls() {
     this.ctx.fillStyle = ColorType.Gray;
 

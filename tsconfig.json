@@ -23,11 +23,11 @@
       "@/*": ["./src/*"],
       "@game/*": ["./src/pages/Game/*"]
     },
-    "typeRoots": ["typings/**/*.d.tsx", "node_modules/@types"]
+    "typeRoots": ["typings/**/*.d.ts", "node_modules/@types"]
   },
   "include": [
     "src",
-    "typings/**/*.d.tsx",
+    "typings/**/*.d.ts",
     "./node_modules/@types"
   ],
   "exclude": [
