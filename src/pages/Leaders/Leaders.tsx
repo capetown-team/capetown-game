@@ -4,7 +4,8 @@ import React, {
   FC,
   memo,
   useMemo,
-  useCallback
+  useCallback,
+  ChangeEvent
 } from 'react';
 import block from 'bem-cn-lite';
 
@@ -52,7 +53,7 @@ const Leaders: FC = () => {
   });
 
   const handlerSearch: SearchType = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+    (event: ChangeEvent<HTMLInputElement>) => {
       const { value } = event.target;
       setSearch(value);
     },
