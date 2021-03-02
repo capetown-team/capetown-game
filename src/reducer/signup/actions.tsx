@@ -22,10 +22,9 @@ export type SignUpState = {
   user: UserType;
 };
 
-const signUp = (userInfo: { user: UserType }) => {
+const signUp = () => {
   return {
-    type: SIGNUP_SUCCESS,
-    payload: userInfo
+    type: SIGNUP_SUCCESS
   };
 };
 
@@ -57,11 +56,11 @@ export const checkSignUp = <S,>(
               first_name: userSignup.first_name
             }
           };
-          dispatch(signUp(user));
+          dispatch(signUp());
           dispatch(authorize(user));
         }
       })
-      .catch((err) => {
+      .catch(() => {
         dispatch(signUpFailure());
       });
   };

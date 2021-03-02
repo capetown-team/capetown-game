@@ -8,30 +8,24 @@ export type ActionType = {
 };
 
 const initialState = {
-  isSignUp: false,
   pending: false,
-  user: null,
-  error: null
+  error: false
 };
 
 export const signupReducer = (state = initialState, action: ActionType) => {
   switch (action.type) {
     case SIGNUP_REQUEST: {
-      return { ...state, error: null, pending: true };
+      return { ...state, error: false, pending: true };
     }
     case SIGNUP_SUCCESS: {
       return {
         ...state,
-        user: {
-          ...action.payload.user
-        },
-        isSignUp: true,
         pending: false,
         error: false
       };
     }
     case SIGNUP_FAILURE: {
-      return { ...state, pending: false, isSignUp: false };
+      return { ...state, pending: false, error: true };
     }
     // no default
   }

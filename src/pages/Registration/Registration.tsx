@@ -21,8 +21,12 @@ import {
   isValidPasswordConfirm
 } from '@/modules/validation';
 
+import { authSelector } from '@/reducer/auth/selectors';
 import { checkSignUp } from '@/reducer/signup/actions';
-import { signUpSelector, errorSelector } from '@/reducer/signup/selectors';
+import { errorSelector, pendingSelector } from '@/reducer/signup/selectors';
+
+import { Loading } from '@/components/Loading';
+
 import './Registration.scss';
 
 const b = block('form');
@@ -31,13 +35,7 @@ export const Registration = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { isSignUp, error } = useSelector((state: AppState) => {
-    return {
-      isSignUp: signUpSelector(state),
-      error: errorSelector(state)
-    };
-  }, shallowEqual);
-
+  const [loading, setLoading] = useState(true);
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -63,6 +61,18 @@ export const Registration = () => {
   const [formValid, setFormValid] = useState(false);
   const [regValid, setRegValid] = useState(true);
 
+  const { isAuth, error, pending } = useSelector((state: AppState) => {
+    return {
+      isAuth: authSelector(state),
+      error: errorSelector(state),
+      pending: pendingSelector(state)
+    };
+  }, shallowEqual);
+
+  useEffect(() => {
+    setLoading(pending);
+  }, [pending]);
+
   useEffect(() => {
     if (
       loginError ||
@@ -78,16 +88,14 @@ export const Registration = () => {
   }, [loginError, passwordError, passwordConfirmError, emailError, nameError]);
 
   useEffect(() => {
-    if (isSignUp) {
+    if (isAuth) {
       history.replace(ROUTES.GAME);
     }
-  }, [isSignUp]);
+  }, [isAuth, history]);
 
   useEffect(() => {
-    if (error) {
-      setRegValid(false);
-    }
-  });
+    setRegValid(!error);
+  }, [error]);
 
   const blurHandler = (e: FocusEvent<Element>) => {
     switch ((e.target as HTMLInputElement).name) {
@@ -158,6 +166,10 @@ export const Registration = () => {
 
     dispatch(checkSignUp(user));
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className={b('wrapper')}>

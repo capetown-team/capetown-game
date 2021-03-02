@@ -8,9 +8,7 @@ export type ActionType = {
 };
 
 const initialState = {
-  isSignIn: false,
   pending: false,
-  user: null,
   error: false
 };
 
@@ -22,13 +20,12 @@ export const signinReducer = (state = initialState, action: ActionType) => {
     case SIGNIN_SUCCESS: {
       return {
         ...state,
-        isSignIn: true,
         pending: false,
         error: false
       };
     }
     case SIGNIN_FAILURE: {
-      return { ...state, pending: false, isSignIn: false, error: true };
+      return { ...state, pending: false, error: true };
     }
     // no default
   }

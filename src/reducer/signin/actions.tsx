@@ -12,10 +12,8 @@ export type UserTypeSign = {
 };
 
 export type SignInState = {
-  isSignIn: boolean;
   pending: boolean;
   error: boolean;
-  user: UserType;
 };
 
 const signIn = () => {

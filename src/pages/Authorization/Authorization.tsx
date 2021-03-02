@@ -16,8 +16,10 @@ import { Input } from '@/components/Input';
 import { isValidLogin, isValidPassword } from '@/modules/validation';
 
 import { checkSignIn } from '@/reducer/signin/actions';
-import { errorSelector } from '@/reducer/signin/selectors';
+import { errorSelector, pendingSelector } from '@/reducer/signin/selectors';
 import { authSelector } from '@/reducer/auth/selectors';
+
+import { Loading } from '@/components/Loading';
 
 import './Authorization.scss';
 
@@ -27,18 +29,7 @@ export const Authorization = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { error } = useSelector((state: AppState) => {
-    return {
-      error: errorSelector(state)
-    };
-  }, shallowEqual);
-
-  const { isAuth } = useSelector((state: AppState) => {
-    return {
-      isAuth: authSelector(state)
-    };
-  }, shallowEqual);
-
+  const [loading, setLoading] = useState(true);
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [loginDirty, setLoginDirty] = useState(false);
@@ -49,6 +40,18 @@ export const Authorization = () => {
   );
   const [formValid, setFormValid] = useState(false);
   const [regValid, setRegValid] = useState(true);
+
+  const { isAuth, error, pending } = useSelector((state: AppState) => {
+    return {
+      isAuth: authSelector(state),
+      pending: pendingSelector(state),
+      error: errorSelector(state)
+    };
+  }, shallowEqual);
+
+  useEffect(() => {
+    setLoading(pending);
+  }, [pending]);
 
   useEffect(() => {
     if (loginError || passwordError) {
@@ -62,12 +65,10 @@ export const Authorization = () => {
     if (isAuth) {
       history.replace(ROUTES.GAME);
     }
-  }, [isAuth]);
+  }, [isAuth, history]);
 
   useEffect(() => {
-    if (error) {
-      setRegValid(false);
-    }
+    setRegValid(!error);
   }, [error]);
 
   const blurHandler = (e: FocusEvent<Element>) => {
@@ -106,6 +107,10 @@ export const Authorization = () => {
 
     dispatch(checkSignIn(user));
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className={b('wrapper')}>
