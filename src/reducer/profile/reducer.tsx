@@ -1,11 +1,23 @@
-import { ActionProps } from '@/types.d';
+import { AuthState } from '@/reducer/auth/actions';
+import { CHANGE_PROFILE_VIEW, CHANGE_PROFILE } from './types';
 
-const initialState = {};
+export type ActionType = {
+  type: string;
+  payload: AuthState;
+};
 
-export const profileReducer = (state = initialState, action: ActionProps) => {
+const initialState = {
+  isProfileView: true,
+  isСhangeable: false
+};
+
+export const profileReducer = (state = initialState, action: ActionType) => {
   switch (action.type) {
-    case 'TEST': {
-      return { ...state };
+    case CHANGE_PROFILE_VIEW: {
+      return { ...state, isProfileView: action.payload };
+    }
+    case CHANGE_PROFILE: {
+      return { ...state, isСhangeable: action.payload };
     }
     // no default
   }

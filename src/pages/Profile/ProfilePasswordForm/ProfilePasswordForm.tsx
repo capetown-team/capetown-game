@@ -1,14 +1,16 @@
 import React, { ChangeEvent, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 
-import { changePassword } from '@/api';
+import { changePassword, changeProfileView } from '@/reducer/profile/actions';
+
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { isValidPassword, isValidPasswordConfirm } from '@/modules/validation';
 
-type Props = {
-  setIsProfileView: (a: boolean) => void;
-};
+// type Props = {
+//   setIsProfileView: (a: boolean) => void;
+// };
 
 type StateObj = {
   [name: string]: string;
@@ -16,7 +18,9 @@ type StateObj = {
 
 const b = block('user-form');
 
-export const ProfilePasswordForm = ({ setIsProfileView }: Props) => {
+export const ProfilePasswordForm = () => {
+  const dispatch = useDispatch();
+
   const stateObj: StateObj = {
     oldPassword: '',
     newPassword: '',
@@ -52,12 +56,12 @@ export const ProfilePasswordForm = ({ setIsProfileView }: Props) => {
 
     if (!isValid) return;
 
-    changePassword({
-      oldPassword: state.oldPassword,
-      newPassword: state.newPassword
-    }).then(() => {
-      setIsProfileView(true);
-    });
+    dispatch(
+      changePassword({
+        oldPassword: state.oldPassword,
+        newPassword: state.newPassword
+      })
+    );
   };
 
   const handleChange = ({ target }: ChangeEvent) => {
@@ -128,7 +132,7 @@ export const ProfilePasswordForm = ({ setIsProfileView }: Props) => {
             <Button
               type="button"
               size="s"
-              onClick={() => setIsProfileView(true)}
+              onClick={() => dispatch(changeProfileView(true))}
             >
               Отмена
             </Button>
