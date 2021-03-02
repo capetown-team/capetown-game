@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Button /> should renders correct <Button /> 1`] = `
+<button
+  className="button button_size_s"
+  type="submit"
+>
+  test
+</button>
+`;

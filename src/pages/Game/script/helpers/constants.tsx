@@ -1,4 +1,5 @@
-export const step = 41;
+// export const step = 41;
+export const step = 40;
 
 export enum ColorType {
   Gray = '#8d99ae',
@@ -12,8 +13,8 @@ export enum ColorType {
 }
 
 export enum DirectionType {
-  Right = 0,
-  Left = 2,
-  Up = 3,
-  Down = 1
+  RIGHT = 0,
+  LEFT = 2,
+  UP = 3,
+  DOWN = 1
 }

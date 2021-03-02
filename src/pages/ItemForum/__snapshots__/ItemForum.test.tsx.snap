@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Authorization /> should renders correct <ItemForum /> 1`] = `
+<Fragment>
+  <Memo(Topping)
+    title="Форум"
+  />
+  <hr />
+  <p>
+    Какая интересная игра!
+  </p>
+</Fragment>
+`;

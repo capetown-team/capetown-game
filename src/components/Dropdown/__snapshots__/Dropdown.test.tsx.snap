@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Authorization /> should renders correct <Dropdown /> 1`] = `
+<div
+  className="dropdown"
+  onMouseLeave={[Function]}
+>
+  <div
+    className="dropdown__panel dropdown__panel_avatar"
+    onClick={[Function]}
+    role="presentation"
+  >
+    <div
+      className="dropdown__title"
+    >
+      Клава
+    </div>
+    <div
+      className="dropdown__avatar"
+    >
+      <img
+        alt=""
+        className="dropdown__img"
+        src="https://ya-praktikum.techtest"
+      />
+    </div>
+    <div
+      className="dropdown__arrow"
+    />
+  </div>
+  <ul
+    className="dropdown__nav"
+  >
+    <li
+      className="dropdown__list"
+      key="Профиль"
+      onClick={[Function]}
+      role="presentation"
+    >
+      Профиль
+    </li>
+    <li
+      className="dropdown__list"
+      key="Выйти"
+      onClick={[Function]}
+      role="presentation"
+    >
+      Выйти
+    </li>
+  </ul>
+</div>
+`;

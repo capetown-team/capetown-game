@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<Pagination /> should renders correct <Button /> 1`] = `
+<ul
+  className="pagination"
+>
+  <li
+    className="pagination__list"
+    key="1"
+  >
+    <span
+      className="pagination__link pagination__link_active"
+      onClick={[Function]}
+      role="presentation"
+    >
+      1
+    </span>
+  </li>
+  <li
+    className="pagination__list"
+    key="2"
+  >
+    <span
+      className="pagination__link"
+      onClick={[Function]}
+      role="presentation"
+    >
+      2
+    </span>
+  </li>
+  <li
+    className="pagination__list"
+    key="3"
+  >
+    <span
+      className="pagination__link"
+      onClick={[Function]}
+      role="presentation"
+    >
+      3
+    </span>
+  </li>
+</ul>
+`;
