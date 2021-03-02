@@ -57,7 +57,7 @@ const Leaders: FC = () => {
       const { value } = event.target;
       setSearch(value);
     },
-    [search]
+    []
   );
 
   // имутируем подключение к API

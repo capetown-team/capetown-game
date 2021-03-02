@@ -6,12 +6,7 @@ import { Button } from '@/components/Button';
 import { Popup } from '@/components/Notification';
 import { BodyNotification } from '@game/BodyNotification';
 import { Engine } from '@/pages/Game/script/Engine';
-import {
-  deactivateFullscreen,
-  fullScreen,
-  HTMLElementFullScreen,
-  DocumentFullScreen
-} from '@/modules/webApi';
+import { toggelFullScreen, HTMLElementFullScreen } from '@/modules/webApi';
 
 import './Game.scss';
 
@@ -26,7 +21,6 @@ const Game = () => {
   const [isPause, setPause] = useState(false);
   const [isInfo, setInfo] = useState(false);
   const [isFullScreen, setFullScreen] = useState(false);
-  let messageFullScreen = 'На весь экран';
 
   const handlerStart = useCallback(() => {
     if (isStart && engine) {
@@ -70,18 +64,16 @@ const Game = () => {
 
     setStart(false);
     setPause(false);
-  }, [engine, isPause]);
+  }, [engine]);
 
-  const handlerFS = () => {
+  const handlerFS = useCallback(() => {
     const target = gameRef.current;
-    if (isFullScreen) {
-      setFullScreen(true);
-      fullScreen(target as HTMLElementFullScreen);
-    } else {
-      setFullScreen(false);
-      deactivateFullscreen(document as DocumentFullScreen);
+
+    if (target) {
+      setFullScreen(!isFullScreen);
+      toggelFullScreen(isFullScreen, target);
     }
-  };
+  }, [isFullScreen]);
 
   useEffect(() => {
     const canvas = canvasRef.current as HTMLCanvasElement;
@@ -99,11 +91,6 @@ const Game = () => {
     };
   }, []);
 
-  useEffect(() => {
-    messageFullScreen = 'На весь экран';
-    if (isFullScreen) messageFullScreen = 'Обычный режим';
-  }, [isFullScreen]);
-
   return (
     <div className={b()}>
       {isInfo && (
@@ -119,9 +106,6 @@ const Game = () => {
         <div className={b('header')}>
           <Button onClick={handlerStart} size="small game__button">
             Новая игра
-          </Button>
-          <Button size="small game__button" onClick={handlerFS}>
-            На весь экран
           </Button>
           <Button onClick={handlerInfo} size="small game__button">
             Правила
@@ -142,7 +126,7 @@ const Game = () => {
           </Button>
 
           <Button size="small game__button" onClick={handlerFS}>
-            {messageFullScreen}
+            {isFullScreen ? 'Обычный режим' : 'На весь экран'}
           </Button>
         </div>
         <canvas

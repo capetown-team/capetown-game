@@ -10,7 +10,7 @@ type Props = {
 export type HTMLElementFullScreen = HTMLDivElement & Props;
 export type DocumentFullScreen = Document & Props;
 
-export const fullScreen = (element: HTMLElementFullScreen) => {
+export const setfullScreen = (element: HTMLElementFullScreen) => {
   if (element.requestFullscreen) {
     element.requestFullscreen();
   } else if (element.webkitRequestFullscreen) {
@@ -27,5 +27,16 @@ export const deactivateFullscreen = (document: DocumentFullScreen) => {
     document.mozCancelFullScreen();
   } else if (document.webkitExitFullscreen) {
     document.webkitExitFullscreen();
+  }
+};
+
+export const toggelFullScreen = (
+  isFullScreenEnabled: boolean,
+  target: HTMLElementFullScreen
+) => {
+  if (isFullScreenEnabled) {
+    deactivateFullscreen(document as DocumentFullScreen);
+  } else {
+    setfullScreen(target);
   }
 };

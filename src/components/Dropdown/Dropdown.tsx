@@ -33,10 +33,13 @@ const Dropdown: FC<Props> = ({ name, avatar, nav }) => {
     setShow(false);
   }, []);
 
-  const handlerRedirect = useCallback((name) => {
-    history.replace(name);
-    setShow(false);
-  }, []);
+  const handlerRedirect = useCallback(
+    (name) => {
+      history.replace(name);
+      setShow(false);
+    },
+    [history]
+  );
 
   return (
     <div onMouseLeave={handlerHideNav} className={b()}>

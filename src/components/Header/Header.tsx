@@ -34,7 +34,7 @@ const Header = () => {
     if (!isAuth) {
       history.replace(ROUTES.SIGNIN);
     }
-  }, []);
+  }, [dispatch, history, isAuth]);
 
   const dropLists: DropNavType[] = [
     {

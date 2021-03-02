@@ -18,8 +18,7 @@ const Pagination: FC<Props> = ({
   usersPerPage,
   totalUsers,
   currentPage,
-  paginate,
-  search
+  paginate
 }) => {
   const pageNumbers = useMemo(() => {
     const res: { num: number; current: boolean }[] = [];
@@ -33,7 +32,7 @@ const Pagination: FC<Props> = ({
     }
 
     return res;
-  }, [currentPage, search]);
+  }, [currentPage, totalUsers, usersPerPage]);
 
   return (
     <ul className={b()}>

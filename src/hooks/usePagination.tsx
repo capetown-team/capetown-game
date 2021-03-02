@@ -16,27 +16,24 @@ interface IPaginationHook<T> {
 }
 
 export const usePagination = <T,>(props: Props<T>): IPaginationHook<T> => {
-  const { perPage, data, search } = props;
+  const { perPage, data } = props;
 
   const [currentPage, setCurrentPage] = useState(1);
 
   useMemo(() => {
     setCurrentPage(1);
-  }, [search]);
+  }, []);
 
-  const handlerPaginate: PaginateType = useCallback(
-    (pageNumber: number) => {
-      setCurrentPage(pageNumber);
-    },
-    [currentPage]
-  );
+  const handlerPaginate: PaginateType = useCallback((pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  }, []);
 
   const currentData = useMemo(() => {
     const indexOfLast = currentPage * perPage;
     const indexOfFirst = indexOfLast - perPage;
 
     return data.slice(indexOfFirst, indexOfLast);
-  }, [currentPage, data]);
+  }, [currentPage, data, perPage]);
 
   return {
     currentData,
