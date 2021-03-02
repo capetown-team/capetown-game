@@ -21,7 +21,8 @@ const Game = () => {
   const [engine, setEngine] = useState<Engine | null>(null);
   const [isStart, setStart] = useState(false);
   const [isPause, setPause] = useState(false);
-  const [messageFullScreen, setMessageFullScreen] = useState('На весь экран');
+  const [isFullScreen, setFullScreen] = useState(false);
+  let messageFullScreen = 'На весь экран';
 
   const handlerStart = useCallback(() => {
     if (isStart && engine) {
@@ -56,11 +57,11 @@ const Game = () => {
 
   const handlerFS = () => {
     const target = gameRef.current;
-    if (messageFullScreen === 'На весь экран') {
-      setMessageFullScreen('Обычный режим');
+    if (isFullScreen) {
+      setFullScreen(true);
       fullScreen(target as HTMLElementFullScreen);
     } else {
-      setMessageFullScreen('На весь экран');
+      setFullScreen(false);
       deactivateFullscreen(document as DocumentFullScreen);
     }
   };
@@ -80,6 +81,11 @@ const Game = () => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    messageFullScreen = 'На весь экран';
+    if (isFullScreen) messageFullScreen = 'Обычный режим';
+  }, [isFullScreen]);
 
   return (
     <div className={b()}>
