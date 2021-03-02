@@ -46,6 +46,7 @@ export const FilePopup = ({
   const handleSubmit = () => {
     if (fileState) {
       onSubmit(fileState);
+      setFileState(null);
     } else {
       setValidState(false);
     }
