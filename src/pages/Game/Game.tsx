@@ -1,11 +1,4 @@
-import React, {
-  memo,
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-  MouseEvent
-} from 'react';
+import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
 import block from 'bem-cn-lite';
 
 import { Topping } from '@/components/Topping';
@@ -32,6 +25,8 @@ const Game = () => {
   const [isStart, setStart] = useState(false);
   const [isPause, setPause] = useState(false);
   const [isInfo, setInfo] = useState(false);
+  const [isFullScreen, setFullScreen] = useState(false);
+  let messageFullScreen = 'На весь экран';
 
   const handlerStart = useCallback(() => {
     if (isStart && engine) {
@@ -77,14 +72,13 @@ const Game = () => {
     setPause(false);
   }, [engine, isPause]);
 
-  const handlerFS = (e: MouseEvent) => {
-    const elemButton = e.target as HTMLElement;
+  const handlerFS = () => {
     const target = gameRef.current;
-    if (elemButton.innerHTML === 'На весь экран') {
-      elemButton.innerHTML = 'Обычный режим';
+    if (isFullScreen) {
+      setFullScreen(true);
       fullScreen(target as HTMLElementFullScreen);
     } else {
-      elemButton.innerHTML = 'На весь экран';
+      setFullScreen(false);
       deactivateFullscreen(document as DocumentFullScreen);
     }
   };
@@ -104,6 +98,11 @@ const Game = () => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    messageFullScreen = 'На весь экран';
+    if (isFullScreen) messageFullScreen = 'Обычный режим';
+  }, [isFullScreen]);
 
   return (
     <div className={b()}>
@@ -140,6 +139,10 @@ const Game = () => {
             size="small game__button"
           >
             Завершить
+          </Button>
+
+          <Button size="small game__button" onClick={handlerFS}>
+            {messageFullScreen}
           </Button>
         </div>
         <canvas
