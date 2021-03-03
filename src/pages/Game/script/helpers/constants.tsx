@@ -1,5 +1,5 @@
 // export const step = 41;
-export const step = 40;
+export const step = 20;
 
 export enum ColorType {
   Gray = '#8d99ae',

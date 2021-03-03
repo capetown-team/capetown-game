@@ -5,10 +5,10 @@ import { InitParameters } from '@game/script/Types';
 import { DirectionWatch } from '@game/script/Direction/DirectionWatch';
 
 export class Pacman {
-  radius = 20;
+  radius = 10;
   posX = 0;
   posY = 0;
-  speed = 3;
+  speed = 1;
   stepMounth = 12;
   isMouthOpen = false;
   angle1 = right.angle1;
@@ -21,8 +21,8 @@ export class Pacman {
   direction = right.direction;
 
   map = dataMap;
-  row = 12;
-  col = 20;
+  row = dataMap.posY.length;
+  col = dataMap.posY[0].posX.length;
 
   score = 0;
 
@@ -41,6 +41,9 @@ export class Pacman {
   }
 
   getType(x: number, y: number): string {
+    // console.log('x2y2', x, y);
+    // console.log(this.map?.posY[y]?.posX[x]?.type || '');
+    // console.log(this.map);
     return this.map?.posY[y]?.posX[x]?.type || '';
   }
 
@@ -60,10 +63,12 @@ export class Pacman {
         gridAheadY += 1;
       }
       const fieldAhead = this.getType(gridAheadX, gridAheadY);
-
+      // console.log('field', field, fieldAhead, gridX, gridY, gridAheadX, gridAheadY);
+      // console.log(this.map?.posY[gridY]);
       const rad = 10;
 
       if (field === 'pill') {
+        // console.log('pill', this.dirY, this.posY, toPixelPos(gridY), toPixelPos(gridY) + rad );
         if (
           (this.dirX === 1 &&
             between(
@@ -76,19 +81,23 @@ export class Pacman {
           (this.dirY === 1 &&
             between(
               this.posY,
-              toPixelPos(gridY) + this.radius - rad,
-              toPixelPos(gridY + 1)
+              toPixelPos(gridY) + this.initParameters.head + this.radius - rad,
+              toPixelPos(gridY) + this.initParameters.head
             )) ||
           (this.dirY === -1 &&
-            between(this.posY, toPixelPos(gridY), toPixelPos(gridY) + rad)) ||
+            between(
+              this.posY,
+              toPixelPos(gridY) + this.initParameters.head,
+              toPixelPos(gridY + 1) + this.initParameters.head + rad
+            )) ||
           fieldAhead === 'wall'
         ) {
           this.score += 20;
           this.map.posY[gridY].posX[gridX].type = 'null';
         }
       }
-
-      if (fieldAhead === 'wall') {
+      // console.log(fieldAhead, gridX, gridY);
+      if (fieldAhead === 'wall' || fieldAhead === 'block') {
         this.stop();
       }
     }
@@ -97,11 +106,12 @@ export class Pacman {
   checkDirectionChange(): void {
     if (this.directionWatcher.get() !== null) {
       const dir = this.directionWatcher.get();
-
+      console.log('dir1', dir);
       if (dir) {
         const x = this.getGridPosX() + dir.dirX;
         const y = this.getGridPosY() + dir.dirY;
 
+        // console.log('dir', dir, x, y, this.posX, this.posY);
         if (x < this.col && x >= 0 && y < this.row && y >= 1) {
           if (dir) {
             this.dirX = dir.dirX;
@@ -130,6 +140,7 @@ export class Pacman {
   }
 
   move() {
+    // console.log('packman', this.posX, this.posY);
     if (!this.frozen) {
       this.posX += this.speed * this.dirX;
       this.posY += this.speed * this.dirY;
@@ -150,6 +161,7 @@ export class Pacman {
         this.posY = this.initParameters.height - startLoop - this.radius;
       }
     }
+    // console.log('xy', this.posX, this.posY);
   }
 
   stop(): void {
@@ -181,13 +193,18 @@ export class Pacman {
   }
 
   getGridPosY(): number {
-    return (this.posY - (this.posY % step)) / step;
+    return (
+      (this.posY -
+        this.initParameters.head -
+        ((this.posY - this.initParameters.head) % step)) /
+      step
+    );
   }
 
   startPosition() {
-    const head = this.initParameters.head / 2;
-    this.posY = this.initParameters.height / 2 - this.radius + head;
-    this.posX = this.initParameters.borderWalls;
+    // const head = this.initParameters.head / 2;TODO
+    this.posY = 285; // this.initParameters.height / 2 - this.radius + head; TODO
+    this.posX = 0; // this.initParameters.borderWalls; TODO
     this.setDirection(right);
     this.directionWatcher.set(right);
   }

@@ -160,6 +160,8 @@ export class Engine {
   }
 
   blank(color = ColorType.LightGrey) {
+    // console.log('blank', this.initParameters.width);
+    // console.log('blank', this.initParameters.height);
     this.ctx.fillStyle = color;
     this.ctx.fillRect(
       0,
@@ -170,11 +172,12 @@ export class Engine {
   }
 
   gameLoop() {
-    this.blank();
+    this.blank(ColorType.Black);
     this.header.drawHeader();
-    this.figure.drawWalls();
+    // this.figure.drawWalls();
     this.figure.drawCoins();
     this.ghost.drawGhost();
+    this.figure.drawBlocks();
     this.ctx.fillStyle = ColorType.Gold;
     this.ctx.beginPath();
 
@@ -200,9 +203,11 @@ export class Engine {
         2 * Math.PI
       );
     }
+
     this.pacman.move();
     this.pacman.checkDirectionChange();
     this.pacman.checkCollisions();
+
     this.ctx.fill();
 
     this.steps += 1;
@@ -238,6 +243,7 @@ export class Engine {
         this.pacman.moveUpDown();
 
         this.pacman.directionWatcher.set(down);
+        // console.log(this.pacman);
         break;
         evt.preventDefault();
       case 37:

@@ -4,9 +4,9 @@ import ghostIcon from '@game/script/images/ghost-right.png';
 
 export class Ghost {
   ghost = {
-    posX: 390,
-    posY: 200,
-    radius: 40,
+    posX: 250,
+    posY: 280,
+    radius: 10,
     image: new Image()
   };
 
