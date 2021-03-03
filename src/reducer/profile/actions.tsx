@@ -4,7 +4,7 @@ import { ThunkAction } from 'redux-thunk';
 import { path } from '@/api';
 
 import { CHANGE_PROFILE_VIEW, CHANGE_PROFILE } from './types';
-import { AUTH_SUCCESS } from '../auth/types';
+import { authorize, UserType } from '../auth/actions';
 
 type UserData = {
   first_name: string;
@@ -23,20 +23,6 @@ export type ProfileState = {
 type UserPassword = {
   oldPassword: string;
   newPassword: string;
-};
-
-const changeProfileSuccess = (userInfo: { user: UserData }) => {
-  return {
-    type: AUTH_SUCCESS,
-    payload: userInfo
-  };
-};
-
-const changeAvatarSuccess = (userInfo: { user: UserData }) => {
-  return {
-    type: AUTH_SUCCESS,
-    payload: userInfo
-  };
 };
 
 export const changeProfileView = (value: boolean) => {
@@ -58,13 +44,13 @@ export const changeProfile = <S,>(
 ): ThunkAction<void, () => S, AxiosInstance, Action<string>> => {
   return async (dispatch: Dispatch, getState, api): Promise<void> => {
     api
-      .put<UserData>(`${path}/user/profile`, userData, {
+      .put<UserType>(`${path}/user/profile`, userData, {
         withCredentials: true
       })
       .then((response) => {
         if (response.data) {
-          const user: { user: UserData } = { user: response.data };
-          dispatch(changeProfileSuccess(user));
+          const user: { user: UserType } = { user: response.data };
+          dispatch(authorize(user));
           dispatch(setIschangeProfile(false));
         }
       });
@@ -95,7 +81,7 @@ export const changeProfileAvatar = <S,>(
     formData.append('avatar', avatar);
 
     api
-      .put<UserData>(`${path}/user/profile/avatar`, formData, {
+      .put<UserType>(`${path}/user/profile/avatar`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         },
@@ -103,8 +89,8 @@ export const changeProfileAvatar = <S,>(
       })
       .then((response) => {
         if (response.data) {
-          const user: { user: UserData } = { user: response.data };
-          dispatch(changeAvatarSuccess(user));
+          const user: { user: UserType } = { user: response.data };
+          dispatch(authorize(user));
         }
       });
   };

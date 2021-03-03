@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 
 import { userSelector } from '@/reducer/auth/selectors';
+import { profileSelector } from '@/reducer/profile/selectors';
 import { AppState } from '@/reducer';
 import { changeProfileAvatar } from '@/reducer/profile/actions';
 
@@ -37,11 +38,14 @@ export const Profile = () => {
       user: userSelector(state)
     };
   });
-  const isProfileView = useSelector((state: AppState) => {
-    return state.profile.isProfileView;
-  });
+
+  const { isProfileView } = useSelector((state: AppState) =>
+    profileSelector(state)
+  );
 
   useEffect(() => {
+    if (!user) return;
+
     setState({
       avatar: user.avatar ?? '',
       id: user.id,

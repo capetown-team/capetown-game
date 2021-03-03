@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 
 import { authSelector } from '@/reducer/auth/selectors';
+import { profileSelector } from '@/reducer/profile/selectors';
 import { logout } from '@/reducer/auth/actions';
 import {
   changeProfile,
@@ -46,9 +47,10 @@ export const ProfileForm = ({ profileData }: Props) => {
       isAuth: authSelector(state)
     };
   });
-  const isСhangeable = useSelector((state: AppState) => {
-    return state.profile.isСhangeable;
-  });
+
+  const { isСhangeable } = useSelector((state: AppState) =>
+    profileSelector(state)
+  );
 
   const [state, setState] = useState(profileData);
   const [validState, setValidState] = useState({

@@ -8,10 +8,6 @@ import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { isValidPassword, isValidPasswordConfirm } from '@/modules/validation';
 
-// type Props = {
-//   setIsProfileView: (a: boolean) => void;
-// };
-
 type StateObj = {
   [name: string]: string;
 };
