@@ -42,15 +42,12 @@ export const ProfileForm = ({ profileData }: Props) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { isAuth } = useSelector((state: AppState) => {
+  const { isAuth, isСhangeable } = useSelector((state: AppState) => {
     return {
-      isAuth: authSelector(state)
+      isAuth: authSelector(state),
+      isСhangeable: profileSelector(state).isСhangeable
     };
   });
-
-  const { isСhangeable } = useSelector((state: AppState) =>
-    profileSelector(state)
-  );
 
   const [state, setState] = useState(profileData);
   const [validState, setValidState] = useState({

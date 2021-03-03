@@ -33,29 +33,26 @@ export const Profile = () => {
   });
 
   const dispatch = useDispatch();
-  const { user } = useSelector((state: AppState) => {
+  const { user, isProfileView } = useSelector((state: AppState) => {
     return {
-      user: userSelector(state)
+      user: userSelector(state),
+      isProfileView: profileSelector(state).isProfileView
     };
   });
-
-  const { isProfileView } = useSelector((state: AppState) =>
-    profileSelector(state)
-  );
 
   useEffect(() => {
     if (!user) return;
 
     setState({
-      avatar: user.avatar ?? '',
+      avatar: user.avatar || '',
       id: user.id,
       data: {
-        first_name: user.first_name ?? '',
-        second_name: user.second_name ?? '',
-        display_name: user.display_name ?? '',
-        email: user.email ?? '',
-        login: user.login ?? '',
-        phone: user.phone ?? ''
+        first_name: user.first_name || '',
+        second_name: user.second_name || '',
+        display_name: user.display_name || '',
+        email: user.email || '',
+        login: user.login || '',
+        phone: user.phone || ''
       }
     });
   }, [user]);
