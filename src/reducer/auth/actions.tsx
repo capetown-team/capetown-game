@@ -24,7 +24,7 @@ export type AuthState = {
   user: UserType;
 };
 
-const authorize = (userInfo: { user: UserType }) => {
+export const authorize = (userInfo: { user: UserType }) => {
   return {
     type: AUTH_SUCCESS,
     payload: userInfo

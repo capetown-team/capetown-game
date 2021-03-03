@@ -5,21 +5,31 @@ import React, {
   FocusEvent,
   ChangeEvent
 } from 'react';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import block from 'bem-cn-lite';
+import { AppState } from '@/reducer';
+import { ROUTES } from '@/constants';
 
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { isValidLogin, isValidPassword } from '@/modules/validation';
-import { signIn } from '@/api';
-import { ROUTES } from '@/constants';
+
+import { checkSignIn } from '@/reducer/signin/actions';
+import { errorSelector, pendingSelector } from '@/reducer/signin/selectors';
+import { authSelector } from '@/reducer/auth/selectors';
+
+import { Loading } from '@/components/Loading';
 
 import './Authorization.scss';
 
 const b = block('form');
 
 export const Authorization = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
+
+  const [loading, setLoading] = useState(true);
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [loginDirty, setLoginDirty] = useState(false);
@@ -31,6 +41,18 @@ export const Authorization = () => {
   const [formValid, setFormValid] = useState(false);
   const [regValid, setRegValid] = useState(true);
 
+  const { isAuth, error, pending } = useSelector((state: AppState) => {
+    return {
+      isAuth: authSelector(state),
+      pending: pendingSelector(state),
+      error: errorSelector(state)
+    };
+  }, shallowEqual);
+
+  useEffect(() => {
+    setLoading(pending);
+  }, [pending]);
+
   useEffect(() => {
     if (loginError || passwordError) {
       setFormValid(false);
@@ -38,6 +60,16 @@ export const Authorization = () => {
       setFormValid(true);
     }
   }, [loginError, passwordError]);
+
+  useEffect(() => {
+    if (isAuth) {
+      history.replace(ROUTES.GAME);
+    }
+  }, [isAuth, history]);
+
+  useEffect(() => {
+    setRegValid(!error);
+  }, [error]);
 
   const blurHandler = (e: FocusEvent<Element>) => {
     const { name } = e.target as HTMLInputElement;
@@ -73,13 +105,12 @@ export const Authorization = () => {
       password
     };
 
-    try {
-      await signIn(user);
-      history.replace(ROUTES.GAME);
-    } catch (err) {
-      setRegValid(false);
-    }
+    dispatch(checkSignIn(user));
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className={b('wrapper')}>

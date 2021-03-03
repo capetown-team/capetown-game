@@ -5,8 +5,11 @@ import React, {
   ChangeEvent,
   MouseEvent
 } from 'react';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
+import { AppState } from '@/reducer';
 import block from 'bem-cn-lite';
+import { ROUTES } from '@/constants';
 
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
@@ -17,15 +20,22 @@ import {
   isValidPassword,
   isValidPasswordConfirm
 } from '@/modules/validation';
-import { signUp } from '@/api';
-import { ROUTES } from '@/constants';
+
+import { authSelector } from '@/reducer/auth/selectors';
+import { checkSignUp } from '@/reducer/signup/actions';
+import { errorSelector, pendingSelector } from '@/reducer/signup/selectors';
+
+import { Loading } from '@/components/Loading';
 
 import './Registration.scss';
 
 const b = block('form');
 
 export const Registration = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
+
+  const [loading, setLoading] = useState(true);
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -51,6 +61,18 @@ export const Registration = () => {
   const [formValid, setFormValid] = useState(false);
   const [regValid, setRegValid] = useState(true);
 
+  const { isAuth, error, pending } = useSelector((state: AppState) => {
+    return {
+      isAuth: authSelector(state),
+      error: errorSelector(state),
+      pending: pendingSelector(state)
+    };
+  }, shallowEqual);
+
+  useEffect(() => {
+    setLoading(pending);
+  }, [pending]);
+
   useEffect(() => {
     if (
       loginError ||
@@ -64,6 +86,16 @@ export const Registration = () => {
       setFormValid(true);
     }
   }, [loginError, passwordError, passwordConfirmError, emailError, nameError]);
+
+  useEffect(() => {
+    if (isAuth) {
+      history.replace(ROUTES.GAME);
+    }
+  }, [isAuth, history]);
+
+  useEffect(() => {
+    setRegValid(!error);
+  }, [error]);
 
   const blurHandler = (e: FocusEvent<Element>) => {
     switch ((e.target as HTMLInputElement).name) {
@@ -83,25 +115,6 @@ export const Registration = () => {
         setNameDirty(true);
         break;
       default:
-    }
-  };
-
-  const submitHandler = async (e: MouseEvent<Element>) => {
-    e.preventDefault();
-    const user = {
-      first_name: name,
-      second_name: name,
-      login,
-      email,
-      phone: '+79191234567',
-      password
-    };
-
-    try {
-      await signUp(user);
-      history.replace(ROUTES.GAME);
-    } catch (err) {
-      setRegValid(false);
     }
   };
 
@@ -139,6 +152,24 @@ export const Registration = () => {
     const nameErr = isValidName(text);
     setNameError(nameErr);
   };
+
+  const submitHandler = async (e: MouseEvent<Element>) => {
+    e.preventDefault();
+    const user = {
+      first_name: name,
+      second_name: name,
+      login,
+      email,
+      phone: '+79191234567',
+      password
+    };
+
+    dispatch(checkSignUp(user));
+  };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className={b('wrapper')}>
