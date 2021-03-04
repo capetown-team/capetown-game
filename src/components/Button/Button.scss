@@ -8,20 +8,14 @@
     border: none;
 
     &_size {
-        &_small {
-            padding: 7px 15px;
-        }
-
         &_s {
-            display: block;
-            width: 280px;
-            height: 38px;
+            padding: 7px 15px;
         }
 
         &_m {
             display: block;
-            width: 308px;
-            height: 42px;
+            padding: 10px 0;
+            width: 100%;
         }
 
         &_l {

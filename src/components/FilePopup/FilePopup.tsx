@@ -29,12 +29,9 @@ export const FilePopup = ({
   const [validState, setValidState] = useState(true);
 
   const handleChange = (event: ChangeEvent) => {
-    if (
-      event.target &&
-      event.target instanceof HTMLInputElement &&
-      event.target.files
-    ) {
-      const file = event.target.files[0];
+    const current = event.target as HTMLInputElement;
+    if (current?.files) {
+      const file = current.files[0];
 
       if (file) {
         setFileState(file);
@@ -53,7 +50,7 @@ export const FilePopup = ({
   };
 
   return (
-    <div className={`${b()} ${show ? '' : 'hidden'}`}>
+    <div className={`${b()} ${!show && 'hidden'}`}>
       <div className={b('box')}>
         <button type="button" className={b('close')} onClick={onClose}>
           X
@@ -66,7 +63,7 @@ export const FilePopup = ({
           </label>
         </div>
         <div className={b('btn')}>
-          <Button type="button" size="s" onClick={handleSubmit}>
+          <Button type="button" size="m" onClick={handleSubmit}>
             {btnText}
           </Button>
         </div>
