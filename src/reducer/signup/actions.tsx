@@ -51,9 +51,14 @@ export const checkSignUp = <S,>(
         if (response.data) {
           const user: { user: UserType } = {
             user: {
+              id: response.data.id,
               login: userSignup.login,
               avatar: '',
-              first_name: userSignup.first_name
+              first_name: userSignup.first_name,
+              second_name: userSignup.second_name,
+              display_name: '',
+              email: userSignup.email,
+              phone: userSignup.phone
             }
           };
           dispatch(signUp());

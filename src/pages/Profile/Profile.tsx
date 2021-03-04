@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 
+import { userSelector } from '@/reducer/auth/selectors';
+import { profileSelector } from '@/reducer/profile/selectors';
+import { AppState } from '@/reducer';
+import { changeProfileAvatar } from '@/reducer/profile/actions';
+
 import { baseUrl } from '@/constants';
-import { changeProfileAvatar, getUserInfo } from '@/api';
 import { FilePopup } from '@/components/FilePopup';
 import { ProfileForm } from './ProfileForm';
 import { ProfilePasswordForm } from './ProfilePasswordForm';
@@ -13,47 +18,49 @@ import './Profile.scss';
 const b = block('user-profile');
 
 export const Profile = () => {
-  const [isProfileView, setIsProfileView] = useState(true);
   const [isShowPopup, setIsShowPopup] = useState(false);
   const [state, setState] = useState({
     avatar: '',
     id: 0,
     data: {
-      firstName: '',
-      secondName: '',
-      displayName: '',
+      first_name: '',
+      second_name: '',
+      display_name: '',
       email: '',
       login: '',
       phone: ''
     }
   });
 
-  const requestProfileData = () => {
-    getUserInfo().then(({ data }) => {
-      setState({
-        avatar: data.avatar,
-        id: data.id,
-        data: {
-          firstName: data.first_name ?? '',
-          secondName: data.second_name ?? '',
-          displayName: data.display_name ?? '',
-          email: data.email ?? '',
-          login: data.login ?? '',
-          phone: data.phone ?? ''
-        }
-      });
-    });
-  };
+  const dispatch = useDispatch();
+  const { user, isProfileView } = useSelector((state: AppState) => {
+    return {
+      user: userSelector(state),
+      isProfileView: profileSelector(state).isProfileView
+    };
+  });
 
   useEffect(() => {
-    requestProfileData();
-  }, []);
+    if (!user) return;
+
+    setState({
+      avatar: user.avatar || '',
+      id: user.id,
+      data: {
+        first_name: user.first_name || '',
+        second_name: user.second_name || '',
+        display_name: user.display_name || '',
+        email: user.email || '',
+        login: user.login || '',
+        phone: user.phone || ''
+      }
+    });
+  }, [user]);
 
   const handleAvatarChange = (file: File) => {
-    changeProfileAvatar(file).then(() => {
-      setIsShowPopup(false);
-      requestProfileData();
-    });
+    dispatch(changeProfileAvatar(file));
+
+    setIsShowPopup(false);
   };
 
   return (
@@ -65,7 +72,7 @@ export const Profile = () => {
               {state.avatar ? (
                 <img src={`${baseUrl}${state.avatar}`} alt="avatar" />
               ) : (
-                <span>М</span>
+                <span>{state.data.first_name.charAt(0)}</span>
               )}
               <button
                 onClick={() => setIsShowPopup(true)}
@@ -76,7 +83,7 @@ export const Profile = () => {
               </button>
             </div>
             <div className={b('avatar-name')}>
-              {`${state.data.firstName} ${state.data.secondName}`}
+              {`${state.data.first_name} ${state.data.second_name}`}
             </div>
           </div>
           <div>
@@ -86,12 +93,9 @@ export const Profile = () => {
           </div>
         </div>
         {isProfileView ? (
-          <ProfileForm
-            profileData={state.data}
-            setIsProfileView={setIsProfileView}
-          />
+          <ProfileForm profileData={state.data} />
         ) : (
-          <ProfilePasswordForm setIsProfileView={setIsProfileView} />
+          <ProfilePasswordForm />
         )}
       </div>
       <FilePopup
