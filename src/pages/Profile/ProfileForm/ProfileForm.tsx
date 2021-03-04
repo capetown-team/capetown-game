@@ -45,7 +45,7 @@ export const ProfileForm = ({ profileData }: Props) => {
   const { isAuth, isСhangeable } = useSelector((state: AppState) => {
     return {
       isAuth: authSelector(state),
-      isСhangeable: profileSelector(state).isСhangeable
+      isСhangeable: profileSelector(state)
     };
   });
 
