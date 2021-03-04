@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from 'react';
+import React, { memo } from 'react';
 import block from 'bem-cn-lite';
 
 import { data as DataForum } from '@/pages/Forum/data';
@@ -19,8 +19,8 @@ export type Props = {
 };
 
 const Forum = () => {
-  const [loading, setLoading] = useState(true);
-  const [data, setData] = useState<Props[]>([]);
+  const loading = false;
+  const data: Props[] = DataForum;
 
   const usersPerPage = 7;
 
@@ -28,11 +28,6 @@ const Forum = () => {
     perPage: usersPerPage,
     data
   });
-
-  useEffect(() => {
-    setData(DataForum);
-    setLoading(false);
-  }, []);
 
   if (loading) {
     return <Loading />;

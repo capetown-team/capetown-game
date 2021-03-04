@@ -120,14 +120,14 @@ export const ProfilePasswordForm = () => {
             )}
           </div>
           <div className={b('btn')}>
-            <Button type="button" size="s" onClick={handleChangePassword}>
+            <Button type="button" size="m" onClick={handleChangePassword}>
               Сохранить
             </Button>
           </div>
           <div className={b('btn')}>
             <Button
               type="button"
-              size="s"
+              size="m"
               onClick={() => dispatch(changeProfileView(true))}
             >
               Отмена

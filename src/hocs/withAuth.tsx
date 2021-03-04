@@ -6,14 +6,14 @@ import { pendingSelector } from '@/reducer/auth/selectors';
 import { Loading } from '@/components/Loading';
 
 export const withAuth = <T,>(WrappedComponent: ComponentType<T>) => {
-  const withPreloadComponent = (props: T) => {
+  return (props: T) => {
     const dispatch = useDispatch();
 
     const isPending = useSelector(pendingSelector);
 
     useEffect(() => {
       dispatch(checkAuth());
-    }, []);
+    }, [dispatch]);
 
     if (isPending) {
       return (
@@ -25,6 +25,4 @@ export const withAuth = <T,>(WrappedComponent: ComponentType<T>) => {
 
     return <WrappedComponent {...props} />;
   };
-
-  return withPreloadComponent;
 };

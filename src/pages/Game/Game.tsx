@@ -104,28 +104,30 @@ const Game = () => {
       <Topping title="Игра Pac-Man" />
       <div className={b('game')} ref={gameRef}>
         <div className={b('header')}>
-          <Button onClick={handlerStart} size="small game__button">
+          <Button onClick={handlerStart} size="s" otherClass="game__button">
             Новая игра
           </Button>
-          <Button onClick={handlerInfo} size="small game__button">
+          <Button onClick={handlerInfo} size="s" otherClass="game__button">
             Правила
           </Button>
           <Button
             disabled={!isStart}
             onClick={handlerPause}
-            size="small game__button"
+            size="s"
+            otherClass="game__button"
           >
             {isPause ? 'Продолжить' : 'Пауза'}
           </Button>
           <Button
             disabled={!isStart}
             onClick={handleStop}
-            size="small game__button"
+            size="s"
+            otherClass="game__button"
           >
             Завершить
           </Button>
 
-          <Button size="small game__button" onClick={handlerFS}>
+          <Button size="s" otherClass="game__button" onClick={handlerFS}>
             {isFullScreen ? 'Обычный режим' : 'На весь экран'}
           </Button>
         </div>

@@ -7,12 +7,8 @@ export const makeApi = () => {
     withCredentials: true
   });
   api.interceptors.response.use(
-    (response) => {
-      return response;
-    },
-    (error) => {
-      return Promise.reject(error);
-    }
+    (response) => response,
+    (error) => Promise.reject(error)
   );
   return api;
 };
