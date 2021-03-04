@@ -127,7 +127,7 @@ export const ProfilePasswordForm = () => {
           <div className={b('btn')}>
             <Button
               type="button"
-              size="s"
+              size="m"
               onClick={() => dispatch(changeProfileView(true))}
             >
               Отмена

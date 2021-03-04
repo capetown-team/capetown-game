@@ -220,7 +220,7 @@ export const ProfileForm = ({ profileData }: Props) => {
         <div className={b('column')}>
           {isСhangeable && (
             <div className={b('btn')}>
-              <Button type="button" size="s" onClick={changeProfileData}>
+              <Button type="button" size="m" onClick={changeProfileData}>
                 Сохранить
               </Button>
             </div>
@@ -230,14 +230,14 @@ export const ProfileForm = ({ profileData }: Props) => {
               <div className={b('btn')}>
                 <Button
                   type="button"
-                  size="s"
+                  size="m"
                   onClick={() => dispatch(setIschangeProfile(true))}
                 >
                   Изменить данные
                 </Button>
               </div>
               <div className={b('btn')}>
-                <Button type="button" size="s" onClick={handleLogout}>
+                <Button type="button" size="m" onClick={handleLogout}>
                   Выйти
                 </Button>
               </div>
@@ -249,7 +249,7 @@ export const ProfileForm = ({ profileData }: Props) => {
             <div className={b('btn')}>
               <Button
                 type="button"
-                size="s"
+                size="m"
                 onClick={() => dispatch(changeProfileView(false))}
               >
                 Изменить пароль
@@ -260,7 +260,7 @@ export const ProfileForm = ({ profileData }: Props) => {
             <div className={b('btn')}>
               <Button
                 type="button"
-                size="s"
+                size="m"
                 onClick={() => {
                   dispatch(setIschangeProfile(false));
                   setState(profileData);
