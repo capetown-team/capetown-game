@@ -5,6 +5,7 @@ import { Ghost } from '@game/script/Ghost';
 import { Header } from '@game/script/Header';
 import { down, left, right, up, drawText } from '@game/script/helpers/action';
 import { ColorType } from '@game/script/helpers/constants';
+import { dataMap } from '@game/script/helpers/data';
 
 export class Engine {
   started = false;
@@ -32,9 +33,9 @@ export class Engine {
         head: 25,
         borderWalls: 10
       };
-      this.pacman = new Pacman(this.initParameters);
+      this.pacman = new Pacman(this.initParameters, dataMap);
       this.figure = new Figure(this.ctx, this.initParameters, this.pacman);
-      this.ghost = new Ghost(this.ctx);
+      this.ghost = new Ghost(this.ctx, this.initParameters, dataMap);
       this.header = new Header(
         this.ctx,
         this.initParameters,
@@ -123,7 +124,7 @@ export class Engine {
     this.figure.updateCoins();
 
     if (!this.pacman) {
-      this.pacman = new Pacman(this.initParameters);
+      this.pacman = new Pacman(this.initParameters, dataMap);
     }
     this.pacman.stop();
     this.steps = 0;
@@ -178,6 +179,7 @@ export class Engine {
     this.figure.drawCoins();
     this.ghost.drawGhost();
     this.figure.drawBlocks();
+    this.figure.drawStrength();
     this.ctx.fillStyle = ColorType.Gold;
     this.ctx.beginPath();
 
@@ -209,6 +211,40 @@ export class Engine {
     this.pacman.checkCollisions();
 
     this.ctx.fill();
+    this.ctx.closePath();
+
+    this.ctx.beginPath();
+    this.ctx.fillStyle = ColorType.Red;
+    this.ctx.arc(
+      this.ghost.posX + this.ghost.radius,
+      this.ghost.posY + this.ghost.radius,
+      this.ghost.radius,
+      0,
+      2 * Math.PI
+    );
+
+    if (this.ghost.isCheckCross) {
+      const directions = this.ghost.checkCross();
+      // if (directions.length > 1)
+      console.log('directions', directions);
+      let successful = false;
+      while (!successful) {
+        successful = this.ghost.checkCollisions();
+        if (!successful) {
+          const newDir = this.ghost.getNewDirection(
+            directions,
+            this.ghost.getDir(this.ghost.direction)
+          );
+          this.ghost.setDirection(newDir);
+        }
+      }
+    }
+
+    // console.log('XY', this.ghost.posX, this.ghost.posY, this.ghost.direction);
+
+    this.ghost.move();
+    this.ctx.fill();
+    this.ctx.closePath();
 
     this.steps += 1;
     if (this.steps % this.pacman.stepMounth === 0) {
@@ -230,6 +266,7 @@ export class Engine {
 
   doKeyDown(evt: { keyCode: number; preventDefault(): void }) {
     this.pacman.unfreeze();
+    this.ghost.unfreeze();
 
     switch (evt.keyCode) {
       case 38:

@@ -1,23 +1,38 @@
-import { FigureType } from '@game/script/Types';
-import { between } from '@game/script/helpers/action';
-import ghostIcon from '@game/script/images/ghost-right.png';
+import { FigureType, InitParameters } from '@game/script/Types';
+import { up, between } from '@game/script/helpers/action';
 
-export class Ghost {
+import { moveClass } from '@game/script/moveClass';
+// import ghostIcon from '@game/script/images/react1.jpg';
+
+type Map = { posY: { row: number; posX: { col: number; type: string }[] }[] };
+
+export class Ghost extends moveClass {
+  initParameters: InitParameters;
   ghost = {
-    posX: 250,
-    posY: 280,
+    posX: 260,
+    posY: 290,
     radius: 10,
     image: new Image()
   };
 
   public ctx!: CanvasRenderingContext2D;
 
-  constructor(ctx: CanvasRenderingContext2D) {
+  constructor(
+    ctx: CanvasRenderingContext2D,
+    initParameters: InitParameters,
+    map: Map
+  ) {
+    super(initParameters, map);
+    this.initParameters = initParameters;
+    this.isCheckBonus = false;
+    this.isCheckPill = false;
+    this.isCheckCross = true;
+    this.direction = up.direction;
     this.ctx = ctx;
   }
 
   drawGhost() {
-    this.ghost.image.src = ghostIcon;
+    // this.ghost.image.src = ghostIcon;
 
     this.ctx.drawImage(
       this.ghost.image,

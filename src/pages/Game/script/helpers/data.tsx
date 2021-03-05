@@ -8,6 +8,8 @@ const getType = (item: string) => {
       return 'pill';
     case 'b':
       return 'block';
+    case 's':
+      return 'strength';
     default:
       return '';
   }
@@ -16,7 +18,7 @@ const getType = (item: string) => {
 const prepareData = () => {
   const map = [
     'bbbbbbbbbbbbbebbbbbbbbbbbbb',
-    'bpppppppppppppppppppppppppb',
+    'bspppppppppppppppppppppppsb',
     'bpbbbbpbbbbpbbpbbbbpbbbbbpb',
     'bpppppppppppbbppppppppppbpb',
     'bpbbpbbbbbbpbbpbbbbbbpbbbpb',
@@ -39,7 +41,7 @@ const prepareData = () => {
     'bpbbpbbbbbbpbbpbbbbbbpbbbpb',
     'bpppppppppppbbppppppppppppb',
     'bpbbbbpbbbbpbbpbbbbpbbbbbpb',
-    'bpppppppppppppppppppppppppb',
+    'bspppppppppppppppppppppppsb',
     'bbbbbbbbbbbbbebbbbbbbbbbbbb'
   ];
   const result = [];
@@ -64,7 +66,3 @@ const prepareData = () => {
 };
 
 export const dataMap = prepareData();
-console.log('map', dataMap);
-console.log(dataMap.posY[14].posX[2].type);
-console.log(dataMap.posY[14].posX[1].type);
-console.log(dataMap.posY[13]);

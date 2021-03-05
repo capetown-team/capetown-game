@@ -154,6 +154,37 @@ export class Figure {
     this.ctx.fill();
   }
 
+  drawStrength() {
+    let posY = 0;
+    this.ctx.strokeStyle = ColorType.Red;
+    this.ctx.fillStyle = ColorType.Red;
+    this.ctx.beginPath();
+
+    if (this.map && this.map.posY && this.map.posY.length > 0) {
+      this.map.posY.forEach((row) => {
+        posY = row.row;
+
+        row.posX.forEach((column) => {
+          if (column.type === 'strength') {
+            this.ctx.arc(
+              toPixelPos(column.col) + this.pacman.radius,
+              toPixelPos(posY) +
+                this.pacman.radius / 2 +
+                this.initParameters.head +
+                3,
+              7,
+              0,
+              2 * Math.PI
+            );
+            this.ctx.moveTo(toPixelPos(column.col), toPixelPos(posY));
+          }
+        });
+      });
+    }
+
+    this.ctx.fill();
+  }
+
   updateCoins() {
     if (this.map && this.map.posY && this.map.posY.length > 0) {
       this.map.posY.forEach((row, inx1) => {

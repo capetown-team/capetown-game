@@ -1,8 +1,10 @@
 import { right, down, between, toPixelPos } from '@game/script/helpers/action';
 import { step } from '@game/script/helpers/constants';
-import { dataMap } from '@game/script/helpers/data';
+// import { dataMap } from '@game/script/helpers/data';
 import { InitParameters } from '@game/script/Types';
 import { DirectionWatch } from '@game/script/Direction/DirectionWatch';
+
+type Map = { posY: { row: number; posX: { col: number; type: string }[] }[] };
 
 export class Pacman {
   radius = 10;
@@ -20,18 +22,27 @@ export class Pacman {
   directionWatcher = new DirectionWatch();
   direction = right.direction;
 
-  map = dataMap;
+  /* map = dataMap;
   row = dataMap.posY.length;
   col = dataMap.posY[0].posX.length;
+  */
 
   score = 0;
+  map: Map = { posY: [] };
+  row = 0;
+  col = 0;
 
-  constructor(initParameters: InitParameters) {
+  constructor(initParameters: InitParameters, map: Map) {
     this.initParameters = initParameters;
 
     this.startPosition();
+    this.setMap(map);
   }
-
+  setMap(map: Map) {
+    this.map = map;
+    this.row = map.posY.length;
+    this.col = map.posY[0].posX.length;
+  }
   freeze() {
     this.frozen = true;
   }
@@ -106,7 +117,7 @@ export class Pacman {
   checkDirectionChange(): void {
     if (this.directionWatcher.get() !== null) {
       const dir = this.directionWatcher.get();
-      console.log('dir1', dir);
+      // console.log('dir1', dir);
       if (dir) {
         const x = this.getGridPosX() + dir.dirX;
         const y = this.getGridPosY() + dir.dirY;
@@ -142,6 +153,7 @@ export class Pacman {
   move() {
     // console.log('packman', this.posX, this.posY);
     if (!this.frozen) {
+      // console.log('pacmanmap', this.map.posY[13].posX[3].type);
       this.posX += this.speed * this.dirX;
       this.posY += this.speed * this.dirY;
       const head = this.initParameters.head * 1.3;
