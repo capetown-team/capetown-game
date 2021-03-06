@@ -3,7 +3,7 @@ import block from 'bem-cn-lite';
 
 import { Topping } from '@/components/Topping';
 import { Button } from '@/components/Button';
-import { Popup } from '@/components/Notification';
+import { Notification } from '@/components/Notification';
 import { BodyNotification } from '@game/BodyNotification';
 import { Engine } from '@/pages/Game/script/Engine';
 import { toggelFullScreen, HTMLElementFullScreen } from '@/modules/webApi';
@@ -94,7 +94,7 @@ const Game = () => {
   return (
     <div className={b()}>
       {isInfo && (
-        <Popup
+        <Notification
           title="Правила игры"
           component={BodyNotification}
           size="a"

@@ -77,7 +77,7 @@ export class Engine {
     this.blank(ColorType.LightGrey);
     drawText(
       this.ctx,
-      'Вы завериши игру',
+      'Вы заверили игру',
       '17',
       ColorType.Black,
       this.initParameters.width / 2 - 85,

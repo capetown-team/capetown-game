@@ -10,7 +10,7 @@ const b = block('landing');
 export const Landing = () => {
   return (
     <div className={b('wrapper')}>
-      <Topping title="Добро пожаловать на сайт команды Кейпаун" />
+      <Topping title="Добро пожаловать на сайт команды Кейптаун" />
 
       <p className={b('main')}>
         Экран игры занимает собой лабиринт, коридоры которого заполнены точками.

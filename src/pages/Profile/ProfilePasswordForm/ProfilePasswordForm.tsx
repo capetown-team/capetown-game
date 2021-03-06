@@ -1,9 +1,8 @@
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 
-import { changePassword, changeProfileView } from '@/reducer/profile/actions';
-
+import { changePassword } from '@/reducers/user/actions';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { isValidPassword, isValidPasswordConfirm } from '@/modules/validation';
@@ -14,7 +13,11 @@ type StateObj = {
 
 const b = block('user-form');
 
-export const ProfilePasswordForm = () => {
+type Props = {
+  setIsProfileView: (a: boolean) => void;
+};
+
+export const ProfilePasswordForm: FC<Props> = ({ setIsProfileView }) => {
   const dispatch = useDispatch();
 
   const stateObj: StateObj = {
@@ -58,6 +61,7 @@ export const ProfilePasswordForm = () => {
         newPassword: state.newPassword
       })
     );
+    setIsProfileView(true);
   };
 
   const handleChange = ({ target }: ChangeEvent) => {
@@ -128,7 +132,7 @@ export const ProfilePasswordForm = () => {
             <Button
               type="button"
               size="m"
-              onClick={() => dispatch(changeProfileView(true))}
+              onClick={() => setIsProfileView(true)}
             >
               Отмена
             </Button>

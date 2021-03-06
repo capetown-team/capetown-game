@@ -21,11 +21,11 @@ const Notification: FC<Props> = ({ title, component, size, onCancel }) => {
     <div className={b()}>
       <div className={b('wrap', { size })}>
         <header>
-          <div className={b('title')}>{title}</div>
+          <div className={b('title', { center: !component })}>{title}</div>
         </header>
         <div className={b('body')}>{Component && <Component />}</div>
         <footer className={b('footer')}>
-          <Button size="small" onClick={onCancel}>
+          <Button size="s" onClick={onCancel}>
             Подтвердить
           </Button>
         </footer>
@@ -36,4 +36,4 @@ const Notification: FC<Props> = ({ title, component, size, onCancel }) => {
 
 const WrappedPopup = memo(Notification);
 
-export { WrappedPopup as Popup };
+export { WrappedPopup as Notification };

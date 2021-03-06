@@ -3,11 +3,9 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 
-import { userSelector } from '@/reducer/auth/selectors';
-import { profileSelector } from '@/reducer/profile/selectors';
-import { AppState } from '@/reducer';
-import { changeProfileAvatar } from '@/reducer/profile/actions';
-
+import { AppState } from '@/reducers';
+import { userSelector } from '@/reducers/user/selectors';
+import { changeProfileAvatar } from '@/reducers/user/actions';
 import { baseUrl } from '@/constants';
 import { FilePopup } from '@/components/FilePopup';
 import { ProfileForm } from './ProfileForm';
@@ -18,6 +16,7 @@ import './Profile.scss';
 const b = block('user-profile');
 
 export const Profile = () => {
+  const [isProfileView, setIsProfileView] = useState(true);
   const [isShowPopup, setIsShowPopup] = useState(false);
   const [state, setState] = useState({
     avatar: '',
@@ -33,10 +32,9 @@ export const Profile = () => {
   });
 
   const dispatch = useDispatch();
-  const { user, isProfileView } = useSelector((state: AppState) => {
+  const { user } = useSelector((state: AppState) => {
     return {
-      user: userSelector(state),
-      isProfileView: profileSelector(state).isProfileView
+      user: userSelector(state)
     };
   });
 
@@ -93,9 +91,12 @@ export const Profile = () => {
           </div>
         </div>
         {isProfileView ? (
-          <ProfileForm profileData={state.data} />
+          <ProfileForm
+            profileData={state.data}
+            setIsProfileView={setIsProfileView}
+          />
         ) : (
-          <ProfilePasswordForm />
+          <ProfilePasswordForm setIsProfileView={setIsProfileView} />
         )}
       </div>
       <FilePopup

@@ -10,7 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 3;
+  z-index: 4;
 
   &__wrap {
     position: relative;
@@ -47,6 +47,10 @@
     font-size: 1.5em;
     font-weight: bold;
     margin-bottom: 1.25rem;
+
+    &_center {
+      text-align: center;
+    }
   }
 
   &__body {

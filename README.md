@@ -1,4 +1,5 @@
 [![reactjs](https://img.shields.io/badge/reactjs-%23239120.svg?&style=for-the-badge&logo=css3&logoColor=white)](https://reactjs.org)
+[![redux](https://img.shields.io/badge/redux-%23239120.svg?&style=for-the-badge&logo=css3&logoColor=white)](https://redux.js.org/)
 [![scss](https://img.shields.io/badge/scss-%23239120.svg?&style=for-the-badge&logo=css3&logoColor=white)](https://sass-scss.ru/)
 [![Docker](https://img.shields.io/badge/Docker-%23239120.svg?&style=for-the-badge&logo=css3&logoColor=white)](https://www.docker.com)
 [![heroku](https://img.shields.io/badge/heroku-%23239120.svg?&style=for-the-badge&logo=css3&logoColor=white)](https://help.heroku.com)
@@ -34,11 +35,12 @@
 ## Актуальная версия с heroku
 На [demo](https://warm-anchorage-94393.herokuapp.com) пример для ознакомления
 ## Что сделано
-- Приложение написано на : `React, TypeScript`, `БЭМ` и библиотеки `bem-cn-lite`;
+- Приложение написано на : `React`, `Redux`, `TypeScript`, `БЭМ` и библиотеки `bem-cn-lite`;
 - Настроен Webpack:
   - html: `HtmlWebpackPlugin`;
   - обработка css: `css-loader`, `style-loader`, `sass-loader`, `mini-css-extract-plugin`;
   - сборка TS/JS: `babel`, `ts-loader`;
+- Настрооет: `server worker`;
 - Код стайлинг: `prettier`, `eslint`;
 - Создана механика игры игры.;
 - Реализованы страницы:
