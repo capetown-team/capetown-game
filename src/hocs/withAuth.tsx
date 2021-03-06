@@ -1,8 +1,8 @@
 import React, { useEffect, ComponentType } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { checkAuth } from '@/reducer/auth/actions';
-import { pendingSelector } from '@/reducer/auth/selectors';
+import { checkAuth } from '@/reducers/user/actions';
+import { pendingSelector } from '@/reducers/user/selectors';
 import { Loading } from '@/components/Loading';
 
 export const withAuth = <T,>(WrappedComponent: ComponentType<T>) => {

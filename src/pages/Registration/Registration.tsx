@@ -8,12 +8,18 @@ import React, {
 } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
-import { AppState } from '@/reducer';
 import block from 'bem-cn-lite';
-import { ROUTES } from '@/constants';
 
+import { AppState } from '@/reducers';
+import {
+  authSelector,
+  errorSelector,
+  loadSelector
+} from '@/reducers/user/selectors';
+import { signUp } from '@/reducers/user/actions';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
+import { Loading } from '@/components/Loading';
 import {
   isValidLogin,
   isValidName,
@@ -21,12 +27,7 @@ import {
   isValidPassword,
   isValidPasswordConfirm
 } from '@/modules/validation';
-
-import { authSelector } from '@/reducer/auth/selectors';
-import { checkSignUp } from '@/reducer/signup/actions';
-import { errorSelector, pendingSelector } from '@/reducer/signup/selectors';
-
-import { Loading } from '@/components/Loading';
+import { ROUTES } from '@/constants';
 
 import './Registration.scss';
 
@@ -66,7 +67,7 @@ export const Registration = () => {
     return {
       isAuth: authSelector(state),
       error: errorSelector(state),
-      pending: pendingSelector(state)
+      pending: loadSelector(state)
     };
   }, shallowEqual);
 
@@ -169,7 +170,7 @@ export const Registration = () => {
         password
       };
 
-      dispatch(checkSignUp(user));
+      dispatch(signUp(user));
     },
     [dispatch, name, login, email, password]
   );

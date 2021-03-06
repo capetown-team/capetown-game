@@ -1,35 +1,58 @@
-import React from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
+import { errorSelector } from '@/reducers/user/selectors';
 import { withAuth } from '@/hocs/withAuth';
 import { withErrorBoundary } from '@/components/ErrorBoundary';
 import { PrivateRoute } from '@/components/PrivateRoute';
 import { Header } from '@/components/Header';
+import { Notification } from '@/components/Notification';
 import { routes } from './routes';
 
 import './App.scss';
 
-const App = () => (
-  <Router>
-    <Header />
-    <div className="app">
-      <Switch>
-        {routes.map(({ path, component, isPrivate, ...rest }) => {
-          const RouteComponent = isPrivate ? PrivateRoute : Route;
+const App = () => {
+  const error = useSelector(errorSelector);
+  const [userError, setUserError] = useState(error);
 
-          return (
-            <RouteComponent
-              key={path}
-              path={path}
-              component={withErrorBoundary(component)}
-              {...rest}
-            />
-          );
-        })}
-      </Switch>
-    </div>
-  </Router>
-);
+  const handlerClose = useCallback(() => {
+    setUserError(false);
+  }, []);
+
+  useEffect(() => {
+    setUserError(error);
+  }, [error]);
+
+  return (
+    <Router>
+      {userError && (
+        <Notification
+          title="Проишзошла ошибка"
+          size="s"
+          onCancel={handlerClose}
+        />
+      )}
+      <Header />
+      <div className="app">
+        <Switch>
+          {routes.map(({ path, component, isPrivate, ...rest }) => {
+            const RouteComponent = isPrivate ? PrivateRoute : Route;
+
+            return (
+              <RouteComponent
+                key={path}
+                path={path}
+                component={withErrorBoundary(component)}
+                {...rest}
+              />
+            );
+          })}
+        </Switch>
+      </div>
+    </Router>
+  );
+};
 
 const withAuthApp = withAuth(App);
 

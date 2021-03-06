@@ -3,12 +3,17 @@ import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 import { Link, NavLink, useHistory } from 'react-router-dom';
 
-import { authSelector, userSelector } from '@/reducer/auth/selectors';
-import { logout } from '@/reducer/auth/actions';
+import { AppState } from '@/reducers';
+import {
+  authSelector,
+  userSelector,
+  loadSelector
+} from '@/reducers/user/selectors';
+import { logout } from '@/reducers/user/actions';
 import { Dropdown } from '@/components/Dropdown';
 import { DropNavType } from '@/components/Dropdown/Dropdown';
+import { Loading } from '@/components/Loading';
 import { ROUTES } from '@/constants';
-import { AppState } from '@/reducer';
 import { overLinks, userLinks } from './data';
 
 import './Header.scss';
@@ -19,10 +24,11 @@ const Header = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { isAuth, user } = useSelector((state: AppState) => {
+  const { isAuth, user, isLoad } = useSelector((state: AppState) => {
     return {
       isAuth: authSelector(state),
-      user: userSelector(state)
+      user: userSelector(state),
+      isLoad: loadSelector(state)
     };
   });
 
@@ -57,6 +63,8 @@ const Header = () => {
 
   return (
     <header className={b()}>
+      {isLoad && <Loading />}
+
       <div className={b('wrap')}>
         <Link className={b('logo')} to="/">
           Pac-Man

@@ -3,19 +3,13 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 
-import { authSelector } from '@/reducer/auth/selectors';
-import { profileSelector } from '@/reducer/profile/selectors';
-import { logout } from '@/reducer/auth/actions';
-import {
-  changeProfile,
-  changeProfileView,
-  setIschangeProfile
-} from '@/reducer/profile/actions';
-import { AppState } from '@/reducer';
-
+import { AppState } from '@/reducers';
+import { authSelector, loadSelector } from '@/reducers/user/selectors';
+import { logout, changeProfile } from '@/reducers/user/actions';
 import { ROUTES } from '@/constants';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
+import { Loading } from '@/components/Loading';
 import {
   isValidLogin,
   isValidName,
@@ -34,21 +28,23 @@ type ProfileData = {
 
 type Props = {
   profileData: ProfileData;
+  setIsProfileView: (a: boolean) => void;
 };
 
 const b = block('user-form');
 
-export const ProfileForm = ({ profileData }: Props) => {
+export const ProfileForm = ({ profileData, setIsProfileView }: Props) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { isAuth, isСhangeable } = useSelector((state: AppState) => {
+  const { isAuth, load } = useSelector((state: AppState) => {
     return {
       isAuth: authSelector(state),
-      isСhangeable: profileSelector(state)
+      load: loadSelector(state)
     };
   });
 
+  const [isСhangeable, setIsСhangeable] = useState(false);
   const [state, setState] = useState(profileData);
   const [validState, setValidState] = useState({
     first_name: '',
@@ -116,10 +112,12 @@ export const ProfileForm = ({ profileData }: Props) => {
     if (!isValid) return;
 
     dispatch(changeProfile(state));
+    setIsСhangeable(false);
   };
 
   return (
     <form className={b()}>
+      {load && <Loading />}
       <div className={b('row')}>
         <div className={b('column')}>
           <div className={b('input')}>
@@ -231,7 +229,7 @@ export const ProfileForm = ({ profileData }: Props) => {
                 <Button
                   type="button"
                   size="m"
-                  onClick={() => dispatch(setIschangeProfile(true))}
+                  onClick={() => setIsСhangeable(true)}
                 >
                   Изменить данные
                 </Button>
@@ -250,7 +248,7 @@ export const ProfileForm = ({ profileData }: Props) => {
               <Button
                 type="button"
                 size="m"
-                onClick={() => dispatch(changeProfileView(false))}
+                onClick={() => setIsProfileView(false)}
               >
                 Изменить пароль
               </Button>
@@ -262,7 +260,7 @@ export const ProfileForm = ({ profileData }: Props) => {
                 type="button"
                 size="m"
                 onClick={() => {
-                  dispatch(setIschangeProfile(false));
+                  setIsСhangeable(false);
                   setState(profileData);
                 }}
               >

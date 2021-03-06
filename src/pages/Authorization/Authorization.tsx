@@ -9,18 +9,19 @@ import React, {
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import block from 'bem-cn-lite';
-import { AppState } from '@/reducer';
-import { ROUTES } from '@/constants';
 
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
-import { isValidLogin, isValidPassword } from '@/modules/validation';
-
-import { checkSignIn } from '@/reducer/signin/actions';
-import { errorSelector, pendingSelector } from '@/reducer/signin/selectors';
-import { authSelector } from '@/reducer/auth/selectors';
-
 import { Loading } from '@/components/Loading';
+import { isValidLogin, isValidPassword } from '@/modules/validation';
+import { AppState } from '@/reducers';
+import { signIn } from '@/reducers/user/actions';
+import {
+  authSelector,
+  errorSelector,
+  loadSelector
+} from '@/reducers/user/selectors';
+import { ROUTES } from '@/constants';
 
 import './Authorization.scss';
 
@@ -45,7 +46,7 @@ export const Authorization = () => {
   const { isAuth, error, pending } = useSelector((state: AppState) => {
     return {
       isAuth: authSelector(state),
-      pending: pendingSelector(state),
+      pending: loadSelector(state),
       error: errorSelector(state)
     };
   }, shallowEqual);
@@ -108,7 +109,7 @@ export const Authorization = () => {
         password
       };
 
-      dispatch(checkSignIn(user));
+      dispatch(signIn(user));
     },
     [dispatch, login, password]
   );

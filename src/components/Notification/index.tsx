@@ -1,1 +1,1 @@
-export { Popup } from './Notification';
+export { Notification } from './Notification';
