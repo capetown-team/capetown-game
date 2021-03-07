@@ -3,7 +3,7 @@
 exports[`<Button /> should renders correct <Button /> 1`] = `
 <button
   className="button button_size_s"
-  type="submit"
+  type="button"
 >
   test
 </button>

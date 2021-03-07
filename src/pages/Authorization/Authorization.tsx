@@ -10,10 +10,6 @@ import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import block from 'bem-cn-lite';
 
-import { Button } from '@/components/Button';
-import { Input } from '@/components/Input';
-import { Loading } from '@/components/Loading';
-import { isValidLogin, isValidPassword } from '@/modules/validation';
 import { AppState } from '@/reducers';
 import { signIn } from '@/reducers/user/actions';
 import {
@@ -21,6 +17,10 @@ import {
   errorSelector,
   loadSelector
 } from '@/reducers/user/selectors';
+import { Button } from '@/components/Button';
+import { Input } from '@/components/Input';
+import { Loading } from '@/components/Loading';
+import { isValidLogin, isValidPassword } from '@/modules/validation';
 import { ROUTES } from '@/constants';
 
 import './Authorization.scss';

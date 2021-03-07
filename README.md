@@ -40,7 +40,8 @@
   - html: `HtmlWebpackPlugin`;
   - обработка css: `css-loader`, `style-loader`, `sass-loader`, `mini-css-extract-plugin`;
   - сборка TS/JS: `babel`, `ts-loader`;
-- Настрооет: `server worker`;
+- Настроен: `server worker`;
+- Добавлены снепшотные тесты ;
 - Код стайлинг: `prettier`, `eslint`;
 - Создана механика игры.;
 - Реализованы страницы:

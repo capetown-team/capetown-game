@@ -3,7 +3,7 @@ node_modules
 .idea
 .git
 build
-**/*.test.ts
+**/*.test.tsx
 **/template.ts
 webpack.config.js
 server.js
