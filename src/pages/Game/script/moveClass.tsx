@@ -18,7 +18,7 @@ export class moveClass {
   directionWatcher = new DirectionWatch();
   direction = up.direction;
 
-  radius = 10;
+  radius = 20;
   posX = 0;
   posY = 0;
   dirX = up.dirX;
@@ -61,12 +61,8 @@ export class moveClass {
     curDir: Direction
   ) {
     let newDir = curDir;
-    // if (directions.length > 1)
-    // {
     const indNewDir = this.getRandomInt(0, directions.length - 1);
     newDir = directions[indNewDir].dir;
-    // }
-
     return newDir;
   }
 
@@ -281,7 +277,7 @@ export class moveClass {
   }
 
   move() {
-    // console.log('frozen', this.frozen);
+    console.log('frozen', this.frozen);
     if (!this.frozen) {
       // console.log('move', this.posX, this.posY);
       // console.log('ghostmap', this.map.posY[13].posX[3].type);
@@ -348,8 +344,8 @@ export class moveClass {
   startPosition() {
     this.posX = 260; // this.initParameters.borderWalls; TODO
     this.posY = 285; // this.initParameters.height / 2 - this.radius + head; TODO
-    this.setDirection(right);
-    this.directionWatcher.set(right);
+    this.setDirection(up);
+    this.directionWatcher.set(up);
   }
 
   reset(): void {

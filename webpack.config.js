@@ -64,6 +64,6 @@ module.exports = {
     historyApiFallback: true,
     hot: isDev,
     open: true,
-    port: 8005
+    port: 8009
   }
 };
