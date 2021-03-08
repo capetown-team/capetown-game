@@ -2,6 +2,7 @@ import { InitParameters } from '@game/script/Types';
 import { Pacman } from '@game/script/Pacman';
 import { Figure } from '@game/script/Figure';
 import { Ghost } from '@game/script/Ghost';
+import { getDir, getNewDirection } from '@game/script/moveClass';
 import { Header } from '@game/script/Header';
 import { down, left, right, up, drawText } from '@game/script/helpers/action';
 import { ColorType } from '@game/script/helpers/constants';
@@ -234,9 +235,9 @@ export class Engine {
       while (!successful) {
         successful = this.ghost.checkCollisions();
         if (!successful) {
-          const newDir = this.ghost.getNewDirection(
+          const newDir = getNewDirection(
             directions,
-            this.ghost.getDir(this.ghost.direction)
+            getDir(this.ghost.direction)
           );
           this.ghost.setDirection(newDir);
         }

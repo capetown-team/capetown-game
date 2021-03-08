@@ -13,6 +13,71 @@ import { Direction } from './Direction/Direction';
 
 type Map = { posY: { row: number; posX: { col: number; type: string }[] }[] };
 
+const getOppositeDirection = (direction: number) => {
+  switch (direction) {
+    case 0:
+      return 2;
+    case 1:
+      return 3;
+    case 2:
+      return 0;
+    case 3:
+      return 1;
+    default:
+      return null;
+  }
+};
+
+const getRandomInt = (min: number, max: number) => {
+  const min1 = Math.ceil(min);
+  const max1 = Math.floor(max);
+  return Math.floor(Math.random() * (max1 - min1)) + min1; // Максимум не включается, минимум включается
+};
+
+const checkGhost = (
+  field: string,
+  gridX: number,
+  gridY: number,
+  fieldAhead: string,
+  rad: number
+) => {
+  return { field, gridX, gridY, fieldAhead, rad };
+};
+
+const checkBonus = (
+  field: string,
+  gridX: number,
+  gridY: number,
+  fieldAhead: string,
+  rad: number
+) => {
+  return { field, gridX, gridY, fieldAhead, rad };
+};
+
+export const getDir = (indDir: number) => {
+  switch (indDir) {
+    case 0:
+      return right;
+    case 1:
+      return down;
+    case 2:
+      return left;
+    case 3:
+      return up;
+    default:
+      return up;
+  }
+};
+
+export const getNewDirection = (
+  directions: { dir: Direction; x: number; y: number }[],
+  curDir: Direction
+) => {
+  let newDir = curDir;
+  const indNewDir = getRandomInt(0, directions.length - 1);
+  newDir = directions[indNewDir].dir;
+  return newDir;
+};
 export class moveClass {
   initParameters: InitParameters;
   directionWatcher = new DirectionWatch();
@@ -47,39 +112,6 @@ export class moveClass {
 
     this.startPosition();
     this.setMap(map);
-  }
-
-  getRandomInt(min: number, max: number) {
-    console.log(this);
-    const min1 = Math.ceil(min);
-    const max1 = Math.floor(max);
-    return Math.floor(Math.random() * (max1 - min1)) + min1; // Максимум не включается, минимум включается
-  }
-
-  getNewDirection(
-    directions: { dir: Direction; x: number; y: number }[],
-    curDir: Direction
-  ) {
-    let newDir = curDir;
-    const indNewDir = this.getRandomInt(0, directions.length - 1);
-    newDir = directions[indNewDir].dir;
-    return newDir;
-  }
-
-  getOppositeDirection(direction: number) {
-    console.log(this);
-    switch (direction) {
-      case 0:
-        return 2;
-      case 1:
-        return 3;
-      case 2:
-        return 0;
-      case 3:
-        return 1;
-      default:
-        return null;
-    }
   }
 
   setMap(map: Map) {
@@ -132,10 +164,8 @@ export class moveClass {
 
       if (this.isCheckPill)
         this.checkPill(field, gridX, gridY, fieldAhead, rad);
-      if (this.isCheckBonus)
-        this.checkBonus(field, gridX, gridY, fieldAhead, rad);
-      if (this.isCheckGhost)
-        this.checkGhost(field, gridX, gridY, fieldAhead, rad);
+      if (this.isCheckBonus) checkBonus(field, gridX, gridY, fieldAhead, rad);
+      if (this.isCheckGhost) checkGhost(field, gridX, gridY, fieldAhead, rad);
 
       if (fieldAhead === 'wall' || fieldAhead === 'block') {
         this.stop();
@@ -148,11 +178,11 @@ export class moveClass {
   checkCross() {
     const gridX = this.getGridPosX(this.posX);
     const gridY = this.getGridPosY(this.posY);
-    const oppositeDir = this.getOppositeDirection(this.direction);
+    const oppositeDir = getOppositeDirection(this.direction);
     const result = [];
     for (let i = 0; i < 4; ) {
       if (i !== oppositeDir) {
-        const newDir = this.getDir(i);
+        const newDir = getDir(i);
         const newX = gridX + newDir.dirX;
         const newY = gridY + newDir.dirY;
         const fieldAhead = this.getType(newX, newY);
@@ -164,22 +194,6 @@ export class moveClass {
     }
 
     return result;
-  }
-
-  getDir(indDir: number) {
-    console.log(this);
-    switch (indDir) {
-      case 0:
-        return right;
-      case 1:
-        return down;
-      case 2:
-        return left;
-      case 3:
-        return up;
-      default:
-        return up;
-    }
   }
 
   checkPill(
@@ -219,28 +233,6 @@ export class moveClass {
     }
   }
 
-  checkGhost(
-    field: string,
-    gridX: number,
-    gridY: number,
-    fieldAhead: string,
-    rad: number
-  ) {
-    console.log(this);
-    return { field, gridX, gridY, fieldAhead, rad };
-  }
-
-  checkBonus(
-    field: string,
-    gridX: number,
-    gridY: number,
-    fieldAhead: string,
-    rad: number
-  ) {
-    console.log(this);
-    return { field, gridX, gridY, fieldAhead, rad };
-  }
-
   checkDirectionChange(): void {
     if (this.directionWatcher.get() !== null) {
       const dir = this.directionWatcher.get();
@@ -277,7 +269,7 @@ export class moveClass {
   }
 
   move() {
-    console.log('frozen', this.frozen);
+    // console.log('frozen', this.frozen);
     if (!this.frozen) {
       // console.log('move', this.posX, this.posY);
       // console.log('ghostmap', this.map.posY[13].posX[3].type);
