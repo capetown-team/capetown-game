@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 
-import { getUserInfo, changeProfileAvatar } from '@/api';
+import { AppState } from '@/reducers';
+import { userSelector } from '@/reducers/user/selectors';
+import { changeProfileAvatar } from '@/reducers/user/actions';
+import { baseUrl } from '@/constants';
 import { FilePopup } from '@/components/FilePopup';
 import { ProfileForm } from './ProfileForm';
 import { ProfilePasswordForm } from './ProfilePasswordForm';
@@ -18,41 +22,43 @@ export const Profile = () => {
     avatar: '',
     id: 0,
     data: {
-      firstName: '',
-      secondName: '',
-      displayName: '',
+      first_name: '',
+      second_name: '',
+      display_name: '',
       email: '',
       login: '',
       phone: ''
     }
   });
 
-  const requestProfileData = () => {
-    getUserInfo().then(({ data }) => {
-      setState({
-        avatar: data.avatar,
-        id: data.id,
-        data: {
-          firstName: data.first_name ?? '',
-          secondName: data.second_name ?? '',
-          displayName: data.display_name ?? '',
-          email: data.email ?? '',
-          login: data.login ?? '',
-          phone: data.phone ?? ''
-        }
-      });
-    });
-  };
+  const dispatch = useDispatch();
+  const { user } = useSelector((state: AppState) => {
+    return {
+      user: userSelector(state)
+    };
+  });
 
   useEffect(() => {
-    requestProfileData();
-  }, []);
+    if (!user) return;
+
+    setState({
+      avatar: user.avatar || '',
+      id: user.id,
+      data: {
+        first_name: user.first_name || '',
+        second_name: user.second_name || '',
+        display_name: user.display_name || '',
+        email: user.email || '',
+        login: user.login || '',
+        phone: user.phone || ''
+      }
+    });
+  }, [user]);
 
   const handleAvatarChange = (file: File) => {
-    changeProfileAvatar(file).then(() => {
-      setIsShowPopup(false);
-      requestProfileData();
-    });
+    dispatch(changeProfileAvatar(file));
+
+    setIsShowPopup(false);
   };
 
   return (
@@ -62,12 +68,9 @@ export const Profile = () => {
           <div className={b('avatar')}>
             <div className={b('avatar-img')}>
               {state.avatar ? (
-                <img
-                  src={`https://ya-praktikum.tech${state.avatar}`}
-                  alt="avatar"
-                />
+                <img src={`${baseUrl}${state.avatar}`} alt="avatar" />
               ) : (
-                <span>М</span>
+                <span>{state.data.first_name.charAt(0)}</span>
               )}
               <button
                 onClick={() => setIsShowPopup(true)}
@@ -78,7 +81,7 @@ export const Profile = () => {
               </button>
             </div>
             <div className={b('avatar-name')}>
-              {`${state.data.firstName} ${state.data.secondName}`}
+              {`${state.data.first_name} ${state.data.second_name}`}
             </div>
           </div>
           <div>

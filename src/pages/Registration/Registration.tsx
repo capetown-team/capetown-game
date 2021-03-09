@@ -3,12 +3,23 @@ import React, {
   useState,
   FocusEvent,
   ChangeEvent,
-  MouseEvent
+  MouseEvent,
+  useCallback
 } from 'react';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
+import block from 'bem-cn-lite';
 
+import { AppState } from '@/reducers';
+import {
+  authSelector,
+  errorSelector,
+  loadSelector
+} from '@/reducers/user/selectors';
+import { signUp } from '@/reducers/user/actions';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
+import { Loading } from '@/components/Loading';
 import {
   isValidLogin,
   isValidName,
@@ -16,14 +27,17 @@ import {
   isValidPassword,
   isValidPasswordConfirm
 } from '@/modules/validation';
-import { signUp } from '@/api';
-import block from 'bem-cn-lite';
+import { ROUTES } from '@/constants';
+
 import './Registration.scss';
 
 const b = block('form');
 
 export const Registration = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
+
+  const [loading, setLoading] = useState(true);
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
@@ -49,6 +63,18 @@ export const Registration = () => {
   const [formValid, setFormValid] = useState(false);
   const [regValid, setRegValid] = useState(true);
 
+  const { isAuth, error, pending } = useSelector((state: AppState) => {
+    return {
+      isAuth: authSelector(state),
+      error: errorSelector(state),
+      pending: loadSelector(state)
+    };
+  }, shallowEqual);
+
+  useEffect(() => {
+    setLoading(pending);
+  }, [pending]);
+
   useEffect(() => {
     if (
       loginError ||
@@ -63,7 +89,17 @@ export const Registration = () => {
     }
   }, [loginError, passwordError, passwordConfirmError, emailError, nameError]);
 
-  const blurHandler = (e: FocusEvent<Element>) => {
+  useEffect(() => {
+    if (isAuth) {
+      history.replace(ROUTES.GAME);
+    }
+  }, [isAuth, history]);
+
+  useEffect(() => {
+    setRegValid(!error);
+  }, [error]);
+
+  const blurHandler = useCallback((e: FocusEvent<Element>) => {
     switch ((e.target as HTMLInputElement).name) {
       case 'login':
         setLoginDirty(true);
@@ -82,65 +118,67 @@ export const Registration = () => {
         break;
       default:
     }
-  };
+  }, []);
 
-  const submitHandler = async (e: MouseEvent<Element>) => {
-    e.preventDefault();
-    const user = {
-      first_name: name,
-      second_name: name,
-      login,
-      email,
-      phone: '+79191234567',
-      password
-    };
-
-    try {
-      await signUp(user);
-      history.replace('/game');
-    } catch (err) {
-      setRegValid(false);
-    }
-  };
-
-  const loginHandler = (e: ChangeEvent<Element>) => {
-    const text = (e.target as HTMLInputElement).value;
+  const loginHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
     setLogin(text);
     const loginErr = isValidLogin(text);
     setLoginError(loginErr);
-  };
+  }, []);
 
-  const passwordHandler = (e: ChangeEvent<Element>) => {
-    const text = (e.target as HTMLInputElement).value;
+  const passwordHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
     setPassword(text);
     const passwordErr = isValidPassword(text);
     setPasswordError(passwordErr);
-  };
+  }, []);
 
-  const passwordConfirmHandler = (e: ChangeEvent<Element>) => {
-    const text = (e.target as HTMLInputElement).value;
-    setpasswordConfirm(text);
-    const passwordErr = isValidPasswordConfirm(text, password);
-    setPasswordConfirmError(passwordErr);
-  };
+  const passwordConfirmHandler = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      const text = e.target.value;
+      setpasswordConfirm(text);
+      const passwordErr = isValidPasswordConfirm(text, password);
+      setPasswordConfirmError(passwordErr);
+    },
+    [password]
+  );
 
-  const emailHandler = (e: ChangeEvent<Element>) => {
-    const text = (e.target as HTMLInputElement).value;
+  const emailHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
     setEmail(text);
     const emailErr = isValidEmail(text);
     setEmailError(emailErr);
-  };
+  }, []);
 
-  const nameHandler = (e: ChangeEvent<Element>) => {
-    const text = (e.target as HTMLInputElement).value;
+  const nameHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
     setName(text);
     const nameErr = isValidName(text);
     setNameError(nameErr);
-  };
+  }, []);
+
+  const submitHandler = useCallback(
+    (e: MouseEvent) => {
+      e.preventDefault();
+      const user = {
+        first_name: name,
+        second_name: name,
+        login,
+        email,
+        phone: '+79191234567',
+        password
+      };
+
+      dispatch(signUp(user));
+    },
+    [dispatch, name, login, email, password]
+  );
 
   return (
-    <div className={b('wrapper')}>
-      <form className={b('login')}>
+    <div className={b()}>
+      {loading && <Loading />}
+      <form className={b('wrapper')}>
         <div className={b('title')}>Регистрация</div>
         <div className={b('row')}>
           <div className={b('title-input')}>Email</div>
@@ -151,7 +189,7 @@ export const Registration = () => {
             id="email"
             value={email}
             name="email"
-            onChange={(e) => emailHandler(e)}
+            onChange={emailHandler}
             onBlur={(e) => blurHandler(e)}
             placeholder="Email"
           />
@@ -165,7 +203,7 @@ export const Registration = () => {
             id="login"
             value={login}
             name="login"
-            onChange={(e) => loginHandler(e)}
+            onChange={loginHandler}
             onBlur={(e) => blurHandler(e)}
             placeholder="Логин"
           />
@@ -179,7 +217,7 @@ export const Registration = () => {
             id="name"
             value={name}
             name="name"
-            onChange={(e) => nameHandler(e)}
+            onChange={nameHandler}
             onBlur={(e) => blurHandler(e)}
             placeholder="Имя"
           />
@@ -194,7 +232,7 @@ export const Registration = () => {
             type="password"
             value={password}
             name="password"
-            onChange={(e) => passwordHandler(e)}
+            onChange={passwordHandler}
             onBlur={(e) => blurHandler(e)}
             placeholder="Пароль"
           />
@@ -209,7 +247,7 @@ export const Registration = () => {
             id="passwordConfirm"
             type="password"
             name="passwordConfirm"
-            onChange={(e) => passwordConfirmHandler(e)}
+            onChange={passwordConfirmHandler}
             onBlur={(e) => blurHandler(e)}
             placeholder="Пароль (еще раз)"
           />
@@ -221,17 +259,15 @@ export const Registration = () => {
           <Button
             disabled={!formValid}
             type="submit"
-            size="s"
+            size="m"
             onClick={submitHandler}
           >
             Зарегистрироваться
           </Button>
         </div>
-        <div className={b('row')}>
-          <Link className={b('link')} to="/authorization">
-            Есть аккаунт?
-          </Link>
-        </div>
+        <Link className={b('link')} to={ROUTES.SIGNIN}>
+          Есть аккаунт?
+        </Link>
       </form>
     </div>
   );

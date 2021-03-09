@@ -1,6 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import block from 'bem-cn-lite';
+
+import { Topping } from '@/components/Topping';
+
 import './Landing.scss';
 
 const b = block('landing');
@@ -8,7 +10,8 @@ const b = block('landing');
 export const Landing = () => {
   return (
     <div className={b('wrapper')}>
-      <h1> Добро пожаловать на сайт команды Кейпаун </h1>
+      <Topping title="Добро пожаловать на сайт команды Кейптаун" />
+
       <p className={b('main')}>
         Экран игры занимает собой лабиринт, коридоры которого заполнены точками.
         Задача игрока — управляя Пакманом, съесть все точки в лабиринте, избегая
@@ -22,28 +25,6 @@ export const Landing = () => {
         всех точек начинается новый уровень в том же лабиринте. По бокам
         лабиринта находятся два входа в один туннель, при вхождении в который
         Пакман и призраки выходят с другой стороны лабиринта.
-      </p>
-      <p className={b('row')}>
-        <Link className={b('link')} to="/authorization">
-          Авторизация
-        </Link>
-      </p>
-
-      <p className={b('row')}>
-        <Link className={b('link')} to="/registration">
-          Регистрация
-        </Link>
-      </p>
-
-      <p className={b('row')}>
-        <Link className={b('link')} to="/profile">
-          Профиль
-        </Link>
-      </p>
-      <p className={b('row')}>
-        <Link className={b('link')} to="/error">
-          Страница ошибки
-        </Link>
       </p>
     </div>
   );

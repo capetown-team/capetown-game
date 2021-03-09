@@ -1,19 +1,25 @@
 @import '../../styles/layout/colors';
+@import '../../styles/layout/mixins';
 
 .form {
-  &__login {
-    position: absolute;
-    width: 369px;
-    height: 512px;
-    top: calc(50% - 512px / 2 + 7px);
-    background: $light-grey;
-    vertical-align: center;
+  min-height: calc(100vh - #{$headerHeight});
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 1rem;
+
+  &__title {
+    margin-bottom: 50px;
   }
 
   &__wrapper {
+    width: 369px;
+    min-height: 450px;
+    background: $light-grey;
     text-align: center;
-    display: flex;
-    justify-content: center;
+    padding: 48px 44px;
+    border-radius: 5px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   }
 
   &__link {
@@ -22,12 +28,10 @@
 
   &__row {
     margin-top: 15px;
+    text-align: left;
   }
 
-  &__title-input {
-    width: 280px;
-    text-align: left;
-    margin-left: 44.5px;
-    margin-right: 44.5px;
+  &__row-button {
+    margin: 15px 0 10px;
   }
 }

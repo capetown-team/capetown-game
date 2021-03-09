@@ -3,21 +3,35 @@ import React, {
   useState,
   MouseEvent,
   FocusEvent,
-  ChangeEvent
+  ChangeEvent,
+  useCallback
 } from 'react';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
+import block from 'bem-cn-lite';
 
+import { AppState } from '@/reducers';
+import { signIn } from '@/reducers/user/actions';
+import {
+  authSelector,
+  errorSelector,
+  loadSelector
+} from '@/reducers/user/selectors';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
+import { Loading } from '@/components/Loading';
 import { isValidLogin, isValidPassword } from '@/modules/validation';
-import block from 'bem-cn-lite';
-import { signIn } from '@/api';
+import { ROUTES } from '@/constants';
+
 import './Authorization.scss';
 
 const b = block('form');
 
 export const Authorization = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
+
+  const [loading, setLoading] = useState(true);
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [loginDirty, setLoginDirty] = useState(false);
@@ -29,6 +43,18 @@ export const Authorization = () => {
   const [formValid, setFormValid] = useState(false);
   const [regValid, setRegValid] = useState(true);
 
+  const { isAuth, error, pending } = useSelector((state: AppState) => {
+    return {
+      isAuth: authSelector(state),
+      pending: loadSelector(state),
+      error: errorSelector(state)
+    };
+  }, shallowEqual);
+
+  useEffect(() => {
+    setLoading(pending);
+  }, [pending]);
+
   useEffect(() => {
     if (loginError || passwordError) {
       setFormValid(false);
@@ -37,7 +63,17 @@ export const Authorization = () => {
     }
   }, [loginError, passwordError]);
 
-  const blurHandler = (e: FocusEvent<Element>) => {
+  useEffect(() => {
+    if (isAuth) {
+      history.replace(ROUTES.GAME);
+    }
+  }, [isAuth, history]);
+
+  useEffect(() => {
+    setRegValid(!error);
+  }, [error]);
+
+  const blurHandler = useCallback((e: FocusEvent<Element>) => {
     const { name } = e.target as HTMLInputElement;
     switch (name) {
       case 'login':
@@ -48,40 +84,40 @@ export const Authorization = () => {
         break;
       default:
     }
-  };
+  }, []);
 
-  const loginHandler = (e: ChangeEvent<Element>) => {
-    const text = (e.target as HTMLInputElement).value;
+  const loginHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
     setLogin(text);
     const loginErr = isValidLogin(text);
     setLoginError(loginErr);
-  };
+  }, []);
 
-  const passwordHandler = (e: ChangeEvent<Element>) => {
-    const text = (e.target as HTMLInputElement).value;
+  const passwordHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    const text = e.target.value;
     setPassword(text);
     const passwordErr = isValidPassword(text);
     setPasswordError(passwordErr);
-  };
+  }, []);
 
-  const submitHandler = async (e: MouseEvent<Element>) => {
-    e.preventDefault();
-    const user = {
-      login,
-      password
-    };
+  const submitHandler = useCallback(
+    (e: MouseEvent<Element>) => {
+      e.preventDefault();
 
-    try {
-      await signIn(user);
-      history.replace('/game');
-    } catch (err) {
-      setRegValid(false);
-    }
-  };
+      const user = {
+        login,
+        password
+      };
+
+      dispatch(signIn(user));
+    },
+    [dispatch, login, password]
+  );
 
   return (
-    <div className={b('wrapper')}>
-      <form className={b('login')}>
+    <div className={b()}>
+      {loading && <Loading />}
+      <form className={b('wrapper')}>
         <div className={b('title')}>Авторизация</div>
         <div className={b('main')}>
           <div className={b('row')}>
@@ -93,12 +129,12 @@ export const Authorization = () => {
               id="login"
               value={login}
               name="login"
-              onChange={(e) => loginHandler(e)}
+              onChange={loginHandler}
               onBlur={(e) => blurHandler(e)}
               placeholder="Логин"
             />
           </div>
-          <div className="row">
+          <div className={b('row')}>
             <div className={b('title-input')}> Пароль </div>
             {passwordDirty && passwordError && (
               <div style={{ color: 'red' }}>{passwordError}</div>
@@ -108,7 +144,7 @@ export const Authorization = () => {
               value={password}
               type="password"
               name="password"
-              onChange={(e) => passwordHandler(e)}
+              onChange={passwordHandler}
               onBlur={(e) => blurHandler(e)}
               placeholder="Пароль"
             />
@@ -120,7 +156,7 @@ export const Authorization = () => {
             <Button
               disabled={!formValid}
               type="submit"
-              size="s"
+              size="m"
               onClick={(e: React.MouseEvent<Element, globalThis.MouseEvent>) =>
                 submitHandler(e)
               }
@@ -128,11 +164,9 @@ export const Authorization = () => {
               Вход
             </Button>
           </div>
-          <div className={b('row')}>
-            <Link className={b('link')} to="/registration">
-              Регистрация
-            </Link>
-          </div>
+          <Link className={b('link')} to={ROUTES.SIGNUP}>
+            Регистрация
+          </Link>
         </div>
       </form>
     </div>

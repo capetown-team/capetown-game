@@ -11,29 +11,23 @@ export type Props = {
   totalUsers: number;
   currentPage: number;
   paginate: PaginateType;
-  search?: string;
 };
 
 const Pagination: FC<Props> = ({
   usersPerPage,
   totalUsers,
   currentPage,
-  paginate,
-  search
+  paginate
 }) => {
   const pageNumbers = useMemo(() => {
     const res: { num: number; current: boolean }[] = [];
 
     for (let i = 1; i <= Math.ceil(totalUsers / usersPerPage); i += 1) {
-      if (i === currentPage) {
-        res.push({ num: i, current: true });
-      } else {
-        res.push({ num: i, current: false });
-      }
+      res.push({ num: i, current: i === currentPage });
     }
 
     return res;
-  }, [currentPage, search]);
+  }, [currentPage, totalUsers, usersPerPage]);
 
   return (
     <ul className={b()}>

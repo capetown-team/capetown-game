@@ -1,43 +1,59 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
+import { errorSelector } from '@/reducers/user/selectors';
+import { withAuth } from '@/hocs/withAuth';
 import { withErrorBoundary } from '@/components/ErrorBoundary';
 import { PrivateRoute } from '@/components/PrivateRoute';
 import { Header } from '@/components/Header';
+import { Notification } from '@/components/Notification';
 import { routes } from './routes';
 
 import './App.scss';
 
-export const useAuth = () => {
-  const [isAuthorized, setAuth] = useState(true);
+const App = () => {
+  const error = useSelector(errorSelector);
+  const [userError, setUserError] = useState(error);
 
-  const signIn = () => {
-    setAuth(true);
-  };
+  const handlerClose = useCallback(() => {
+    setUserError(false);
+  }, []);
 
-  return { isAuthorized, signIn };
+  useEffect(() => {
+    setUserError(error);
+  }, [error]);
+
+  return (
+    <Router>
+      {userError && (
+        <Notification
+          title="Проишзошла ошибка"
+          size="s"
+          onCancel={handlerClose}
+        />
+      )}
+      <Header />
+      <div className="app">
+        <Switch>
+          {routes.map(({ path, component, isPrivate, ...rest }) => {
+            const RouteComponent = isPrivate ? PrivateRoute : Route;
+
+            return (
+              <RouteComponent
+                key={path}
+                path={path}
+                component={withErrorBoundary(component)}
+                {...rest}
+              />
+            );
+          })}
+        </Switch>
+      </div>
+    </Router>
+  );
 };
 
-export const App = () => (
-  <Router>
-    <Header />
-    <div className="app">
-      <Switch>
-        {routes.map(({ path, component, isPrivate, ...rest }) => {
-          const RouteComponent = isPrivate ? PrivateRoute : Route;
-          const { isAuthorized } = useAuth();
+const withAuthApp = withAuth(App);
 
-          return (
-            <RouteComponent
-              key={path}
-              path={path}
-              isAuthorized={isAuthorized}
-              component={withErrorBoundary(component)}
-              {...rest}
-            />
-          );
-        })}
-      </Switch>
-    </div>
-  </Router>
-);
+export { withAuthApp as App };

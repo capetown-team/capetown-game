@@ -1,10 +1,15 @@
-import React, { ChangeEvent, useState, useEffect } from 'react';
+import React, { ChangeEvent, useState, useEffect, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 
-import { logOut, changeProfile } from '@/api';
+import { AppState } from '@/reducers';
+import { authSelector, loadSelector } from '@/reducers/user/selectors';
+import { logout, changeProfile } from '@/reducers/user/actions';
+import { ROUTES } from '@/constants';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
+import { Loading } from '@/components/Loading';
 import {
   isValidLogin,
   isValidName,
@@ -13,7 +18,12 @@ import {
 } from '@/modules/validation';
 
 type ProfileData = {
-  [name: string]: string;
+  first_name: string;
+  second_name: string;
+  display_name: string;
+  login: string;
+  email: string;
+  phone: string;
 };
 
 type Props = {
@@ -24,14 +34,22 @@ type Props = {
 const b = block('user-form');
 
 export const ProfileForm = ({ profileData, setIsProfileView }: Props) => {
+  const dispatch = useDispatch();
   const history = useHistory();
-  const [isСhangeable, setIsСhangeable] = useState(false);
 
+  const { isAuth, load } = useSelector((state: AppState) => {
+    return {
+      isAuth: authSelector(state),
+      load: loadSelector(state)
+    };
+  });
+
+  const [isСhangeable, setIsСhangeable] = useState(false);
   const [state, setState] = useState(profileData);
   const [validState, setValidState] = useState({
-    firstName: '',
-    secondName: '',
-    displayName: '',
+    first_name: '',
+    second_name: '',
+    display_name: '',
     login: '',
     email: '',
     phone: ''
@@ -45,9 +63,9 @@ export const ProfileForm = ({ profileData, setIsProfileView }: Props) => {
     let validStr = '';
 
     if (
-      name === 'firstName' ||
-      name === 'secondName' ||
-      name === 'displayName'
+      name === 'first_name' ||
+      name === 'second_name' ||
+      name === 'display_name'
     ) {
       validStr = isValidName(state[name]);
     } else if (name === 'login') {
@@ -66,6 +84,22 @@ export const ProfileForm = ({ profileData, setIsProfileView }: Props) => {
     return !validStr;
   };
 
+  const handleLogout = useCallback(() => {
+    dispatch(logout());
+
+    if (!isAuth) {
+      history.replace(ROUTES.SIGNIN);
+    }
+  }, [dispatch, history, isAuth]);
+
+  const handleChange = ({ target }: ChangeEvent) => {
+    if (target && target instanceof HTMLInputElement) {
+      const { value, name } = target;
+
+      setState({ ...state, [name]: value });
+    }
+  };
+
   const changeProfileData = () => {
     let isValid = true;
 
@@ -77,54 +111,28 @@ export const ProfileForm = ({ profileData, setIsProfileView }: Props) => {
 
     if (!isValid) return;
 
-    const userData = {
-      // eslint-disable-next-line camelcase
-      first_name: state.firstName,
-      // eslint-disable-next-line camelcase
-      second_name: state.secondName,
-      // eslint-disable-next-line camelcase
-      display_name: state.displayName,
-      login: state.login,
-      email: state.email,
-      phone: state.phone
-    };
-
-    changeProfile(userData).then(() => {
-      setIsСhangeable(false);
-    });
-  };
-
-  const handleLogout = () => {
-    logOut().then(() => {
-      history.push('/autorization');
-    });
-  };
-
-  const handleChange = ({ target }: ChangeEvent) => {
-    if (target && target instanceof HTMLInputElement) {
-      const { value, name } = target;
-
-      setState({ ...state, [name]: value });
-    }
+    dispatch(changeProfile(state));
+    setIsСhangeable(false);
   };
 
   return (
     <form className={b()}>
+      {load && <Loading />}
       <div className={b('row')}>
         <div className={b('column')}>
           <div className={b('input')}>
             <label className={b('label')}>
               Имя
               <Input
-                value={state.firstName}
-                name="firstName"
+                value={state.first_name}
+                name="first_name"
                 disabled={!isСhangeable}
                 onChange={handleChange}
-                onBlur={() => validateInput('firstName')}
+                onBlur={() => validateInput('first_name')}
               />
             </label>
-            {validState.firstName && (
-              <div className={b('invalid')}>{validState.firstName}</div>
+            {validState.first_name && (
+              <div className={b('invalid')}>{validState.first_name}</div>
             )}
           </div>
           <div className={b('input')}>
@@ -163,15 +171,15 @@ export const ProfileForm = ({ profileData, setIsProfileView }: Props) => {
             <label className={b('label')}>
               Фамилия
               <Input
-                value={state.secondName}
-                name="secondName"
+                value={state.second_name}
+                name="second_name"
                 disabled={!isСhangeable}
                 onChange={handleChange}
-                onBlur={() => validateInput('secondName')}
+                onBlur={() => validateInput('second_name')}
               />
             </label>
-            {validState.secondName && (
-              <div className={b('invalid')}>{validState.secondName}</div>
+            {validState.second_name && (
+              <div className={b('invalid')}>{validState.second_name}</div>
             )}
           </div>
           <div className={b('input')}>
@@ -193,15 +201,15 @@ export const ProfileForm = ({ profileData, setIsProfileView }: Props) => {
             <label className={b('label')}>
               Имя в чате
               <Input
-                value={state.displayName}
-                name="displayName"
+                value={state.display_name}
+                name="display_name"
                 disabled={!isСhangeable}
                 onChange={handleChange}
-                onBlur={() => validateInput('displayName')}
+                onBlur={() => validateInput('display_name')}
               />
             </label>
-            {validState.displayName && (
-              <div className={b('invalid')}>{validState.displayName}</div>
+            {validState.display_name && (
+              <div className={b('invalid')}>{validState.display_name}</div>
             )}
           </div>
         </div>
@@ -210,7 +218,7 @@ export const ProfileForm = ({ profileData, setIsProfileView }: Props) => {
         <div className={b('column')}>
           {isСhangeable && (
             <div className={b('btn')}>
-              <Button type="button" size="s" onClick={changeProfileData}>
+              <Button type="button" size="m" onClick={changeProfileData}>
                 Сохранить
               </Button>
             </div>
@@ -220,14 +228,14 @@ export const ProfileForm = ({ profileData, setIsProfileView }: Props) => {
               <div className={b('btn')}>
                 <Button
                   type="button"
-                  size="s"
+                  size="m"
                   onClick={() => setIsСhangeable(true)}
                 >
                   Изменить данные
                 </Button>
               </div>
               <div className={b('btn')}>
-                <Button type="button" size="s" onClick={handleLogout}>
+                <Button type="button" size="m" onClick={handleLogout}>
                   Выйти
                 </Button>
               </div>
@@ -239,7 +247,7 @@ export const ProfileForm = ({ profileData, setIsProfileView }: Props) => {
             <div className={b('btn')}>
               <Button
                 type="button"
-                size="s"
+                size="m"
                 onClick={() => setIsProfileView(false)}
               >
                 Изменить пароль
@@ -250,7 +258,7 @@ export const ProfileForm = ({ profileData, setIsProfileView }: Props) => {
             <div className={b('btn')}>
               <Button
                 type="button"
-                size="s"
+                size="m"
                 onClick={() => {
                   setIsСhangeable(false);
                   setState(profileData);

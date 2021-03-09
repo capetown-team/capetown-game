@@ -1,14 +1,15 @@
 import React, {
-  useEffect,
   useState,
   FC,
   memo,
   useMemo,
-  useCallback
+  useCallback,
+  ChangeEvent
 } from 'react';
 import block from 'bem-cn-lite';
+
 import { Pagination } from '@/components/Pagination';
-import { SearchType } from '@/types.d';
+import { InputType } from '@/types.d';
 import { usersData } from '@/pages/Leaders/data';
 import { usePagination } from '@/hooks/usePagination';
 import { Loading } from '@/components/Loading';
@@ -28,8 +29,8 @@ export type Props = {
 };
 
 const Leaders: FC = () => {
-  const [loading, setLoading] = useState(true);
-  const [users, setUsers] = useState<Props[]>([]);
+  const loading = false;
+  const [users, setUsers] = useState<Props[]>(usersData);
   const [search, setSearch] = useState('');
 
   const usersPerPage = 7;
@@ -50,19 +51,13 @@ const Leaders: FC = () => {
     search
   });
 
-  const handlerSearch: SearchType = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handlerSearch: InputType = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) => {
       const { value } = event.target;
       setSearch(value);
     },
-    [search]
+    []
   );
-
-  // имутируем подключение к API
-  useEffect(() => {
-    setUsers(usersData);
-    setLoading(false);
-  }, []);
 
   if (loading) {
     return <Loading />;
@@ -76,7 +71,6 @@ const Leaders: FC = () => {
         totalUsers={users.length}
         paginate={handlerPaginate}
         currentPage={currentPage}
-        search={search}
       />
 
       <ul>

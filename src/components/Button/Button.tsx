@@ -14,15 +14,30 @@ type Props = {
   type?: 'submit' | 'button';
   children: ReactNode | string;
   disabled?: boolean;
+  otherClass?: string;
 } & ButtonHTMLAttributes<HTMLButtonElement>;
 
-const Button: FC<Props> = ({ size, children, onClick, disabled, type }) => {
-  const className = b({ size });
+const Button: FC<Props> = ({
+  size,
+  children,
+  onClick,
+  disabled,
+  type = 'button',
+  otherClass
+}) => {
+  const classes = [];
+  if (size) {
+    classes.push(b({ size }));
+  }
+  if (otherClass) {
+    classes.push(otherClass);
+  }
+
   return (
     <button
       disabled={disabled}
       type={type === 'button' ? 'button' : 'submit'}
-      className={className}
+      className={classes.join(' ')}
       onClick={onClick}
     >
       {children}
