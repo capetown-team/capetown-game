@@ -1,22 +1,17 @@
 import { FigureType, InitParameters } from '@game/script/Types';
 import { up, between } from '@game/script/helpers/action';
-
-import { moveClass } from '@game/script/moveClass';
+import { moveClass, Map } from '@game/script/moveClass';
 import ghostright from '@game/script/images/ghost-right.jpg';
 import ghostleft from '@game/script/images/ghost-left.jpg';
 
-type Map = { posY: { row: number; posX: { col: number; type: string }[] }[] };
-
 export class Ghost extends moveClass {
   initParameters: InitParameters;
-  ghost = {
-    posX: 260,
-    posY: 290,
-    radius: 20,
-    image: new Image()
-  };
-
+  radius = 20;
+  image = new Image();
   public ctx!: CanvasRenderingContext2D;
+  startX = 260;
+  startY = 285;
+  startDir = up;
 
   constructor(
     ctx: CanvasRenderingContext2D,
@@ -27,17 +22,18 @@ export class Ghost extends moveClass {
     this.initParameters = initParameters;
     this.isCheckBonus = false;
     this.isCheckPill = false;
-    this.isCheckCross = true;
     this.direction = up.direction;
     this.ctx = ctx;
+    this.posX = this.startX;
+    this.posY = this.startY;
   }
 
   drawGhost() {
-    this.ghost.image.src = ghostright;
-    if (this.direction === 2) this.ghost.image.src = ghostleft;
+    this.image.src = ghostright;
+    if (this.direction === 2) this.image.src = ghostleft;
 
     this.ctx.drawImage(
-      this.ghost.image,
+      this.image,
       this.posX,
       this.posY,
       this.radius,

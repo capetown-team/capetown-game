@@ -11,7 +11,9 @@ import { InitParameters } from '@game/script/Types';
 import { DirectionWatch } from '@game/script/Direction/DirectionWatch';
 import { Direction } from './Direction/Direction';
 
-type Map = { posY: { row: number; posX: { col: number; type: string }[] }[] };
+export type Map = {
+  posY: { row: number; posX: { col: number; type: string }[] }[];
+};
 
 const getOppositeDirection = (direction: number) => {
   switch (direction) {
@@ -31,17 +33,7 @@ const getOppositeDirection = (direction: number) => {
 const getRandomInt = (min: number, max: number) => {
   const min1 = Math.ceil(min);
   const max1 = Math.floor(max);
-  return Math.floor(Math.random() * (max1 - min1)) + min1; // Максимум не включается, минимум включается
-};
-
-const checkGhost = (
-  field: string,
-  gridX: number,
-  gridY: number,
-  fieldAhead: string,
-  rad: number
-) => {
-  return { field, gridX, gridY, fieldAhead, rad };
+  return Math.floor(Math.random() * (max1 - min1)) + min1;
 };
 
 const checkBonus = (
@@ -84,8 +76,12 @@ export class moveClass {
   direction = up.direction;
 
   radius = 20;
+  radiulsPill = 10;
   posX = 0;
   posY = 0;
+  startX = 0;
+  startY = 0;
+  startDir = up;
   dirX = up.dirX;
   dirY = up.dirY;
   angle1 = up.angle1;
@@ -102,14 +98,11 @@ export class moveClass {
   score = 0;
   isCheckPill = true;
   isCheckBonus = true;
-  isCheckGhost = true;
-  isCheckCross = true;
 
   constructor(initParameters: InitParameters, map: Map) {
     this.initParameters = initParameters;
     this.row = 0;
     this.col = 0;
-
     this.startPosition();
     this.setMap(map);
   }
@@ -136,7 +129,6 @@ export class moveClass {
     if (!this.frozen) {
       const gridX = this.getGridPosX(this.posX + this.dirX);
       const gridY = this.getGridPosY(this.posY + this.dirY);
-      // console.log('head', this.initParameters.head);
       let gridAheadX = gridX;
       let gridAheadY = gridY;
 
@@ -150,22 +142,11 @@ export class moveClass {
       }
 
       const fieldAhead = this.getType(gridAheadX, gridAheadY);
-      /* console.log(
-        'fieldAhead',
-        fieldAhead,
-        gridAheadX,
-        gridAheadY,
-        gridX,
-        gridY,
-        this.posX,
-        this.posY
-      ); */
-      const rad = 10;
 
       if (this.isCheckPill)
-        this.checkPill(field, gridX, gridY, fieldAhead, rad);
-      if (this.isCheckBonus) checkBonus(field, gridX, gridY, fieldAhead, rad);
-      if (this.isCheckGhost) checkGhost(field, gridX, gridY, fieldAhead, rad);
+        this.checkPill(field, gridX, gridY, fieldAhead, this.radiulsPill);
+      if (this.isCheckBonus)
+        checkBonus(field, gridX, gridY, fieldAhead, this.radiulsPill);
 
       if (fieldAhead === 'wall' || fieldAhead === 'block') {
         this.stop();
@@ -186,7 +167,7 @@ export class moveClass {
         const newX = gridX + newDir.dirX;
         const newY = gridY + newDir.dirY;
         const fieldAhead = this.getType(newX, newY);
-        // console.log('cross', i, newX, newY, fieldAhead);
+
         if (fieldAhead !== 'wall' && fieldAhead !== 'block')
           result.push({ dir: newDir, x: newX, y: newY });
       }
@@ -269,10 +250,7 @@ export class moveClass {
   }
 
   move() {
-    // console.log('frozen', this.frozen);
     if (!this.frozen) {
-      // console.log('move', this.posX, this.posY);
-      // console.log('ghostmap', this.map.posY[13].posX[3].type);
       this.posX += this.speed * this.dirX;
       this.posY += this.speed * this.dirY;
       const head = this.initParameters.head * 1.3;
@@ -319,8 +297,6 @@ export class moveClass {
 
   getGridPosX(posX = this.posX): number {
     const result = (posX - (posX % step)) / step;
-    // console.log('%', posX % step);
-    // if ((posX % step) >= 19) result = result + 1;
     return result;
   }
 
@@ -334,17 +310,14 @@ export class moveClass {
   }
 
   startPosition() {
-    this.posX = 260; // this.initParameters.borderWalls; TODO
-    this.posY = 285; // this.initParameters.height / 2 - this.radius + head; TODO
-    this.setDirection(up);
-    this.directionWatcher.set(up);
+    this.posX = this.startX;
+    this.posY = this.startY;
+    this.setDirection(this.startDir);
+    this.directionWatcher.set(this.startDir);
   }
 
   reset(): void {
     this.startPosition();
     this.freeze();
-
-    this.isMouthOpen = true;
-    this.score = 0;
   }
 }

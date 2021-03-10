@@ -12,9 +12,7 @@ export class Engine {
   started = false;
   pause = false;
   gameOver = false;
-
   requestId = 0;
-
   steps = 0;
 
   public ctx!: CanvasRenderingContext2D;
@@ -129,7 +127,6 @@ export class Engine {
       this.pacman = new Pacman(this.initParameters, dataMap);
     }
     this.pacman.stop();
-    // this.ghost.freeze();
     this.steps = 0;
     this.ghost.drawGhost();
 
@@ -164,8 +161,6 @@ export class Engine {
   }
 
   blank(color = ColorType.LightGrey) {
-    // console.log('blank', this.initParameters.width);
-    // console.log('blank', this.initParameters.height);
     this.ctx.fillStyle = color;
     this.ctx.fillRect(
       0,
@@ -178,11 +173,11 @@ export class Engine {
   gameLoop() {
     this.blank(ColorType.Black);
     this.header.drawHeader();
-    // this.figure.drawWalls();
     this.figure.drawCoins();
     this.ghost.drawGhost();
     this.figure.drawBlocks();
     this.figure.drawStrength();
+
     this.ctx.fillStyle = ColorType.Gold;
     this.ctx.beginPath();
 
@@ -216,39 +211,20 @@ export class Engine {
     this.ctx.fill();
     this.ctx.closePath();
 
-    // this.ctx.beginPath();
-    // this.ghost.drawGhost();
-    /* this.ctx.fillStyle = ColorType.Red;
-    this.ctx.arc(
-      this.ghost.posX + this.ghost.radius,
-      this.ghost.posY + this.ghost.radius,
-      this.ghost.radius,
-      0,
-      2 * Math.PI
-    ); */
-
-    if (this.ghost.isCheckCross) {
-      const directions = this.ghost.checkCross();
-      // if (directions.length > 1)
-      // console.log('directions', directions);
-      let successful = false;
-      while (!successful) {
-        successful = this.ghost.checkCollisions();
-        if (!successful) {
-          const newDir = getNewDirection(
-            directions,
-            getDir(this.ghost.direction)
-          );
-          this.ghost.setDirection(newDir);
-        }
+    const directions = this.ghost.checkCross();
+    let successful = false;
+    while (!successful) {
+      successful = this.ghost.checkCollisions();
+      if (!successful) {
+        const newDir = getNewDirection(
+          directions,
+          getDir(this.ghost.direction)
+        );
+        this.ghost.setDirection(newDir);
       }
     }
 
-    // console.log('XY', this.ghost.posX, this.ghost.posY, this.ghost.direction);
-
     this.ghost.move();
-    // this.ctx.fill();
-    // this.ctx.closePath();
 
     this.steps += 1;
     if (this.steps % this.pacman.stepMounth === 0) {
@@ -284,7 +260,6 @@ export class Engine {
         this.pacman.moveUpDown();
 
         this.pacman.directionWatcher.set(down);
-        // console.log(this.pacman);
         break;
         evt.preventDefault();
       case 37:
