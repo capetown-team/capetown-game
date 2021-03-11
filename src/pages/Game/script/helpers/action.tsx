@@ -24,6 +24,14 @@ export const buildWall = (
   context.fillRect(gridX, gridY, width, height);
 };
 
+export const buildBlock = (
+  context: CanvasRenderingContext2D,
+  gridX: number,
+  gridY: number
+) => {
+  context.fillRect(gridX, gridY, step, step);
+};
+
 export const drawText = (
   context: CanvasRenderingContext2D,
   text: string,

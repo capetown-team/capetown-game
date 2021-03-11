@@ -134,8 +134,8 @@ const Game = () => {
         <canvas
           className={b('canvas')}
           ref={canvasRef}
-          width={800}
-          height={500}
+          width={540}
+          height={540}
         />
       </div>
     </div>
