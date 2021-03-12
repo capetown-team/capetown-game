@@ -18,6 +18,28 @@ export type ResponseType = {
   };
 };
 
+export type ResponseLeaderBoardType = {
+  data: {
+    pacmanScore: number;
+    pacmanPlayer: string;
+  };
+}[];
+
+export type LeaderBoardType = {
+  data: {
+    pacmanScore: number;
+    pacmanPlayer: string;
+    pacmanAvatar: string | null;
+    pacmanID: number;
+  };
+  ratingFieldName: string;
+};
+
+export type LeaderBoardAllType = {
+  ratingFieldName: string;
+  cursor: number;
+  limit: number;
+};
 export interface IApi {
   getUserInfo(): Promise<ResponseUserType>;
   logOut(): Promise<ResponseType>;
@@ -26,6 +48,8 @@ export interface IApi {
   changeUser(body: UserProfileType): Promise<ResponseUserType>;
   changePassword(body: UserPasswordType): Promise<ResponseType>;
   changeAvatar(avatar: File): Promise<ResponseUserType>;
+  postLiderBoardResult(body: LeaderBoardType): Promise<ResponseType>;
+  postLiderBoardAll(data: LeaderBoardAllType): Promise<ResponseType>;
 }
 
 const context = (): IApi => {
@@ -79,6 +103,18 @@ const context = (): IApi => {
     });
   };
 
+  const postLiderBoardResult = async (data: LeaderBoardType) => {
+    return client.post(`${path}/leaderboard`, data, {
+      withCredentials: true
+    });
+  };
+
+  const postLiderBoardAll = (data: LeaderBoardAllType) => {
+    return client.post(`${path}/leaderboard/all`, data, {
+      withCredentials: true
+    });
+  };
+
   return {
     getUserInfo,
     logOut,
@@ -86,8 +122,16 @@ const context = (): IApi => {
     signUp,
     changeUser,
     changePassword,
-    changeAvatar
+    changeAvatar,
+    postLiderBoardAll,
+    postLiderBoardResult
   };
+};
+
+export const postLiderBoardAll = async (data: LeaderBoardAllType) => {
+  return client.post(`${path}/leaderboard/all`, data, {
+    withCredentials: true
+  });
 };
 
 export const api = context();
