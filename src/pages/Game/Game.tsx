@@ -1,4 +1,7 @@
 import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import { userSelector } from '@/reducers/user/selectors';
+
 import block from 'bem-cn-lite';
 
 import { Topping } from '@/components/Topping';
@@ -13,6 +16,8 @@ import './Game.scss';
 const b = block('game');
 
 const Game = () => {
+  const user = useSelector(userSelector);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gameRef = useRef<HTMLElementFullScreen>(null);
 
@@ -24,13 +29,13 @@ const Game = () => {
 
   const handlerStart = useCallback(() => {
     if (isStart && engine) {
-      engine.newGame();
+      engine.newGame(user);
       setPause(false);
     } else if (engine) {
       engine.startGame();
       setStart(true);
     }
-  }, [engine, isStart]);
+  }, [engine, isStart, user]);
 
   const handlerPause = useCallback(() => {
     if (engine && !engine.gameOver) {

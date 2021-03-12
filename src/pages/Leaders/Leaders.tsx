@@ -19,6 +19,7 @@ import { LeaderList } from '@/pages/Leaders/LeaderList';
 import './Leaders.scss';
 
 const b = block('table');
+console.log('usersData1', usersData);
 
 export type Props = {
   id: number;
@@ -34,7 +35,7 @@ const Leaders: FC = () => {
   const [search, setSearch] = useState('');
 
   const usersPerPage = 7;
-
+  console.log('users', users);
   useMemo(() => {
     const data = usersData.filter((user) => {
       return user.displayName
