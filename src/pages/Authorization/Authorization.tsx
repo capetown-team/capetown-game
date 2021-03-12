@@ -22,6 +22,7 @@ import { Input } from '@/components/Input';
 import { Loading } from '@/components/Loading';
 import { isValidLogin, isValidPassword } from '@/modules/validation';
 import { ROUTES } from '@/constants';
+import { getCodeOAuth } from '@/modules/OAuth';
 
 import './Authorization.scss';
 
@@ -114,6 +115,10 @@ export const Authorization = () => {
     [dispatch, login, password]
   );
 
+  const oAuthHandler = () => {
+    getCodeOAuth();
+  };
+
   return (
     <div className={b()}>
       {loading && <Loading />}
@@ -167,6 +172,11 @@ export const Authorization = () => {
           <Link className={b('link')} to={ROUTES.SIGNUP}>
             Регистрация
           </Link>
+          <div className={b('row-button-oauth')}>
+            <Button size="m" onClick={() => oAuthHandler()}>
+              Войти через Yandex
+            </Button>
+          </div>
         </div>
       </form>
     </div>

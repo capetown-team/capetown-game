@@ -26,6 +26,7 @@ export interface IApi {
   changeUser(body: UserProfileType): Promise<ResponseUserType>;
   changePassword(body: UserPasswordType): Promise<ResponseType>;
   changeAvatar(avatar: File): Promise<ResponseUserType>;
+  postClientID(body: string): Promise<ResponseType>;
 }
 
 const context = (): IApi => {
@@ -40,6 +41,15 @@ const context = (): IApi => {
       {
         withCredentials: true
       }
+    );
+  };
+
+  const postClientID = async (code: string) => {
+    console.log('postClient');
+    return client.post(
+      `${path}/oauth/yandex`,
+      { code },
+      { withCredentials: true }
     );
   };
 
@@ -86,7 +96,8 @@ const context = (): IApi => {
     signUp,
     changeUser,
     changePassword,
-    changeAvatar
+    changeAvatar,
+    postClientID
   };
 };
 

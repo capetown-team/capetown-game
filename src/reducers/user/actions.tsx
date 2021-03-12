@@ -135,6 +135,37 @@ export const signIn = <S,>(
   };
 };
 
+export const signinOAuth = <S,>(
+  code: string
+): ThunkAction<void, () => S, IApi, Action<string>> => {
+  return async (
+    dispatch: Dispatch,
+    getState,
+    { postClientID, getUserInfo }
+  ): Promise<void> => {
+    console.log('code1', code);
+    dispatch(userRequest());
+    postClientID(code)
+      .then(async (response) => {
+        if (response.data) {
+          getUserInfo()
+            .then((response) => {
+              if (response.data) {
+                const user: { user: UserType } = { user: response.data };
+                dispatch(authorize(user));
+              }
+            })
+            .catch((error) => {
+              dispatch(userFailure(error));
+            });
+        }
+      })
+      .catch((error) => {
+        dispatch(userFailure(error));
+      });
+  };
+};
+
 export const signUp = <S,>(
   userSignup: SignUpType
 ): ThunkAction<void, () => S, IApi, Action<string>> => {
