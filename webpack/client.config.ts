@@ -21,7 +21,10 @@ const clientConfig: Configuration = {
     }),
     new CssoWebpackPlugin(),
     new CopyWebpackPlugin({
-      patterns: [{ from: 'src/assets/favicon.ico', to: '.' }]
+      patterns: [
+        { from: 'src/assets/favicon.ico', to: '.' },
+        { from: 'src/assets/robots.txt', to: '.' }
+      ]
     })
   ],
   output: {

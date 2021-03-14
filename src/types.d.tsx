@@ -1,9 +1,11 @@
 import { ChangeEvent, MouseEvent } from 'react';
 import { Action as ReduxAction, compose } from 'redux';
+import { AppState } from '@/reducers';
 
 declare global {
   interface Window {
     __REDUX_DEVTOOLS_EXTENSION__?: typeof compose;
+    __INITIAL_STATE__: AppState;
   }
 }
 

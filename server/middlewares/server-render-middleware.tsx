@@ -26,6 +26,9 @@ const getHtml = (
         </head>
         <body>
             <div id="root">${reactHtml}</div>
+            <script>
+              window.__INITIAL_STATE__ = ${JSON.stringify(state)}
+            </script>
             <script src="/main.js"></script>
         </body>
       </html>
@@ -47,7 +50,6 @@ export const serverRenderMiddleware = (
 
   const reactHtml = renderToString(jsx);
   const helmetData = Helmet.renderStatic();
-
   const pageIsAvailable = (Object.values(ROUTES) as string[]).includes(
     request.path
   );

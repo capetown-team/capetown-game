@@ -11,8 +11,13 @@ app.use(express.json());
 app.use(compression());
 app.use(express.static(path.resolve(__dirname, '../dist')));
 
+app.get('/sw.js', (_, res) => {
+  res.sendFile(path.join(__dirname, '../sw.js'));
+});
+
 app.get('/*', serverRenderMiddleware);
 
 app.listen(port, () => {
+  // eslint-disable-next-line no-console
   console.log(`Listening on port: ${port}`);
 });
