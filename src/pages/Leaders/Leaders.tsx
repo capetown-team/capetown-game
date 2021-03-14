@@ -10,7 +10,7 @@ import block from 'bem-cn-lite';
 
 import { Pagination } from '@/components/Pagination';
 import { InputType } from '@/types.d';
-import { usersData } from '@/pages/Leaders/data';
+import { getLidersData } from '@/pages/Leaders/data';
 import { usePagination } from '@/hooks/usePagination';
 import { Loading } from '@/components/Loading';
 import { Topping } from '@/components/Topping';
@@ -18,8 +18,8 @@ import { LeaderList } from '@/pages/Leaders/LeaderList';
 
 import './Leaders.scss';
 
+const usersData = getLidersData();
 const b = block('table');
-console.log('usersData1', usersData);
 
 export type Props = {
   id: number;
@@ -35,15 +35,20 @@ const Leaders: FC = () => {
   const [search, setSearch] = useState('');
 
   const usersPerPage = 7;
-  console.log('users', users);
-  useMemo(() => {
-    const data = usersData.filter((user) => {
-      return user.displayName
-        .toLocaleLowerCase()
-        .includes(search.toLocaleLowerCase());
-    });
 
-    setUsers(data);
+  useMemo(() => {
+    if (!search) {
+      setUsers(usersData);
+    }
+    {
+      const data = usersData.filter((user) => {
+        return user.displayName
+          .toLocaleLowerCase()
+          .includes(search.toLocaleLowerCase());
+      });
+
+      setUsers(data);
+    }
   }, [search]);
 
   const { currentData, currentPage, handlerPaginate } = usePagination({

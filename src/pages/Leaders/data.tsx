@@ -1,9 +1,9 @@
 import { postLiderBoardAll } from '@/middlewares/api';
 import { Props } from './Leaders';
 
-const LeaderData: Props[] = [];
+let LeaderData: Props[] = [];
 
-const getLiderBoardData = async () => {
+export const getLiderBoardData = async () => {
   await postLiderBoardAll({
     ratingFieldName: 'pacmanScore',
     cursor: 0,
@@ -20,7 +20,8 @@ const getLiderBoardData = async () => {
   });
 };
 
-getLiderBoardData();
-console.log('LeaderData', LeaderData);
-export const usersData: Props[] = LeaderData;
-console.log('usersData', usersData);
+export const getLidersData = () => {
+  LeaderData = [];
+  getLiderBoardData();
+  return LeaderData;
+};
