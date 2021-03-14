@@ -2,17 +2,17 @@ import { InitParameters } from '@game/script/Types';
 import { Pacman } from '@game/script/Pacman';
 import { Figure } from '@game/script/Figure';
 import { Ghost } from '@game/script/Ghost';
+import { getDir, getNewDirection } from '@game/script/moveClass';
 import { Header } from '@game/script/Header';
 import { down, left, right, up, drawText } from '@game/script/helpers/action';
 import { ColorType } from '@game/script/helpers/constants';
+import { dataMap } from '@game/script/helpers/data';
 
 export class Engine {
   started = false;
   pause = false;
   gameOver = false;
-
   requestId = 0;
-
   steps = 0;
 
   public ctx!: CanvasRenderingContext2D;
@@ -32,9 +32,9 @@ export class Engine {
         head: 25,
         borderWalls: 10
       };
-      this.pacman = new Pacman(this.initParameters);
+      this.pacman = new Pacman(this.initParameters, dataMap);
       this.figure = new Figure(this.ctx, this.initParameters, this.pacman);
-      this.ghost = new Ghost(this.ctx);
+      this.ghost = new Ghost(this.ctx, this.initParameters, dataMap);
       this.header = new Header(
         this.ctx,
         this.initParameters,
@@ -105,6 +105,8 @@ export class Engine {
     this.figure.updateCoins();
     this.pacman.reset();
     this.pacman.directionWatcher.set(right);
+    this.ghost.reset();
+    this.ghost.directionWatcher.set(right);
 
     this.startGame();
   }
@@ -112,6 +114,7 @@ export class Engine {
   startGame() {
     if (this.started && !this.pause) {
       this.pacman.reset();
+      this.figure.updateCoins();
 
       return;
     }
@@ -120,10 +123,8 @@ export class Engine {
     this.started = true;
     this.gameOver = false;
 
-    this.figure.updateCoins();
-
     if (!this.pacman) {
-      this.pacman = new Pacman(this.initParameters);
+      this.pacman = new Pacman(this.initParameters, dataMap);
     }
     this.pacman.stop();
     this.steps = 0;
@@ -170,11 +171,13 @@ export class Engine {
   }
 
   gameLoop() {
-    this.blank();
+    this.blank(ColorType.Black);
     this.header.drawHeader();
-    this.figure.drawWalls();
     this.figure.drawCoins();
     this.ghost.drawGhost();
+    this.figure.drawBlocks();
+    this.figure.drawStrength();
+
     this.ctx.fillStyle = ColorType.Gold;
     this.ctx.beginPath();
 
@@ -200,17 +203,35 @@ export class Engine {
         2 * Math.PI
       );
     }
+
     this.pacman.move();
     this.pacman.checkDirectionChange();
     this.pacman.checkCollisions();
+
     this.ctx.fill();
+    this.ctx.closePath();
+
+    const directions = this.ghost.checkCross();
+    let successful = false;
+    while (!successful) {
+      successful = this.ghost.checkCollisions();
+      if (!successful) {
+        const newDir = getNewDirection(
+          directions,
+          getDir(this.ghost.direction)
+        );
+        this.ghost.setDirection(newDir);
+      }
+    }
+
+    this.ghost.move();
 
     this.steps += 1;
     if (this.steps % this.pacman.stepMounth === 0) {
       this.pacman.isMouthOpen = !this.pacman.isMouthOpen;
     }
 
-    if (this.ghost.isTouch(this.pacman, this.ghost.ghost)) {
+    if (this.ghost.isTouch(this.pacman)) {
       if (this.header.hearts > 1) {
         this.header.hearts -= 1;
         this.pacman.startPosition();
@@ -225,6 +246,7 @@ export class Engine {
 
   doKeyDown(evt: { keyCode: number; preventDefault(): void }) {
     this.pacman.unfreeze();
+    this.ghost.unfreeze();
 
     switch (evt.keyCode) {
       case 38:
