@@ -6,14 +6,14 @@
   "scripts": {
     "dev": "webpack serve",
     "build": "webpack --mode production",
-    "lint:style": "stylelint --fix ./src/**/*.scss",
-    "lint:ts": "eslint ./src --ext .tsx,.ts,.js",
+    "stylelint": "stylelint --fix ./src/**/*.scss",
+    "lint": "./node_modules/.bin/eslint ./src --ext .tsx,.ts,.js",
     "test": "jest --runInBand --config .jest/config.json"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm-run-all lint:* test",
-      "pre-push": "npm-run-all lint:*"
+      "pre-commit": "npm run lint && npm run stylelint",
+      "pre-push": "npm run lint && npm run stylelint"
     }
   },
   "repository": {
