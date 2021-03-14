@@ -50,7 +50,8 @@
     "jsx-a11y/label-has-associated-control": "off",
     "camelcase": ["error", {"allow": ["first_name", "second_name", "display_name"]}],
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "error"
+    "react-hooks/exhaustive-deps": "error",
+    "import/no-extraneous-dependencies": "off"
   },
   "settings": {
     "import/resolver": {

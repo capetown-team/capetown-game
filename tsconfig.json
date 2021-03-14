@@ -4,9 +4,9 @@
       "dom",
       "es2017"
     ],
-    "module": "esnext",
+    "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es5",
+    "target": "esnext",
     "jsx": "react",
     "importHelpers": true,
     "noUnusedLocals": true,
@@ -27,10 +27,14 @@
   },
   "include": [
     "src",
+    "webpack.config.ts",
+    "webpack/**/*.ts",
+    "server",
     "typings/**/*.d.ts",
     "./node_modules/@types"
   ],
   "exclude": [
+    "node_modules",
     "**/*.js"
   ]
 }
