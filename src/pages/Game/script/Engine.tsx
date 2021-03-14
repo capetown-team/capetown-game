@@ -99,11 +99,13 @@ export class Engine {
       );
     }
 
+    console.log('post');
     this.postResult();
     this.reset();
   }
 
   postResult() {
+    console.log('user', this.user);
     if (this.user !== undefined) {
       api.postLiderBoardResult({
         data: {
@@ -118,7 +120,6 @@ export class Engine {
   }
 
   newGame(user: UserType) {
-    this.user = user;
     this.reset();
     this.gameOver = false;
     this.header.hearts = 3;
@@ -128,10 +129,12 @@ export class Engine {
     this.ghost.reset();
     this.ghost.directionWatcher.set(right);
 
-    this.startGame();
+    this.startGame(user);
   }
 
-  startGame() {
+  startGame(user: UserType | undefined = undefined) {
+    if (user !== undefined) this.user = user;
+
     if (this.started && !this.pause) {
       this.pacman.reset();
       this.figure.updateCoins();
