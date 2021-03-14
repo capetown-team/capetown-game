@@ -18,6 +18,7 @@ const b = block('game');
 
 const Game = () => {
   const user = useSelector(userSelector);
+  console.log('gameuser', user);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gameRef = useRef<HTMLElementFullScreen>(null);
@@ -33,7 +34,7 @@ const Game = () => {
       engine.newGame(user);
       setPause(false);
     } else if (engine) {
-      engine.startGame();
+      engine.startGame(user);
       setStart(true);
     }
   }, [engine, isStart, user]);
