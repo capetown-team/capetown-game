@@ -3,14 +3,15 @@ import React, {
   FC,
   memo,
   useMemo,
+  useEffect,
   useCallback,
   ChangeEvent
 } from 'react';
 import block from 'bem-cn-lite';
+import { postLiderBoardAll } from '@/middlewares/api';
 
 import { Pagination } from '@/components/Pagination';
 import { InputType } from '@/types.d';
-import { getLidersData } from '@/pages/Leaders/data';
 import { usePagination } from '@/hooks/usePagination';
 import { Loading } from '@/components/Loading';
 import { Topping } from '@/components/Topping';
@@ -18,7 +19,6 @@ import { LeaderList } from '@/pages/Leaders/LeaderList';
 
 import './Leaders.scss';
 
-const usersData = getLidersData();
 const b = block('table');
 
 export type Props = {
@@ -31,25 +31,49 @@ export type Props = {
 
 const Leaders: FC = () => {
   const loading = false;
-  const [users, setUsers] = useState<Props[]>(usersData);
+  const [users, setUsers] = useState<Props[]>([]);
+  const [usersData, setUsersData] = useState<Props[]>([]);
   const [search, setSearch] = useState('');
 
   const usersPerPage = 7;
 
-  useMemo(() => {
-    if (!search) {
-      setUsers(usersData);
-    }
-    {
-      const data = usersData.filter((user) => {
-        return user.displayName
-          .toLocaleLowerCase()
-          .includes(search.toLocaleLowerCase());
-      });
+  useEffect(() => {
+    let isMounted = true;
 
-      setUsers(data);
-    }
-  }, [search]);
+    postLiderBoardAll({
+      ratingFieldName: 'pacmanScore',
+      cursor: 0,
+      limit: 10
+    }).then((response) => {
+      const result: Props[] = [];
+      for (let i = 0; i < response.data.length; i += 1) {
+        result.push({
+          id: i + 1,
+          displayName: response.data[i].data.pacmanPlayer,
+          avatar: response.data[i].data.pacmanAvatar,
+          score: response.data[i].data.pacmanScore
+        });
+      }
+      if (isMounted) {
+        setUsers(result);
+        setUsersData(result);
+      }
+    });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useMemo(() => {
+    const data = usersData.filter((user) => {
+      return user.displayName
+        .toLocaleLowerCase()
+        .includes(search.toLocaleLowerCase());
+    });
+
+    setUsers(data);
+  }, [search, usersData]);
 
   const { currentData, currentPage, handlerPaginate } = usePagination({
     perPage: usersPerPage,

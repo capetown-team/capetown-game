@@ -98,14 +98,11 @@ export class Engine {
         this.initParameters.height / 2 - 20
       );
     }
-
-    console.log('post');
     this.postResult();
     this.reset();
   }
 
   postResult() {
-    console.log('user', this.user);
     if (this.user !== undefined) {
       api.postLiderBoardResult({
         data: {
