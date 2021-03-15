@@ -18,7 +18,6 @@ const b = block('game');
 
 const Game = () => {
   const user = useSelector(userSelector);
-  console.log('gameuser', user);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gameRef = useRef<HTMLElementFullScreen>(null);

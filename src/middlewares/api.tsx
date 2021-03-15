@@ -104,7 +104,6 @@ const context = (): IApi => {
   };
 
   const postLiderBoardResult = async (data: LeaderBoardType) => {
-    console.log('test', data);
     return client.post(`${path}/leaderboard`, data, {
       withCredentials: true
     });
