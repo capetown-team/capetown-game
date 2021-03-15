@@ -18,13 +18,6 @@ export type ResponseType = {
   };
 };
 
-export type ResponseLeaderBoardType = {
-  data: {
-    pacmanScore: number;
-    pacmanPlayer: string;
-  };
-}[];
-
 export type LeaderBoardType = {
   data: {
     pacmanScore: number;
