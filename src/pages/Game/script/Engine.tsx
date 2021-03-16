@@ -171,6 +171,24 @@ export class Engine {
   }
 
   gameLoop() {
+    if (navigator && navigator.getGamepads) {
+      const gamepads = navigator.getGamepads();
+
+      if (gamepads && gamepads[0]) {
+        const gp = gamepads[0];
+
+        if (gp.buttons[12].pressed) {
+          this.doKeyDown({ keyCode: 38 });
+        } else if (gp.buttons[13].pressed) {
+          this.doKeyDown({ keyCode: 40 });
+        } else if (gp.buttons[14].pressed) {
+          this.doKeyDown({ keyCode: 37 });
+        } else if (gp.buttons[15].pressed) {
+          this.doKeyDown({ keyCode: 39 });
+        }
+      }
+    }
+
     this.blank(ColorType.Black);
     this.header.drawHeader();
     this.figure.drawCoins();
@@ -244,32 +262,31 @@ export class Engine {
     this.requestId = window.requestAnimationFrame(this.gameLoop.bind(this));
   }
 
-  doKeyDown(evt: { keyCode: number; preventDefault(): void }) {
+  doKeyDown(evt: { keyCode: number; preventDefault?: () => void }) {
     this.pacman.unfreeze();
     this.ghost.unfreeze();
 
+    if (evt.preventDefault) {
+      evt.preventDefault();
+    }
+
     switch (evt.keyCode) {
       case 38:
-        evt.preventDefault();
         this.pacman.moveUpDown();
 
         this.pacman.directionWatcher.set(up);
         break;
       case 40:
-        evt.preventDefault();
         this.pacman.moveUpDown();
 
         this.pacman.directionWatcher.set(down);
         break;
-        evt.preventDefault();
       case 37:
-        evt.preventDefault();
         this.pacman.moveRightLeft();
 
         this.pacman.directionWatcher.set(left);
         break;
       case 39:
-        evt.preventDefault();
         this.pacman.moveRightLeft();
 
         this.pacman.directionWatcher.set(right);
