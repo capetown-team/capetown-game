@@ -16,7 +16,10 @@ import { usePagination } from '@/hooks/usePagination';
 import { Loading } from '@/components/Loading';
 import { Topping } from '@/components/Topping';
 import { LeaderList } from '@/pages/Leaders/LeaderList';
-import { leadersSelector } from '@/reducers/leaderBoard/selectors';
+import {
+  leadersSelector,
+  pendingSelector
+} from '@/reducers/leaderBoard/selectors';
 import { getLiderBoardAll } from '@/reducers/leaderBoard/actions';
 
 import './Leaders.scss';
@@ -32,6 +35,15 @@ export type Props = {
 };
 
 const Leaders: FC = () => {
+  const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState<Props[]>([]);
+  const [search, setSearch] = useState('');
+
+  const usersPerPage = 7;
+
+  const usersData = useSelector(leadersSelector);
+  const pending = useSelector(pendingSelector);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -44,13 +56,9 @@ const Leaders: FC = () => {
     );
   }, [dispatch]);
 
-  const loading = false;
-  const [users, setUsers] = useState<Props[]>([]);
-  const [search, setSearch] = useState('');
-
-  const usersData = useSelector(leadersSelector);
-
-  const usersPerPage = 7;
+  useEffect(() => {
+    setLoading(pending);
+  }, [pending]);
 
   useMemo(() => {
     if (usersData !== []) {
