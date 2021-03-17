@@ -171,7 +171,7 @@ export class Engine {
   }
 
   gameLoop() {
-    if (navigator && navigator.getGamepads) {
+    if (typeof navigator !== 'undefined' && navigator.getGamepads) {
       const gamepads = navigator.getGamepads();
 
       if (gamepads && gamepads[0]) {
