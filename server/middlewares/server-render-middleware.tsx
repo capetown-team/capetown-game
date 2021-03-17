@@ -52,7 +52,7 @@ export const serverRenderMiddleware = (
   const statsFile = path.resolve(__dirname, 'loadable-stats.json');
   const extractor = new ChunkExtractor({ statsFile });
 
-  function renderApp() {
+  const renderApp = () => {
     const jsx = extractor.collectChunks(
       <ReduxProvider store={store}>
         <StaticRouter location={location}>
@@ -71,7 +71,7 @@ export const serverRenderMiddleware = (
     response
       .status(pageIsAvailable ? 200 : 404)
       .send(getHtml(reactHtml, state, helmetData, extractor));
-  }
+  };
 
   const dataRequirements: ThunkAction<
     void,
