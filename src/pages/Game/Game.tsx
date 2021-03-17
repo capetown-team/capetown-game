@@ -30,22 +30,6 @@ const Game = () => {
   const [isInfo, setInfo] = useState(false);
   const [isFullScreen, setFullScreen] = useState(false);
 
-  const postResult = () => {
-    if (engine !== null && engine !== undefined) {
-      dispatch(
-        setLiderBoardResult({
-          data: {
-            pacmanScore: engine.pacman.score,
-            pacmanPlayer: user.first_name,
-            pacmanAvatar: user.avatar,
-            pacmanID: user.id
-          },
-          ratingFieldName: 'pacmanScore'
-        })
-      );
-    }
-  };
-
   const handlerStart = useCallback(() => {
     if (isStart && engine) {
       engine.newGame();
@@ -55,6 +39,25 @@ const Game = () => {
       setStart(true);
     }
   }, [engine, isStart]);
+
+  const postResult = useCallback(
+    (engine: Engine) => {
+      if (engine !== null && engine !== undefined) {
+        dispatch(
+          setLiderBoardResult({
+            data: {
+              pacmanScore: engine.pacman.score,
+              pacmanPlayer: user.first_name,
+              pacmanAvatar: user.avatar,
+              pacmanID: user.id
+            },
+            ratingFieldName: 'pacmanScore'
+          })
+        );
+      }
+    },
+    [dispatch, user]
+  );
 
   const handlerPause = useCallback(() => {
     if (engine && !engine.gameOver) {
@@ -83,7 +86,7 @@ const Game = () => {
 
   const handleStop = () => {
     if (engine) {
-      postResult();
+      postResult(engine);
       (engine as Engine).finishGame();
     }
 
@@ -104,7 +107,8 @@ const Game = () => {
     const canvas = canvasRef.current as HTMLCanvasElement;
     const engine = new Engine(
       canvas,
-      canvas.getContext('2d') as CanvasRenderingContext2D
+      canvas.getContext('2d') as CanvasRenderingContext2D,
+      postResult
     );
     setEngine(engine);
 
@@ -113,7 +117,7 @@ const Game = () => {
         engine.finishGame();
       }
     };
-  }, []);
+  }, [postResult]);
 
   return (
     <div className={b()}>
