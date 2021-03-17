@@ -7,6 +7,11 @@ import {
   UserPasswordType
 } from '@/reducers/user/types';
 
+import {
+  LeaderBoardType,
+  LeaderBoardAllType
+} from '@/reducers/leaderBoard/types';
+
 export type ResponseUserType = {
   data: UserType;
 };
@@ -18,21 +23,10 @@ export type ResponseType = {
   };
 };
 
-export type LeaderBoardType = {
-  data: {
-    pacmanScore: number;
-    pacmanPlayer: string;
-    pacmanAvatar: string | null;
-    pacmanID: number;
-  };
-  ratingFieldName: string;
+export type ResponseLeaders = {
+  data: LeaderBoardType[];
 };
 
-export type LeaderBoardAllType = {
-  ratingFieldName: string;
-  cursor: number;
-  limit: number;
-};
 export interface IApi {
   getUserInfo(): Promise<ResponseUserType>;
   logOut(): Promise<ResponseType>;
@@ -41,8 +35,8 @@ export interface IApi {
   changeUser(body: UserProfileType): Promise<ResponseUserType>;
   changePassword(body: UserPasswordType): Promise<ResponseType>;
   changeAvatar(avatar: File): Promise<ResponseUserType>;
-  postLiderBoardResult(body: LeaderBoardType): Promise<ResponseType>;
-  postLiderBoardAll(data: LeaderBoardAllType): Promise<ResponseType>;
+  setLiderBoardResult(body: LeaderBoardType): Promise<ResponseType>;
+  getLiderBoardAll(data: LeaderBoardAllType): Promise<ResponseLeaders>;
 }
 
 const context = (): IApi => {
@@ -96,13 +90,13 @@ const context = (): IApi => {
     });
   };
 
-  const postLiderBoardResult = async (data: LeaderBoardType) => {
+  const setLiderBoardResult = async (data: LeaderBoardType) => {
     return client.post(`${path}/leaderboard`, data, {
       withCredentials: true
     });
   };
 
-  const postLiderBoardAll = (data: LeaderBoardAllType) => {
+  const getLiderBoardAll = (data: LeaderBoardAllType) => {
     return client.post(`${path}/leaderboard/all`, data, {
       withCredentials: true
     });
@@ -116,12 +110,12 @@ const context = (): IApi => {
     changeUser,
     changePassword,
     changeAvatar,
-    postLiderBoardAll,
-    postLiderBoardResult
+    getLiderBoardAll,
+    setLiderBoardResult
   };
 };
 
-export const postLiderBoardAll = async (data: LeaderBoardAllType) => {
+export const getLiderBoardAll = async (data: LeaderBoardAllType) => {
   return client.post(`${path}/leaderboard/all`, data, {
     withCredentials: true
   });

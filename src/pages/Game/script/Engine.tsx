@@ -1,6 +1,3 @@
-import { api } from '@/middlewares/api';
-import { UserType } from '@/reducers/user/types';
-
 import { InitParameters } from '@game/script/Types';
 import { Pacman } from '@game/script/Pacman';
 import { Figure } from '@game/script/Figure';
@@ -12,12 +9,12 @@ import { ColorType } from '@game/script/helpers/constants';
 import { dataMap } from '@game/script/helpers/data';
 
 export class Engine {
-  user: UserType | undefined;
   started = false;
   pause = false;
   gameOver = false;
   requestId = 0;
   steps = 0;
+  score = 0;
 
   public ctx!: CanvasRenderingContext2D;
   public pacman!: Pacman;
@@ -77,6 +74,7 @@ export class Engine {
   }
 
   finishGame() {
+    this.score = this.pacman.score;
     this.gameOver = true;
     this.blank(ColorType.LightGrey);
     drawText(
@@ -98,25 +96,11 @@ export class Engine {
         this.initParameters.height / 2 - 20
       );
     }
-    this.postResult();
+
     this.reset();
   }
 
-  postResult() {
-    if (this.user !== undefined) {
-      api.postLiderBoardResult({
-        data: {
-          pacmanScore: this.pacman.score,
-          pacmanPlayer: this.user.first_name,
-          pacmanAvatar: this.user.avatar,
-          pacmanID: this.user.id
-        },
-        ratingFieldName: 'pacmanScore'
-      });
-    }
-  }
-
-  newGame(user: UserType) {
+  newGame() {
     this.reset();
     this.gameOver = false;
     this.header.hearts = 3;
@@ -126,12 +110,10 @@ export class Engine {
     this.ghost.reset();
     this.ghost.directionWatcher.set(right);
 
-    this.startGame(user);
+    this.startGame();
   }
 
-  startGame(user: UserType | undefined = undefined) {
-    if (user !== undefined) this.user = user;
-
+  startGame() {
     if (this.started && !this.pause) {
       this.pacman.reset();
       this.figure.updateCoins();
@@ -156,11 +138,11 @@ export class Engine {
   }
 
   endGame() {
-    this.postResult();
+    this.score = this.pacman.score;
+    this.gameOver = true;
     setTimeout(() => {
       this.stopAnimation();
       this.blank(ColorType.LightGrey);
-      this.gameOver = true;
       drawText(
         this.ctx,
         'Игра окончена',
@@ -258,6 +240,7 @@ export class Engine {
         this.pacman.startPosition();
         this.pacman.freeze();
       } else {
+        this.score = this.pacman.score;
         this.endGame();
       }
     }
