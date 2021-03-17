@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(compression());
 app.use(express.static(path.resolve(__dirname, '../dist')));
 
-app.get('/sw.js', (_, res) => {
+app.get('/sw.js', (req, res) => {
   res.sendFile(path.join(__dirname, '../sw.js'));
 });
 

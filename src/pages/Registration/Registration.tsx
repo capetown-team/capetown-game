@@ -28,6 +28,7 @@ import {
   isValidPasswordConfirm
 } from '@/modules/validation';
 import { ROUTES } from '@/constants';
+import { PageMeta } from '@/components/PageMeta';
 
 import './Registration.scss';
 
@@ -177,6 +178,7 @@ export const Registration = () => {
 
   return (
     <div className={b()}>
+      <PageMeta title="Регистрация" />
       {loading && <Loading />}
       <form className={b('wrapper')}>
         <div className={b('title')}>Регистрация</div>

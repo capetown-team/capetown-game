@@ -2,6 +2,7 @@ import React from 'react';
 import block from 'bem-cn-lite';
 
 import { Topping } from '@/components/Topping';
+import { PageMeta } from '@/components/PageMeta';
 
 import './Landing.scss';
 
@@ -10,6 +11,11 @@ const b = block('landing');
 export const Landing = () => {
   return (
     <div className={b('wrapper')}>
+      <PageMeta
+        title="Добро пожаловать на сайт команды Кейптаун"
+        description="Экран игры занимает собой лабиринт, коридоры которого заполнены точками.
+        Задача игрока — управляя Пакманом, съесть все точки в лабиринте, избегая"
+      />
       <Topping title="Добро пожаловать на сайт команды Кейптаун" />
 
       <p className={b('main')}>

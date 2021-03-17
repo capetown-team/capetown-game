@@ -15,6 +15,7 @@ import { usePagination } from '@/hooks/usePagination';
 import { Loading } from '@/components/Loading';
 import { Topping } from '@/components/Topping';
 import { LeaderList } from '@/pages/Leaders/LeaderList';
+import { PageMeta } from '@/components/PageMeta';
 
 import './Leaders.scss';
 
@@ -65,6 +66,7 @@ const Leaders: FC = () => {
 
   return (
     <main className={b()}>
+      <PageMeta title="Доска лидеров" />
       <Topping title="Доска лидеров" searchHandler={handlerSearch} />
       <Pagination
         usersPerPage={usersPerPage}

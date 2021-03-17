@@ -2,6 +2,8 @@ import path from 'path';
 import { Configuration } from 'webpack';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import LoadablePlugin from '@loadable/webpack-plugin';
+import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 
 import { isDev, filename, distDir, alias } from './env';
 import jsLoader from './loaders/js';
@@ -14,7 +16,7 @@ const CssoWebpackPlugin = require('csso-webpack-plugin').default;
 
 const clientConfig: Configuration = {
   mode: 'development',
-  entry: path.join(__dirname, `../src/index.tsx`),
+  entry: path.resolve(__dirname, `../src/index.tsx`),
   plugins: [
     new MiniCssExtractPlugin({
       filename: filename('css')
@@ -23,19 +25,22 @@ const clientConfig: Configuration = {
     new CopyWebpackPlugin({
       patterns: [
         { from: 'src/assets/favicon.ico', to: '.' },
+        { from: 'src/assets/game.png', to: './images' },
         { from: 'src/assets/robots.txt', to: '.' }
       ]
-    })
+    }),
+    new LoadablePlugin()
   ],
   output: {
     path: distDir,
     filename: filename('js'),
-    publicPath: ''
+    publicPath: '/'
   },
   devtool: isDev ? 'source-map' : false,
   resolve: {
     alias,
-    extensions: ['.ts', '.tsx', '.js', '.jsx']
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+    plugins: [new TsconfigPathsPlugin({ configFile: './tsconfig.json' })]
   },
   module: {
     rules: [

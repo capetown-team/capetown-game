@@ -14,6 +14,7 @@ if (process.env.NODE_ENV === 'development') {
 
 export const store = createStore(
   reducer,
+  isServer ? undefined : window.__INITIAL_STATE__,
   compose(
     applyMiddleware(...middlewares),
     !isServer && window.__REDUX_DEVTOOLS_EXTENSION__
