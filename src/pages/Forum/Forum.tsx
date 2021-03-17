@@ -7,6 +7,7 @@ import { Topping } from '@/components/Topping';
 import { Loading } from '@/components/Loading';
 import { ForumList } from '@/pages/Forum/ForumList';
 import { Pagination } from '@/components/Pagination';
+import { PageMeta } from '@/components/PageMeta';
 
 import './Forum.scss';
 
@@ -35,6 +36,7 @@ const Forum = () => {
 
   return (
     <main className={b()}>
+      <PageMeta title="Форум" />
       <Topping title="Форум" />
 
       <Pagination

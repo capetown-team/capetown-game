@@ -10,3 +10,5 @@ export type AppState = {
 export const reducer = combineReducers({
   user: userReducer
 });
+
+export type State = ReturnType<typeof reducer>;

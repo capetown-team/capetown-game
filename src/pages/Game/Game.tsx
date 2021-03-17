@@ -7,6 +7,7 @@ import { Notification } from '@/components/Notification';
 import { BodyNotification } from '@game/BodyNotification';
 import { Engine } from '@/pages/Game/script/Engine';
 import { toggelFullScreen, HTMLElementFullScreen } from '@/modules/webApi';
+import { PageMeta } from '@/components/PageMeta';
 
 import './Game.scss';
 
@@ -93,6 +94,11 @@ const Game = () => {
 
   return (
     <div className={b()}>
+      <PageMeta
+        title="Игра Pac-Man"
+        description="Игрок управляет Пакманом через лабиринт, поедая пак-точки во время движения."
+        image="/images/game.png"
+      />
       {isInfo && (
         <Notification
           title="Правила игры"
