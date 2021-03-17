@@ -1,5 +1,5 @@
 import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { userSelector } from '@/reducers/user/selectors';
 
 import block from 'bem-cn-lite';
@@ -10,13 +10,15 @@ import { Notification } from '@/components/Notification';
 import { BodyNotification } from '@game/BodyNotification';
 import { Engine } from '@/pages/Game/script/Engine';
 import { toggelFullScreen, HTMLElementFullScreen } from '@/modules/webApi';
-import { PageMeta } from '@/components/PageMeta';
+import { setLiderBoardResult } from '@/reducers/leaderBoard/actions';
 
+import { PageMeta } from '@/components/PageMeta';
 import './Game.scss';
 
 const b = block('game');
 
 const Game = () => {
+  const dispatch = useDispatch();
   const user = useSelector(userSelector);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -28,15 +30,31 @@ const Game = () => {
   const [isInfo, setInfo] = useState(false);
   const [isFullScreen, setFullScreen] = useState(false);
 
+  const postResult = () => {
+    if (engine !== null && engine !== undefined) {
+      dispatch(
+        setLiderBoardResult({
+          data: {
+            pacmanScore: engine.pacman.score,
+            pacmanPlayer: user.first_name,
+            pacmanAvatar: user.avatar,
+            pacmanID: user.id
+          },
+          ratingFieldName: 'pacmanScore'
+        })
+      );
+    }
+  };
+
   const handlerStart = useCallback(() => {
     if (isStart && engine) {
-      engine.newGame(user);
+      engine.newGame();
       setPause(false);
     } else if (engine) {
-      engine.startGame(user);
+      engine.startGame();
       setStart(true);
     }
-  }, [engine, isStart, user]);
+  }, [engine, isStart]);
 
   const handlerPause = useCallback(() => {
     if (engine && !engine.gameOver) {
@@ -63,14 +81,15 @@ const Game = () => {
     setInfo(false);
   }, []);
 
-  const handleStop = useCallback(() => {
+  const handleStop = () => {
     if (engine) {
+      postResult();
       (engine as Engine).finishGame();
     }
 
     setStart(false);
     setPause(false);
-  }, [engine]);
+  };
 
   const handlerFS = useCallback(() => {
     const target = gameRef.current;
@@ -88,7 +107,6 @@ const Game = () => {
       canvas.getContext('2d') as CanvasRenderingContext2D
     );
     setEngine(engine);
-    // engine.startGame();
 
     return () => {
       if (engine && engine.started) {

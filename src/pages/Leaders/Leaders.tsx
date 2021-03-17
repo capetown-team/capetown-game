@@ -3,12 +3,12 @@ import React, {
   FC,
   memo,
   useMemo,
-  useEffect,
   useCallback,
-  ChangeEvent
+  ChangeEvent,
+  useEffect
 } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
-import { postLiderBoardAll } from '@/middlewares/api';
 
 import { Pagination } from '@/components/Pagination';
 import { InputType } from '@/types.d';
@@ -16,6 +16,9 @@ import { usePagination } from '@/hooks/usePagination';
 import { Loading } from '@/components/Loading';
 import { Topping } from '@/components/Topping';
 import { LeaderList } from '@/pages/Leaders/LeaderList';
+import { leadersSelector } from '@/reducers/leaderBoard/selectors';
+import { getLiderBoardAll } from '@/reducers/leaderBoard/actions';
+
 import { PageMeta } from '@/components/PageMeta';
 
 import './Leaders.scss';
@@ -31,49 +34,36 @@ export type Props = {
 };
 
 const Leaders: FC = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(
+      getLiderBoardAll({
+        ratingFieldName: 'pacmanScore',
+        cursor: 0,
+        limit: 1000
+      })
+    );
+  }, [dispatch]);
+
   const loading = false;
   const [users, setUsers] = useState<Props[]>([]);
-  const [usersData, setUsersData] = useState<Props[]>([]);
   const [search, setSearch] = useState('');
+
+  const usersData = useSelector(leadersSelector);
 
   const usersPerPage = 7;
 
-  useEffect(() => {
-    let isMounted = true;
-
-    postLiderBoardAll({
-      ratingFieldName: 'pacmanScore',
-      cursor: 0,
-      limit: 10
-    }).then((response) => {
-      const result: Props[] = [];
-      for (let i = 0; i < response.data.length; i += 1) {
-        result.push({
-          id: i + 1,
-          displayName: response.data[i].data.pacmanPlayer,
-          avatar: response.data[i].data.pacmanAvatar,
-          score: response.data[i].data.pacmanScore
-        });
-      }
-      if (isMounted) {
-        setUsers(result);
-        setUsersData(result);
-      }
-    });
-
-    return () => {
-      isMounted = false;
-    };
-  }, []);
-
   useMemo(() => {
-    const data = usersData.filter((user) => {
-      return user.displayName
-        .toLocaleLowerCase()
-        .includes(search.toLocaleLowerCase());
-    });
+    if (usersData !== []) {
+      const data = usersData.filter((user) => {
+        return user.displayName
+          .toLocaleLowerCase()
+          .includes(search.toLocaleLowerCase());
+      });
 
-    setUsers(data);
+      setUsers(data);
+    }
   }, [search, usersData]);
 
   const { currentData, currentPage, handlerPaginate } = usePagination({
