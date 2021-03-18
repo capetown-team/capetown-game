@@ -8,12 +8,14 @@ import { down, left, right, up, drawText } from '@game/script/helpers/action';
 import { ColorType } from '@game/script/helpers/constants';
 import { dataMap } from '@game/script/helpers/data';
 
+type FunctionPostResult = (engine: Engine) => void;
 export class Engine {
   started = false;
   pause = false;
   gameOver = false;
   requestId = 0;
   steps = 0;
+  postResult;
 
   public ctx!: CanvasRenderingContext2D;
   public pacman!: Pacman;
@@ -23,7 +25,11 @@ export class Engine {
 
   readonly initParameters!: InitParameters;
 
-  constructor(canvas: HTMLCanvasElement | null, ctx: CanvasRenderingContext2D) {
+  constructor(
+    canvas: HTMLCanvasElement | null,
+    ctx: CanvasRenderingContext2D,
+    postResult: FunctionPostResult
+  ) {
     if (canvas) {
       this.ctx = ctx;
       this.initParameters = {
@@ -35,6 +41,7 @@ export class Engine {
       this.pacman = new Pacman(this.initParameters, dataMap);
       this.figure = new Figure(this.ctx, this.initParameters, this.pacman);
       this.ghost = new Ghost(this.ctx, this.initParameters, dataMap);
+      this.postResult = postResult;
       this.header = new Header(
         this.ctx,
         this.initParameters,
@@ -255,6 +262,7 @@ export class Engine {
         this.pacman.startPosition();
         this.pacman.freeze();
       } else {
+        if (this.postResult !== undefined) this.postResult(this);
         this.endGame();
       }
     }

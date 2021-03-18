@@ -4,18 +4,26 @@ import React, {
   memo,
   useMemo,
   useCallback,
-  ChangeEvent
+  ChangeEvent,
+  useEffect
 } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 
 import { Pagination } from '@/components/Pagination';
 import { InputType } from '@/types.d';
-import { usersData } from '@/pages/Leaders/data';
 import { usePagination } from '@/hooks/usePagination';
 import { Loading } from '@/components/Loading';
 import { Topping } from '@/components/Topping';
 import { LeaderList } from '@/pages/Leaders/LeaderList';
+import {
+  leadersSelector,
+  pendingSelector
+} from '@/reducers/leaderBoard/selectors';
+import { getLiderBoardAll } from '@/reducers/leaderBoard/actions';
+
 import { PageMeta } from '@/components/PageMeta';
+
 
 import './Leaders.scss';
 
@@ -30,21 +38,42 @@ export type Props = {
 };
 
 const Leaders: FC = () => {
-  const loading = false;
-  const [users, setUsers] = useState<Props[]>(usersData);
+  const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState<Props[]>([]);
   const [search, setSearch] = useState('');
 
   const usersPerPage = 7;
 
-  useMemo(() => {
-    const data = usersData.filter((user) => {
-      return user.displayName
-        .toLocaleLowerCase()
-        .includes(search.toLocaleLowerCase());
-    });
+  const usersData = useSelector(leadersSelector);
+  const pending = useSelector(pendingSelector);
 
-    setUsers(data);
-  }, [search]);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(
+      getLiderBoardAll({
+        ratingFieldName: 'pacmanScore',
+        cursor: 0,
+        limit: 1000
+      })
+    );
+  }, [dispatch]);
+
+  useEffect(() => {
+    setLoading(pending);
+  }, [pending]);
+
+  useMemo(() => {
+    if (usersData !== []) {
+      const data = usersData.filter((user) => {
+        return user.displayName
+          .toLocaleLowerCase()
+          .includes(search.toLocaleLowerCase());
+      });
+
+      setUsers(data);
+    }
+  }, [search, usersData]);
 
   const { currentData, currentPage, handlerPaginate } = usePagination({
     perPage: usersPerPage,

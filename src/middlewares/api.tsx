@@ -7,6 +7,11 @@ import {
   UserPasswordType
 } from '@/reducers/user/types';
 
+import {
+  LeaderBoardType,
+  LeaderBoardAllType
+} from '@/reducers/leaderBoard/types';
+
 export type ResponseUserType = {
   data: UserType;
 };
@@ -18,6 +23,10 @@ export type ResponseType = {
   };
 };
 
+export type ResponseLeaders = {
+  data: LeaderBoardType[];
+};
+
 export interface IApi {
   getUserInfo(): Promise<ResponseUserType>;
   logOut(): Promise<ResponseType>;
@@ -26,6 +35,8 @@ export interface IApi {
   changeUser(body: UserProfileType): Promise<ResponseUserType>;
   changePassword(body: UserPasswordType): Promise<ResponseType>;
   changeAvatar(avatar: File): Promise<ResponseUserType>;
+  setLiderBoardResult(body: LeaderBoardType): Promise<ResponseType>;
+  getLiderBoardAll(data: LeaderBoardAllType): Promise<ResponseLeaders>;
 }
 
 const context = (): IApi => {
@@ -79,6 +90,18 @@ const context = (): IApi => {
     });
   };
 
+  const setLiderBoardResult = async (data: LeaderBoardType) => {
+    return client.post(`${path}/leaderboard`, data, {
+      withCredentials: true
+    });
+  };
+
+  const getLiderBoardAll = (data: LeaderBoardAllType) => {
+    return client.post(`${path}/leaderboard/all`, data, {
+      withCredentials: true
+    });
+  };
+
   return {
     getUserInfo,
     logOut,
@@ -86,8 +109,16 @@ const context = (): IApi => {
     signUp,
     changeUser,
     changePassword,
-    changeAvatar
+    changeAvatar,
+    getLiderBoardAll,
+    setLiderBoardResult
   };
+};
+
+export const getLiderBoardAll = async (data: LeaderBoardAllType) => {
+  return client.post(`${path}/leaderboard/all`, data, {
+    withCredentials: true
+  });
 };
 
 export const api = context();
