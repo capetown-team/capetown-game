@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import { errorSelector } from '@/reducers/user/selectors';
@@ -25,7 +25,7 @@ const App = () => {
   }, [error]);
 
   return (
-    <Router>
+    <>
       {userError && (
         <Notification
           title="Проишзошла ошибка"
@@ -50,7 +50,7 @@ const App = () => {
           })}
         </Switch>
       </div>
-    </Router>
+    </>
   );
 };
 

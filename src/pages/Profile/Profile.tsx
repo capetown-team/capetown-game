@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 
+import { PageMeta } from '@/components/PageMeta';
 import { AppState } from '@/reducers';
 import { userSelector } from '@/reducers/user/selectors';
 import { changeProfileAvatar } from '@/reducers/user/actions';
@@ -63,6 +64,7 @@ export const Profile = () => {
 
   return (
     <div className={b()}>
+      <PageMeta title="Профиль" />
       <div className={b('container')}>
         <div className={b('header')}>
           <div className={b('avatar')}>

@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 
+import { PageMeta } from '@/components/PageMeta';
 import { AppState } from '@/reducers';
 import { authSelector, loadSelector } from '@/reducers/user/selectors';
 import { logout, changeProfile } from '@/reducers/user/actions';
@@ -117,6 +118,7 @@ export const ProfileForm = ({ profileData, setIsProfileView }: Props) => {
 
   return (
     <form className={b()}>
+      <PageMeta title="Профиль" />
       {load && <Loading />}
       <div className={b('row')}>
         <div className={b('column')}>

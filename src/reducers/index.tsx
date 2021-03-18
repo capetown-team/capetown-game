@@ -14,3 +14,5 @@ export const reducer = combineReducers({
   user: userReducer,
   leaderBoard: leaderBoardReducer
 });
+
+export type State = ReturnType<typeof reducer>;

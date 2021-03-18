@@ -22,6 +22,9 @@ import {
 } from '@/reducers/leaderBoard/selectors';
 import { getLiderBoardAll } from '@/reducers/leaderBoard/actions';
 
+import { PageMeta } from '@/components/PageMeta';
+
+
 import './Leaders.scss';
 
 const b = block('table');
@@ -92,6 +95,7 @@ const Leaders: FC = () => {
 
   return (
     <main className={b()}>
+      <PageMeta title="Доска лидеров" />
       <Topping title="Доска лидеров" searchHandler={handlerSearch} />
       <Pagination
         usersPerPage={usersPerPage}
