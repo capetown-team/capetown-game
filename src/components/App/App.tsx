@@ -8,6 +8,7 @@ import { withErrorBoundary } from '@/components/ErrorBoundary';
 import { PrivateRoute } from '@/components/PrivateRoute';
 import { Header } from '@/components/Header';
 import { Notification } from '@/components/Notification';
+import { AppState } from '@/reducers';
 import { signinOAuth } from '@/reducers/user/actions';
 import { getCode } from '@/modules/OAuth';
 import { routes } from './routes';
@@ -17,8 +18,13 @@ import './App.scss';
 const App = () => {
   const dispatch = useDispatch();
 
-  const error = useSelector(errorSelector);
-  const isAuth = useSelector(authSelector);
+  const { isAuth, error } = useSelector((state: AppState) => {
+    return {
+      isAuth: authSelector(state),
+      error: errorSelector(state)
+    };
+  });
+
   const [userError, setUserError] = useState(error);
 
   const handlerClose = useCallback(() => {
@@ -32,7 +38,9 @@ const App = () => {
   useEffect(() => {
     if (!isAuth) {
       const code = getCode();
-      if (code !== null) dispatch(signinOAuth(code));
+      if (code !== null) {
+        dispatch(signinOAuth(code));
+      }
     }
   }, [isAuth, dispatch]);
 

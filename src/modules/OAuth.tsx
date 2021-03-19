@@ -15,5 +15,4 @@ export const getCodeOAuth = async () => {
   const redirectURL = 'http://localhost:5000/';
   const urlAuth = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectURL}`;
   document.location.href = urlAuth;
-  console.log('doc', document.location.href);
 };
