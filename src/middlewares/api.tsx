@@ -37,6 +37,7 @@ export interface IApi {
   changeAvatar(avatar: File): Promise<ResponseUserType>;
   setLiderBoardResult(body: LeaderBoardType): Promise<ResponseType>;
   getLiderBoardAll(data: LeaderBoardAllType): Promise<ResponseLeaders>;
+  postClientID(body: string): Promise<ResponseType>;
 }
 
 const context = (): IApi => {
@@ -51,6 +52,14 @@ const context = (): IApi => {
       {
         withCredentials: true
       }
+    );
+  };
+
+  const postClientID = async (code: string) => {
+    return client.post(
+      `${path}/oauth/yandex`,
+      { code },
+      { withCredentials: true }
     );
   };
 
@@ -111,7 +120,8 @@ const context = (): IApi => {
     changePassword,
     changeAvatar,
     getLiderBoardAll,
-    setLiderBoardResult
+    setLiderBoardResult,
+    postClientID
   };
 };
 
