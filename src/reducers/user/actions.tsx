@@ -20,38 +20,63 @@ import {
   UserPasswordType
 } from './types';
 
-export const authorize = (userInfo: { user: UserType }) => {
+type SigningUp = {
+  type: typeof USER_SUCCESS;
+  payload: { user: UserType };
+};
+
+export const authorize = (userInfo: { user: UserType }): SigningUp => {
   return {
     type: USER_SUCCESS,
     payload: userInfo
   };
 };
 
-const authRequest = () => {
+type AuthRequest = {
+  type: typeof AUTH_REQUEST;
+};
+const authRequest = (): AuthRequest => {
   return {
     type: AUTH_REQUEST
   };
 };
 
-const userRequest = () => {
+type UserRequest = {
+  type: typeof USER_REQUEST;
+};
+
+const userRequest = (): UserRequest => {
   return {
     type: USER_REQUEST
   };
 };
 
-const authCheckFailure = () => {
+type AuthCheckFailure = {
+  type: typeof AUTH_CHECK_FAILURE;
+};
+
+const authCheckFailure = (): AuthCheckFailure => {
   return {
     type: AUTH_CHECK_FAILURE
   };
 };
 
-const updateProfile = () => {
+type UpdateProfile = {
+  type: typeof PROFILE_SUCCESS;
+};
+
+const updateProfile = (): UpdateProfile => {
   return {
     type: PROFILE_SUCCESS
   };
 };
 
-export const userFailure = (error: string) => {
+type UserFailure = {
+  type: typeof USER_FAILURE;
+  payload: { error: string };
+};
+
+export const userFailure = (error: string): UserFailure => {
   return {
     type: USER_FAILURE,
     payload: {
@@ -83,6 +108,10 @@ export const checkAuth = <S,>(): ThunkAction<
         dispatch(authCheckFailure());
       });
   };
+};
+
+type Logout = {
+  type: typeof LOGOUT;
 };
 
 export const logout = <S,>(): ThunkAction<
@@ -258,3 +287,12 @@ export const signinOAuth = <S,>(
       });
   };
 };
+
+export type UserAction =
+  | SigningUp
+  | AuthRequest
+  | UserRequest
+  | AuthCheckFailure
+  | UpdateProfile
+  | UserFailure
+  | Logout;

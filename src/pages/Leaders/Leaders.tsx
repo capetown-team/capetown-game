@@ -24,7 +24,6 @@ import { getLiderBoardAll } from '@/reducers/leaderBoard/actions';
 
 import { PageMeta } from '@/components/PageMeta';
 
-
 import './Leaders.scss';
 
 const b = block('table');
