@@ -13,8 +13,8 @@ export type UserState = {
   isAuth: boolean;
   pending: boolean;
   load: boolean;
-  error: boolean;
-  user: UserType;
+  error?: boolean;
+  user?: UserType;
 };
 
 export type SignInType = {

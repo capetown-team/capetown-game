@@ -1,4 +1,4 @@
-import { UserState } from '@/reducers/user/types';
+import { UserAction } from './actions';
 import {
   USER_SUCCESS,
   AUTH_CHECK_FAILURE,
@@ -9,20 +9,13 @@ import {
   LOGOUT
 } from './constants';
 
-type ActionType = {
-  type: string;
-  payload: UserState;
-};
-
-const initialState = {
+export const initialState = {
   isAuth: false,
   pending: false,
-  load: false,
-  user: null,
-  error: null
+  load: false
 };
 
-export const userReducer = (state = initialState, action: ActionType) => {
+export const userReducer = (state = initialState, action: UserAction) => {
   switch (action.type) {
     case AUTH_REQUEST:
       return { ...state, error: null, pending: true };
@@ -31,9 +24,7 @@ export const userReducer = (state = initialState, action: ActionType) => {
     case USER_SUCCESS: {
       return {
         ...state,
-        user: {
-          ...action.payload.user
-        },
+        user: action.payload.user,
         isAuth: true,
         pending: false,
         load: false,
