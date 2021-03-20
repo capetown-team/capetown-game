@@ -27,7 +27,7 @@
     "@typescript-eslint"
   ],
   "rules": {
-    "no-underscore-dangle": ["error", { "allowAfterThis": true, "allow": ["__REDUX_DEVTOOLS_EXTENSION__", "__INITIAL_STATE__"] }],
+    "no-underscore-dangle": ["error", { "allowAfterThis": true, "allow": ["__REDUX_DEVTOOLS_EXTENSION__", "__INITIAL_STATE__", "__REDUX_DEVTOOLS_EXTENSION_COMPOSE__"] }],
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": ["error"],
     "comma-dangle": ["error", "never"],

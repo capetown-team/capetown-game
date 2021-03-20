@@ -14,6 +14,14 @@ export const overLinks: LinkType[] = [
   {
     name: 'Регистрация',
     linkTo: ROUTES.SIGNUP
+  },
+  {
+    name: 'Лидеры',
+    linkTo: ROUTES.LEADERBOARD
+  },
+  {
+    name: 'post',
+    linkTo: '/post'
   }
 ];
 
@@ -34,5 +42,9 @@ export const userLinks: LinkType[] = [
   {
     name: 'Форум',
     linkTo: ROUTES.FORUM
+  },
+  {
+    name: 'post',
+    linkTo: '/post'
   }
 ];

@@ -6,6 +6,7 @@ import { ROUTES } from '@/constants';
 import { authSelector } from '@/reducers/user/selectors';
 
 const PrivateRoute = ({ component: Component, ...rest }: RouteProps) => {
+  // const isAuth = true;
   const [isAuth, setAuth] = useState(true);
   const auth = useSelector(authSelector);
 

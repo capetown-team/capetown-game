@@ -18,6 +18,7 @@ const serverConfig: Configuration = {
   target: 'node',
   node: { __dirname: false },
   entry: path.resolve(__dirname, '../server/server'),
+  // entry: path.resolve(__dirname, '../server/index'),
   plugins: [new LoadablePlugin()],
   module: {
     rules: [

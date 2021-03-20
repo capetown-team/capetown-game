@@ -4,13 +4,12 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { errorSelector, authSelector } from '@/reducers/user/selectors';
 import { withAuth } from '@/hocs/withAuth';
-import { withErrorBoundary } from '@/components/ErrorBoundary';
-import { PrivateRoute } from '@/components/PrivateRoute';
 import { Header } from '@/components/Header';
 import { Notification } from '@/components/Notification';
 import { AppState } from '@/reducers';
 import { signinOAuth } from '@/reducers/user/actions';
 import { getCode } from '@/modules/OAuth';
+import { PrivateRoute } from '@/components/PrivateRoute';
 import { routes } from './routes';
 
 import './App.scss';
@@ -56,18 +55,22 @@ const App = () => {
       <Header />
       <div className="app">
         <Switch>
-          {routes.map(({ path, component, isPrivate, ...rest }) => {
-            const RouteComponent = isPrivate ? PrivateRoute : Route;
+          {routes.map(({ ...routeProps }) => (
+            <PrivateRoute key={routeProps.path} {...routeProps} />
+          ))}
 
-            return (
-              <RouteComponent
-                key={path}
-                path={path}
-                component={withErrorBoundary(component)}
-                {...rest}
-              />
-            );
-          })}
+          {/*{routes.map(({ path, component, isPrivate, ...rest }) => {*/}
+          {/*  const RouteComponent = isPrivate ? PrivateRoute : Route;*/}
+
+          {/*  return (*/}
+          {/*    <RouteComponent*/}
+          {/*      key={path}*/}
+          {/*      path={path}*/}
+          {/*      component={withErrorBoundary(component)}*/}
+          {/*      {...rest}*/}
+          {/*    />*/}
+          {/*  );*/}
+          {/*})}*/}
         </Switch>
       </div>
     </>
@@ -75,5 +78,6 @@ const App = () => {
 };
 
 const withAuthApp = withAuth(App);
+// const withAuthApp = App;
 
 export { withAuthApp as App };
