@@ -134,6 +134,7 @@
     "redux": "4.0.5",
     "redux-thunk": "2.3.0",
     "rimraf": "^3.0.2",
-    "webpack-node-externals": "2.5.2"
+    "tslib": "^2.1.0",
+    "webpack-node-externals": "^2.5.2"
   }
 }

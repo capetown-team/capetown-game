@@ -1,4 +1,5 @@
 import { LeaderBoardState } from '@/reducers/leaderBoard/types';
+import { LeaderBoardAction } from './actions';
 import {
   LEADER_BOARD_REQUEST,
   LEADER_BOARD_SUCCESS,
@@ -13,7 +14,7 @@ type ActionType = {
   payload: LeaderBoardState;
 };
 
-const initialState = {
+export const initialState = {
   leaders: [],
   isSuccessResult: false,
   isSuccessBoard: false,
@@ -23,7 +24,7 @@ const initialState = {
 
 export const leaderBoardReducer = (
   state = initialState,
-  action: ActionType
+  action: LeaderBoardAction
 ) => {
   switch (action.type) {
     case LEADER_BOARD_REQUEST:

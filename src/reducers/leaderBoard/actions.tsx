@@ -13,38 +13,63 @@ import {
   LEADER_RESULT_FAILURE
 } from './constants';
 
-const leaderBoardRequest = () => {
+type LeaderBoardRequest = {
+  type: typeof LEADER_BOARD_REQUEST;
+};
+
+const leaderBoardRequest = (): LeaderBoardRequest => {
   return {
     type: LEADER_BOARD_REQUEST
   };
 };
 
-const leaderBoardSuccess = (leaders: Props[]) => {
+type LeaderBoardSuccess = {
+  type: typeof LEADER_BOARD_SUCCESS;
+  payload: { leaders: Props[] };
+};
+
+const leaderBoardSuccess = (leaders: Props[]): LeaderBoardSuccess => {
   return {
     type: LEADER_BOARD_SUCCESS,
     payload: { leaders }
   };
 };
 
-const leaderBoardFailure = () => {
+type LeaderBoardFailure = {
+  type: typeof LEADER_BOARD_FAILURE;
+};
+
+const leaderBoardFailure = (): LeaderBoardFailure => {
   return {
     type: LEADER_BOARD_FAILURE
   };
 };
 
-const leaderResultRequest = () => {
+type LeaderResultRequest = {
+  type: typeof LEADER_RESULT_REQUEST;
+};
+
+const leaderResultRequest = (): LeaderResultRequest => {
   return {
     type: LEADER_RESULT_REQUEST
   };
 };
 
-const leaderResultSuccess = () => {
+type LeaderResultSuccess = {
+  type: typeof LEADER_RESULT_SUCCESS;
+};
+
+const leaderResultSuccess = (): LeaderResultSuccess => {
   return {
     type: LEADER_RESULT_SUCCESS
   };
 };
 
-const leaderResultFailure = () => {
+type LeaderResultFailure = {
+  type: typeof LEADER_RESULT_FAILURE;
+};
+
+const leaderResultFailure = (): LeaderResultFailure => {
   return {
     type: LEADER_RESULT_FAILURE
   };
@@ -100,3 +125,11 @@ export const getLiderBoardAll = <S,>(
       });
   };
 };
+
+export type LeaderBoardAction =
+  | LeaderBoardRequest
+  | LeaderBoardSuccess
+  | LeaderBoardFailure
+  | LeaderResultFailure
+  | LeaderResultSuccess
+  | LeaderResultRequest;

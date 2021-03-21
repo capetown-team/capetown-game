@@ -1,9 +1,6 @@
 {
   "compilerOptions": {
-    "lib": [
-      "dom",
-      "es2017"
-    ],
+    "lib": ["dom", "es2017"],
     "module": "commonjs",
     "moduleResolution": "node",
     "target": "es5",
@@ -21,7 +18,8 @@
     "outDir": "./dist",
     "paths": {
       "@/*": ["./src/*"],
-      "@game/*": ["./src/pages/Game/*"]
+      "@game/*": ["./src/pages/Game/*"],
+      "tslib": ["path/to/node_modules/tslib/tslib.d.ts"]
     },
     "typeRoots": ["typings/**/*.d.ts", "node_modules/@types"]
   },
@@ -33,8 +31,5 @@
     "typings/**/*.d.ts",
     "./node_modules/@types"
   ],
-  "exclude": [
-    "node_modules",
-    "**/*.js"
-  ]
+  "exclude": ["node_modules", "**/*.js"]
 }
