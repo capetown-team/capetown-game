@@ -6,7 +6,7 @@
 ## Описание
 Браузерная игра в жанре Pac-Man, в которой необходимо собрать все монеты и обойти монстров
 ## PacMan
-![Main](https://raw.githubusercontent.com/capetown-team/capetown-game/readme/ui/packman.png)
+![Main](/ui/packman.png)
 ## Установка
 1. Клонировать репозиторий
 ```
