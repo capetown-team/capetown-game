@@ -1,5 +1,4 @@
 import path from 'path';
-// import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 import { Configuration } from 'webpack';
 import nodeExternals from 'webpack-node-externals';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
@@ -17,7 +16,7 @@ const serverConfig: Configuration = {
   name: 'server',
   target: 'node',
   node: { __dirname: false },
-  entry: path.resolve(__dirname, '../server/server'),
+  entry: path.resolve(__dirname, '../server/'),
   plugins: [new LoadablePlugin()],
   module: {
     rules: [
@@ -28,7 +27,7 @@ const serverConfig: Configuration = {
     ]
   },
   output: {
-    filename: 'server.bundle.js',
+    filename: 'server.js',
     path: path.resolve(__dirname, '../dist'),
     publicPath: '/'
   },

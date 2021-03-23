@@ -1,6 +1,8 @@
 import React, { memo, FC } from 'react';
 import block from 'bem-cn-lite';
+
 import { Props as LeaderProps } from '@/pages/Leaders/Leaders';
+import { baseUrl } from '@/constants';
 
 const b = block('table');
 
@@ -13,7 +15,11 @@ const LeaderList: FC<Props> = ({ avatar, displayName, score, index }) => {
       <div className={b('item')}>
         <div className={b('avatar')}>
           {avatar ? (
-            <img className={b('img')} src={avatar} alt={displayName} />
+            <img
+              className={b('img')}
+              src={`${baseUrl}${avatar}`}
+              alt={displayName}
+            />
           ) : null}
         </div>
       </div>

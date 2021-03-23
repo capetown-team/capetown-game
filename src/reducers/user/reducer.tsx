@@ -12,7 +12,8 @@ import {
 export const initialState = {
   isAuth: false,
   pending: false,
-  load: false
+  load: false,
+  user: null
 };
 
 export const userReducer = (state = initialState, action: UserAction) => {

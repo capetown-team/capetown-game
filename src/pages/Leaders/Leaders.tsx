@@ -11,7 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 
 import { Pagination } from '@/components/Pagination';
-import { InputType } from '@/types.d';
+import { InputType, RouterFetchDataArgs } from '@/types.d';
 import { usePagination } from '@/hooks/usePagination';
 import { Loading } from '@/components/Loading';
 import { Topping } from '@/components/Topping';
@@ -21,7 +21,6 @@ import {
   pendingSelector
 } from '@/reducers/leaderBoard/selectors';
 import { getLiderBoardAll } from '@/reducers/leaderBoard/actions';
-
 import { PageMeta } from '@/components/PageMeta';
 
 import './Leaders.scss';
@@ -116,6 +115,16 @@ const Leaders: FC = () => {
         ))}
       </ul>
     </main>
+  );
+};
+
+export const fetchData = ({ dispatch }: RouterFetchDataArgs) => {
+  return dispatch(
+    getLiderBoardAll({
+      ratingFieldName: 'pacmanScore',
+      cursor: 0,
+      limit: 1000
+    })
   );
 };
 

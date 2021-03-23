@@ -39,7 +39,7 @@ type LeaderBoardFailure = {
   type: typeof LEADER_BOARD_FAILURE;
 };
 
-const leaderBoardFailure = (): LeaderBoardFailure => {
+const leaderBoardFailure = (s: string): LeaderBoardFailure => {
   return {
     type: LEADER_BOARD_FAILURE
   };
@@ -104,25 +104,24 @@ export const getLiderBoardAll = <S,>(
     getState,
     { getLiderBoardAll }
   ): Promise<void> => {
-    dispatch(leaderBoardRequest());
-    getLiderBoardAll(LeaderBoardRequest)
-      .then((response) => {
-        if (response.data) {
-          const result: Props[] = [];
-          for (let i = 0; i < response.data.length; i += 1) {
-            result.push({
-              id: i + 1,
-              displayName: response.data[i].data.pacmanPlayer,
-              avatar: response.data[i].data.pacmanAvatar,
-              score: response.data[i].data.pacmanScore
-            });
-          }
-          dispatch(leaderBoardSuccess(result));
+    try {
+      dispatch(leaderBoardRequest());
+      const { data } = await getLiderBoardAll(LeaderBoardRequest);
+      if (data) {
+        const result: Props[] = [];
+        for (let i = 0; i < data.length; i += 1) {
+          result.push({
+            id: i + 1,
+            displayName: data[i].data.pacmanPlayer,
+            avatar: data[i].data.pacmanAvatar,
+            score: data[i].data.pacmanScore
+          });
         }
-      })
-      .catch(() => {
-        dispatch(leaderBoardFailure());
-      });
+        dispatch(leaderBoardSuccess(result));
+      }
+    } catch (err) {
+      dispatch(leaderBoardFailure(JSON.stringify('Ну такое')));
+    }
   };
 };
 

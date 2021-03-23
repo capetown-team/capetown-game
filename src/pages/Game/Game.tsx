@@ -46,10 +46,10 @@ const Game = () => {
         dispatch(
           setLiderBoardResult({
             data: {
-              pacmanScore: engine.pacman.score,
-              pacmanPlayer: user.first_name,
-              pacmanAvatar: user.avatar,
-              pacmanID: user.id
+              pacmanScore: engine.pacman.score || 0,
+              pacmanPlayer: user?.first_name || '',
+              pacmanAvatar: user?.avatar || '',
+              pacmanID: user?.id || 0
             },
             ratingFieldName: 'pacmanScore'
           })
@@ -114,6 +114,7 @@ const Game = () => {
 
     return () => {
       if (engine && engine.started) {
+        postResult(engine);
         engine.finishGame();
       }
     };

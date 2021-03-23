@@ -5,21 +5,25 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { renderToString } from 'react-dom/server';
 import { ThunkAction } from 'redux-thunk';
 import { StaticRouter, matchPath } from 'react-router-dom';
+import { StaticRouterContext } from 'react-router';
 import { Helmet, HelmetData } from 'react-helmet';
 import { Request, Response } from 'express';
 import { ChunkExtractor } from '@loadable/server';
-
+import serialize from 'serialize-javascript';
 import url from 'url';
+
 import { routes } from '@/components/App/routes';
-import { AppState } from '../../src/reducers';
-import { App } from '../../src/components/App';
-import { store } from '../../src/store/store';
-import { ROUTES } from '../../src/constants';
-import { IApi } from '../../src/middlewares/api';
+import { store } from '@/store/store';
+import { State } from '@/reducers';
+import { UserType } from '@/reducers/user/types';
+import { authorize } from '@/reducers/user/actions';
+import { ROUTES } from '@/constants';
+import { IApi } from '@/middlewares/api';
+import { App } from '@/components/App';
 
 const getHtml = (
   reactHtml: string,
-  state: AppState,
+  state: State,
   helmetData: HelmetData,
   extractor: ChunkExtractor
 ): string => `
@@ -36,26 +40,32 @@ const getHtml = (
         <body>
             <div id="root">${reactHtml}</div>
             <script>
-              window.__INITIAL_STATE__ = ${JSON.stringify(state)}
+              window.__INITIAL_STATE__ = ${serialize(state)}
             </script>
             ${extractor.getScriptTags()}
         </body>
       </html>
     `;
 
-export const serverRenderMiddleware = (
+export const serverRenderMiddleware = async (
   request: Request,
   response: Response
 ) => {
-  const location: string = request.url;
+  // const store = createStore();
+  if (response.locals.user) {
+    const user: { user: UserType } = { user: response.locals.user };
+    await store.dispatch(authorize(user));
+  }
+  const location: string = request.path;
 
   const statsFile = path.resolve(__dirname, 'loadable-stats.json');
   const extractor = new ChunkExtractor({ statsFile });
+  const context: StaticRouterContext = {};
 
   const renderApp = () => {
     const jsx = extractor.collectChunks(
       <ReduxProvider store={store}>
-        <StaticRouter location={location}>
+        <StaticRouter location={location} context={context}>
           <App />
         </StaticRouter>
       </ReduxProvider>
@@ -68,8 +78,13 @@ export const serverRenderMiddleware = (
     );
     const state = store.getState();
 
+    if (context.url) {
+      response.redirect(context.url);
+      return;
+    }
+
     response
-      .status(pageIsAvailable ? 200 : 404)
+      .status(pageIsAvailable ? context.statusCode || 200 : 404)
       .send(getHtml(reactHtml, state, helmetData, extractor));
   };
 

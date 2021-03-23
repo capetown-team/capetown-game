@@ -1,1 +1,1 @@
-export { Leaders } from './Leaders';
+export { Leaders, fetchData } from './Leaders';

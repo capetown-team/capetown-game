@@ -1,14 +1,10 @@
-import React, { memo, useEffect, useState, useCallback } from 'react';
+import React, { memo, useCallback, FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 import { Link, NavLink, useHistory } from 'react-router-dom';
 
 import { AppState } from '@/reducers';
-import {
-  authSelector,
-  userSelector,
-  loadSelector
-} from '@/reducers/user/selectors';
+import { userSelector, loadSelector } from '@/reducers/user/selectors';
 import { logout } from '@/reducers/user/actions';
 import { Dropdown } from '@/components/Dropdown';
 import { DropNavType } from '@/components/Dropdown/Dropdown';
@@ -20,19 +16,22 @@ import './Header.scss';
 
 const b = block('header');
 
-const Header = () => {
+type Props = {
+  isAuth: boolean;
+};
+
+const Header: FC<Props> = ({ isAuth }) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { isAuth, user, isLoad } = useSelector((state: AppState) => {
+  const { user, isLoad } = useSelector((state: AppState) => {
     return {
-      isAuth: authSelector(state),
       user: userSelector(state),
       isLoad: loadSelector(state)
     };
   });
 
-  const [links, setLinks] = useState(overLinks);
+  const links = isAuth ? userLinks : overLinks;
 
   const handlerLogout = useCallback(() => {
     dispatch(logout());
@@ -52,14 +51,6 @@ const Header = () => {
       name: 'Выйти'
     }
   ];
-
-  useEffect(() => {
-    if (isAuth) {
-      setLinks(userLinks);
-    } else {
-      setLinks(overLinks);
-    }
-  }, [isAuth]);
 
   return (
     <header className={b()}>
@@ -84,7 +75,7 @@ const Header = () => {
           ))}
         </nav>
 
-        {isAuth && (
+        {isAuth && user && (
           <Dropdown
             name={user.first_name}
             avatar={user.avatar}

@@ -8,7 +8,6 @@ import { withErrorBoundary } from '@/components/ErrorBoundary';
 import { PrivateRoute } from '@/components/PrivateRoute';
 import { Header } from '@/components/Header';
 import { Notification } from '@/components/Notification';
-import { AppState } from '@/reducers';
 import { signinOAuth } from '@/reducers/user/actions';
 import { getCode } from '@/modules/OAuth';
 import { routes } from './routes';
@@ -18,12 +17,8 @@ import './App.scss';
 const App = () => {
   const dispatch = useDispatch();
 
-  const { isAuth, error } = useSelector((state: AppState) => {
-    return {
-      isAuth: authSelector(state),
-      error: errorSelector(state)
-    };
-  });
+  const isAuth = useSelector(authSelector);
+  const error = useSelector(errorSelector);
 
   const [userError, setUserError] = useState(error);
 
@@ -53,7 +48,7 @@ const App = () => {
           onCancel={handlerClose}
         />
       )}
-      <Header />
+      <Header isAuth={isAuth} />
       <div className="app">
         <Switch>
           {routes.map(({ path, component, isPrivate, ...rest }) => {
@@ -63,6 +58,7 @@ const App = () => {
               <RouteComponent
                 key={path}
                 path={path}
+                isAuth={isAuth}
                 component={withErrorBoundary(component)}
                 {...rest}
               />

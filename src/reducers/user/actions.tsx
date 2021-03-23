@@ -35,6 +35,7 @@ export const authorize = (userInfo: { user: UserType }): SigningUp => {
 type AuthRequest = {
   type: typeof AUTH_REQUEST;
 };
+
 const authRequest = (): AuthRequest => {
   return {
     type: AUTH_REQUEST
@@ -91,22 +92,17 @@ export const checkAuth = <S,>(): ThunkAction<
   IApi,
   Action<string>
 > => {
-  return async (
-    dispatch: Dispatch,
-    getState,
-    { getUserInfo }
-  ): Promise<void> => {
+  return async (dispatch: Dispatch, getState, { getUserInfo }) => {
     dispatch(authRequest());
-    getUserInfo()
-      .then((response) => {
-        if (response.data) {
-          const user: { user: UserType } = { user: response.data };
-          dispatch(authorize(user));
-        }
-      })
-      .catch(() => {
-        dispatch(authCheckFailure());
-      });
+
+    try {
+      const response = await getUserInfo();
+      const user: { user: UserType } = { user: response.data };
+
+      dispatch(authorize(user));
+    } catch (e) {
+      dispatch(authCheckFailure());
+    }
   };
 };
 

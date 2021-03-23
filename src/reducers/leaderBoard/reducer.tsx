@@ -1,4 +1,3 @@
-import { LeaderBoardState } from '@/reducers/leaderBoard/types';
 import { LeaderBoardAction } from './actions';
 import {
   LEADER_BOARD_REQUEST,
@@ -8,11 +7,6 @@ import {
   LEADER_RESULT_SUCCESS,
   LEADER_RESULT_FAILURE
 } from './constants';
-
-type ActionType = {
-  type: string;
-  payload: LeaderBoardState;
-};
 
 export const initialState = {
   leaders: [],
