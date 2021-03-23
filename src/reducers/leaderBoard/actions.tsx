@@ -39,7 +39,7 @@ type LeaderBoardFailure = {
   type: typeof LEADER_BOARD_FAILURE;
 };
 
-const leaderBoardFailure = (s: string): LeaderBoardFailure => {
+const leaderBoardFailure = (): LeaderBoardFailure => {
   return {
     type: LEADER_BOARD_FAILURE
   };
@@ -120,7 +120,7 @@ export const getLiderBoardAll = <S,>(
         dispatch(leaderBoardSuccess(result));
       }
     } catch (err) {
-      dispatch(leaderBoardFailure(JSON.stringify('Ну такое')));
+      dispatch(leaderBoardFailure());
     }
   };
 };
