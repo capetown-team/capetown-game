@@ -1,8 +1,4 @@
-import { match } from 'react-router';
-import { Dispatch } from 'redux';
-
-import { checkAuth } from '@/reducers/user/actions';
-import { Leaders } from '@/pages/Leaders';
+import { Leaders, fetchData } from '@/pages/Leaders';
 import { Forum } from '@/pages/Forum';
 import { ItemForum } from '@/pages/ItemForum';
 import { Profile } from '@/pages/Profile';
@@ -12,12 +8,6 @@ import { Registration } from '@/pages/Registration';
 import { Game } from '@/pages/Game';
 import { Landing } from '@/pages/Landing';
 import { ROUTES } from '@/constants';
-
-export type RouterFetchDataArgs = {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  dispatch: Dispatch<any>;
-  match: match<{ slug: string }>;
-};
 
 export const routes = [
   {
@@ -29,7 +19,8 @@ export const routes = [
   {
     path: ROUTES.LEADERBOARD,
     component: Leaders,
-    isPrivate: true
+    isPrivate: true,
+    fetchData
   },
   {
     path: ROUTES.FORUM,
@@ -64,9 +55,7 @@ export const routes = [
     path: ROUTES.PROFILE,
     component: Profile,
     isPrivate: true,
-    fetchData({ dispatch }: RouterFetchDataArgs) {
-      return dispatch(checkAuth());
-    }
+    exact: true
   },
   {
     path: '/error',

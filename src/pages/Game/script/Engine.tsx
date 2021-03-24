@@ -13,7 +13,7 @@ export class Engine {
   started = false;
   pause = false;
   gameOver = false;
-  requestId = 0;
+  requestId: null | number = null;
   steps = 0;
   postResult;
 
@@ -54,7 +54,7 @@ export class Engine {
   stopAnimation() {
     if (this.requestId) {
       window.cancelAnimationFrame(this.requestId);
-      this.requestId = 0;
+      this.requestId = null;
     }
   }
 

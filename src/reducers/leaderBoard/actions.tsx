@@ -13,38 +13,63 @@ import {
   LEADER_RESULT_FAILURE
 } from './constants';
 
-const leaderBoardRequest = () => {
+type LeaderBoardRequest = {
+  type: typeof LEADER_BOARD_REQUEST;
+};
+
+const leaderBoardRequest = (): LeaderBoardRequest => {
   return {
     type: LEADER_BOARD_REQUEST
   };
 };
 
-const leaderBoardSuccess = (leaders: Props[]) => {
+type LeaderBoardSuccess = {
+  type: typeof LEADER_BOARD_SUCCESS;
+  payload: { leaders: Props[] };
+};
+
+const leaderBoardSuccess = (leaders: Props[]): LeaderBoardSuccess => {
   return {
     type: LEADER_BOARD_SUCCESS,
     payload: { leaders }
   };
 };
 
-const leaderBoardFailure = () => {
+type LeaderBoardFailure = {
+  type: typeof LEADER_BOARD_FAILURE;
+};
+
+const leaderBoardFailure = (): LeaderBoardFailure => {
   return {
     type: LEADER_BOARD_FAILURE
   };
 };
 
-const leaderResultRequest = () => {
+type LeaderResultRequest = {
+  type: typeof LEADER_RESULT_REQUEST;
+};
+
+const leaderResultRequest = (): LeaderResultRequest => {
   return {
     type: LEADER_RESULT_REQUEST
   };
 };
 
-const leaderResultSuccess = () => {
+type LeaderResultSuccess = {
+  type: typeof LEADER_RESULT_SUCCESS;
+};
+
+const leaderResultSuccess = (): LeaderResultSuccess => {
   return {
     type: LEADER_RESULT_SUCCESS
   };
 };
 
-const leaderResultFailure = () => {
+type LeaderResultFailure = {
+  type: typeof LEADER_RESULT_FAILURE;
+};
+
+const leaderResultFailure = (): LeaderResultFailure => {
   return {
     type: LEADER_RESULT_FAILURE
   };
@@ -72,31 +97,39 @@ export const setLiderBoardResult = <S,>(
 };
 
 export const getLiderBoardAll = <S,>(
-  LeaderBoardRequest: LeaderBoardAllType
+  LeaderBoardRequest: LeaderBoardAllType,
+  cookies?: string
 ): ThunkAction<void, () => S, IApi, Action<string>> => {
   return async (
     dispatch: Dispatch,
     getState,
     { getLiderBoardAll }
   ): Promise<void> => {
-    dispatch(leaderBoardRequest());
-    getLiderBoardAll(LeaderBoardRequest)
-      .then((response) => {
-        if (response.data) {
-          const result: Props[] = [];
-          for (let i = 0; i < response.data.length; i += 1) {
-            result.push({
-              id: i + 1,
-              displayName: response.data[i].data.pacmanPlayer,
-              avatar: response.data[i].data.pacmanAvatar,
-              score: response.data[i].data.pacmanScore
-            });
-          }
-          dispatch(leaderBoardSuccess(result));
+    try {
+      dispatch(leaderBoardRequest());
+      const { data } = await getLiderBoardAll(LeaderBoardRequest, cookies);
+      if (data) {
+        const result: Props[] = [];
+        for (let i = 0; i < data.length; i += 1) {
+          result.push({
+            id: i + 1,
+            displayName: data[i].data.pacmanPlayer,
+            avatar: data[i].data.pacmanAvatar,
+            score: data[i].data.pacmanScore
+          });
         }
-      })
-      .catch(() => {
-        dispatch(leaderBoardFailure());
-      });
+        dispatch(leaderBoardSuccess(result));
+      }
+    } catch (err) {
+      dispatch(leaderBoardFailure());
+    }
   };
 };
+
+export type LeaderBoardAction =
+  | LeaderBoardRequest
+  | LeaderBoardSuccess
+  | LeaderBoardFailure
+  | LeaderResultFailure
+  | LeaderResultSuccess
+  | LeaderResultRequest;

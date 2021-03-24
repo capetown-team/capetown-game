@@ -10,20 +10,19 @@ import React, {
 import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 
-import { Pagination } from '@/components/Pagination';
-import { InputType } from '@/types.d';
-import { usePagination } from '@/hooks/usePagination';
-import { Loading } from '@/components/Loading';
-import { Topping } from '@/components/Topping';
-import { LeaderList } from '@/pages/Leaders/LeaderList';
 import {
   leadersSelector,
   pendingSelector
 } from '@/reducers/leaderBoard/selectors';
 import { getLiderBoardAll } from '@/reducers/leaderBoard/actions';
-
+import { AppState } from '@/reducers';
+import { Pagination } from '@/components/Pagination';
+import { usePagination } from '@/hooks/usePagination';
+import { Loading } from '@/components/Loading';
+import { Topping } from '@/components/Topping';
+import { LeaderList } from '@/pages/Leaders/LeaderList';
 import { PageMeta } from '@/components/PageMeta';
-
+import { InputType, RouterFetchDataArgs } from '@/types.d';
 
 import './Leaders.scss';
 
@@ -38,14 +37,17 @@ export type Props = {
 };
 
 const Leaders: FC = () => {
-  const [loading, setLoading] = useState(true);
   const [users, setUsers] = useState<Props[]>([]);
   const [search, setSearch] = useState('');
 
   const usersPerPage = 7;
 
-  const usersData = useSelector(leadersSelector);
-  const pending = useSelector(pendingSelector);
+  const { usersData, loading } = useSelector((state: AppState) => {
+    return {
+      usersData: leadersSelector(state),
+      loading: pendingSelector(state)
+    };
+  });
 
   const dispatch = useDispatch();
 
@@ -58,10 +60,6 @@ const Leaders: FC = () => {
       })
     );
   }, [dispatch]);
-
-  useEffect(() => {
-    setLoading(pending);
-  }, [pending]);
 
   useMemo(() => {
     if (usersData !== []) {
@@ -111,12 +109,24 @@ const Leaders: FC = () => {
           <div className={b('item', { main: true })}>Игрок</div>
           <div className={b('item')}>Очки</div>
         </li>
-
         {currentData.map((user: Props, index: number) => (
           <LeaderList key={user.id} {...user} index={index} />
         ))}
       </ul>
     </main>
+  );
+};
+
+export const fetchData = ({ dispatch, cookies }: RouterFetchDataArgs) => {
+  return dispatch(
+    getLiderBoardAll(
+      {
+        ratingFieldName: 'pacmanScore',
+        cursor: 0,
+        limit: 1000
+      },
+      cookies
+    )
   );
 };
 

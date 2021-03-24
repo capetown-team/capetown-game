@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 
 import { errorSelector, authSelector } from '@/reducers/user/selectors';
 import { withAuth } from '@/hocs/withAuth';
@@ -8,8 +8,8 @@ import { withErrorBoundary } from '@/components/ErrorBoundary';
 import { PrivateRoute } from '@/components/PrivateRoute';
 import { Header } from '@/components/Header';
 import { Notification } from '@/components/Notification';
-import { AppState } from '@/reducers';
 import { signinOAuth } from '@/reducers/user/actions';
+import { AppState } from '@/reducers';
 import { getCode } from '@/modules/OAuth';
 import { routes } from './routes';
 
@@ -23,7 +23,7 @@ const App = () => {
       isAuth: authSelector(state),
       error: errorSelector(state)
     };
-  });
+  }, shallowEqual);
 
   const [userError, setUserError] = useState(error);
 
@@ -53,7 +53,7 @@ const App = () => {
           onCancel={handlerClose}
         />
       )}
-      <Header />
+      <Header isAuth={isAuth} />
       <div className="app">
         <Switch>
           {routes.map(({ path, component, isPrivate, ...rest }) => {
@@ -63,6 +63,7 @@ const App = () => {
               <RouteComponent
                 key={path}
                 path={path}
+                isAuth={isAuth}
                 component={withErrorBoundary(component)}
                 {...rest}
               />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
@@ -19,18 +19,6 @@ const b = block('user-profile');
 export const Profile = () => {
   const [isProfileView, setIsProfileView] = useState(true);
   const [isShowPopup, setIsShowPopup] = useState(false);
-  const [state, setState] = useState({
-    avatar: '',
-    id: 0,
-    data: {
-      first_name: '',
-      second_name: '',
-      display_name: '',
-      email: '',
-      login: '',
-      phone: ''
-    }
-  });
 
   const dispatch = useDispatch();
   const { user } = useSelector((state: AppState) => {
@@ -39,22 +27,18 @@ export const Profile = () => {
     };
   });
 
-  useEffect(() => {
-    if (!user) return;
-
-    setState({
-      avatar: user.avatar || '',
-      id: user.id,
-      data: {
-        first_name: user.first_name || '',
-        second_name: user.second_name || '',
-        display_name: user.display_name || '',
-        email: user.email || '',
-        login: user.login || '',
-        phone: user.phone || ''
-      }
-    });
-  }, [user]);
+  const state = {
+    avatar: user?.avatar || '',
+    id: user?.id,
+    data: {
+      first_name: user?.first_name || '',
+      second_name: user?.second_name || '',
+      display_name: user?.display_name || '',
+      email: user?.email || '',
+      login: user?.login || '',
+      phone: user?.phone || ''
+    }
+  };
 
   const handleAvatarChange = (file: File) => {
     dispatch(changeProfileAvatar(file));
