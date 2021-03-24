@@ -9,4 +9,4 @@ export enum ROUTES {
   PROFILE = '/profile'
 }
 
-export const baseUrl = 'https://ya-praktikum.tech';
+export const baseUrl = 'https://ya-praktikum.tech/';
