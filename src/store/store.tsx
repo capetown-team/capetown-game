@@ -8,7 +8,7 @@ import { isServer } from '@/modules/isServer';
 import { getInitialState } from './get-initial-state';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const InitialState: any = getInitialState();
+const initialState: any = getInitialState();
 
 const middlewares: Middleware[] = [thunk.withExtraArgument(api)];
 
@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'development') {
 
 export const store = createStore(
   reducer,
-  InitialState,
+  initialState,
   compose(
     applyMiddleware(...middlewares),
     !isServer && window.__REDUX_DEVTOOLS_EXTENSION__

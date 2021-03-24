@@ -14,7 +14,7 @@ export type UserState = {
   pending: boolean;
   load: boolean;
   error?: boolean;
-  user?: UserType | null;
+  user: UserType | null;
 };
 
 export type SignInType = {
