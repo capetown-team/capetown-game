@@ -97,7 +97,8 @@ export const setLiderBoardResult = <S,>(
 };
 
 export const getLiderBoardAll = <S,>(
-  LeaderBoardRequest: LeaderBoardAllType
+  LeaderBoardRequest: LeaderBoardAllType,
+  cookies?: string
 ): ThunkAction<void, () => S, IApi, Action<string>> => {
   return async (
     dispatch: Dispatch,
@@ -106,7 +107,7 @@ export const getLiderBoardAll = <S,>(
   ): Promise<void> => {
     try {
       dispatch(leaderBoardRequest());
-      const { data } = await getLiderBoardAll(LeaderBoardRequest);
+      const { data } = await getLiderBoardAll(LeaderBoardRequest, cookies);
       if (data) {
         const result: Props[] = [];
         for (let i = 0; i < data.length; i += 1) {

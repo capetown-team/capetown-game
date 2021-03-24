@@ -109,7 +109,6 @@ const Leaders: FC = () => {
           <div className={b('item', { main: true })}>Игрок</div>
           <div className={b('item')}>Очки</div>
         </li>
-
         {currentData.map((user: Props, index: number) => (
           <LeaderList key={user.id} {...user} index={index} />
         ))}
@@ -118,13 +117,16 @@ const Leaders: FC = () => {
   );
 };
 
-export const fetchData = ({ dispatch }: RouterFetchDataArgs) => {
+export const fetchData = ({ dispatch, cookies }: RouterFetchDataArgs) => {
   return dispatch(
-    getLiderBoardAll({
-      ratingFieldName: 'pacmanScore',
-      cursor: 0,
-      limit: 1000
-    })
+    getLiderBoardAll(
+      {
+        ratingFieldName: 'pacmanScore',
+        cursor: 0,
+        limit: 1000
+      },
+      cookies
+    )
   );
 };
 

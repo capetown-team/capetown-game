@@ -36,7 +36,10 @@ export interface IApi {
   changePassword(body: UserPasswordType): Promise<ResponseType>;
   changeAvatar(avatar: File): Promise<ResponseUserType>;
   setLiderBoardResult(body: LeaderBoardType): Promise<ResponseType>;
-  getLiderBoardAll(data: LeaderBoardAllType): Promise<ResponseLeaders>;
+  getLiderBoardAll(
+    data: LeaderBoardAllType,
+    cookies?: string
+  ): Promise<ResponseLeaders>;
   postClientID(body: string): Promise<ResponseType>;
 }
 
@@ -84,7 +87,12 @@ const context = (): IApi => {
     return client.post(`${path}/leaderboard`, data);
   };
 
-  const getLiderBoardAll = (data: LeaderBoardAllType) => {
+  const getLiderBoardAll = (data: LeaderBoardAllType, cookies: string) => {
+    if (cookies) {
+      return client.post(`${path}/leaderboard/all`, data, {
+        headers: { Cookie: cookies }
+      });
+    }
     return client.post(`${path}/leaderboard/all`, data);
   };
 

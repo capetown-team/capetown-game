@@ -20,5 +20,6 @@ export type ClickType = (event: MouseEvent) => void;
 export type RouterFetchDataArgs = {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   dispatch: Dispatch<any>;
+  cookies: string;
   match: match<{ slug: string }>;
 };

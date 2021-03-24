@@ -26,6 +26,7 @@ export const serverUserAuthMiddleware = async (
       });
 
       response.locals.user = data;
+      response.locals.cookies = cookies;
     } catch (err) {
       response.locals.user = null;
       // eslint-disable-next-line no-console

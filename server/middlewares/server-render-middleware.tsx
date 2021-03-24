@@ -51,16 +51,17 @@ export const serverRenderMiddleware = async (
   request: Request,
   response: Response
 ) => {
-  // const store = createStore();
   if (response.locals.user) {
     const user: { user: UserType } = { user: response.locals.user };
     await store.dispatch(authorize(user));
   }
+
+  const { cookies } = response.locals;
   const location: string = request.path;
+  const context: StaticRouterContext = {};
 
   const statsFile = path.resolve(__dirname, 'loadable-stats.json');
   const extractor = new ChunkExtractor({ statsFile });
-  const context: StaticRouterContext = {};
 
   const renderApp = () => {
     const jsx = extractor.collectChunks(
@@ -106,6 +107,7 @@ export const serverRenderMiddleware = async (
       dataRequirements.push(
         fetchData({
           dispatch: store.dispatch,
+          cookies,
           match
         })
       );
