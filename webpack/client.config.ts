@@ -1,5 +1,5 @@
 import path from 'path';
-import { Configuration } from 'webpack';
+import { Configuration, HotModuleReplacementPlugin } from 'webpack';
 import CopyWebpackPlugin from 'copy-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import LoadablePlugin from '@loadable/webpack-plugin';
@@ -14,9 +14,17 @@ import imageLoader from './loaders/image';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const CssoWebpackPlugin = require('csso-webpack-plugin').default;
 
+const entry: [string, ...string[]] = [
+  path.resolve(__dirname, `../src/index.tsx`)
+];
+
+if (isDev) {
+  entry.push('webpack-hot-middleware/client');
+}
+
 const clientConfig: Configuration = {
   mode: 'development',
-  entry: path.resolve(__dirname, `../src/index.tsx`),
+  entry,
   plugins: [
     new MiniCssExtractPlugin({
       filename: filename('css')
@@ -29,7 +37,8 @@ const clientConfig: Configuration = {
         { from: 'src/assets/robots.txt', to: '.' }
       ]
     }),
-    new LoadablePlugin()
+    new LoadablePlugin(),
+    isDev ? new HotModuleReplacementPlugin() : ''
   ],
   output: {
     path: distDir,
