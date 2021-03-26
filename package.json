@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "rimraf dist",
     "start:webpack": "cross-env NODE_ENV=development webpack --mode=development --watch",
-    "start:server": "wait-on dist/server.js && nodemon -r esm dist/server.js",
+    "start:server": "wait-on dist/server.js && node dist/server.js --watch",
     "start": "npm run clean && npm-run-all --print-label --parallel start:*",
     "build": "npm run clean  && cross-env NODE_ENV=production && webpack --mode production",
     "build:serve": "node -r esm dist/server.bundle.js",
@@ -63,6 +63,8 @@
     "@types/react-router-dom": "5.1.7",
     "@types/redux": "3.6.0",
     "@types/webpack": "^4.41.26",
+    "@types/webpack-dev-middleware": "4.1.0",
+    "@types/webpack-hot-middleware": "2.25.3",
     "@types/webpack-node-externals": "^2.5.0",
     "@typescript-eslint/eslint-plugin": "4.14.2",
     "@typescript-eslint/parser": "4.14.2",
@@ -112,6 +114,8 @@
     "wait-on": "^5.2.1",
     "webpack": "5.20.1",
     "webpack-cli": "4.5.0",
+    "webpack-dev-middleware": "4.1.0",
+    "webpack-hot-middleware": "2.25.0",
     "webpackbar": "5.0.0-3"
   },
   "dependencies": {

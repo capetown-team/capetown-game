@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
+import { hot } from 'react-hot-loader/root';
 
 import { errorSelector, authSelector } from '@/reducers/user/selectors';
 import { withAuth } from '@/hocs/withAuth';
@@ -75,6 +76,7 @@ const App = () => {
   );
 };
 
-const withAuthApp = withAuth(App);
+const withAuthApp =
+  process.env.NODE_ENV === 'development' ? hot(withAuth(App)) : withAuth(App);
 
 export { withAuthApp as App };
