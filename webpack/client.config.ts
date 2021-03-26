@@ -14,13 +14,13 @@ import imageLoader from './loaders/image';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const CssoWebpackPlugin = require('csso-webpack-plugin').default;
 
-const entry: [string, ...string[]] = [
-  path.resolve(__dirname, `../src/index.tsx`)
-];
+const entry: string[] = [path.resolve(__dirname, `../src/index.tsx`)];
 
 if (isDev) {
   entry.push('webpack-hot-middleware/client');
 }
+
+const devPlugins = isDev ? [new HotModuleReplacementPlugin()] : [];
 
 const clientConfig: Configuration = {
   mode: 'development',
@@ -38,7 +38,7 @@ const clientConfig: Configuration = {
       ]
     }),
     new LoadablePlugin(),
-    isDev ? new HotModuleReplacementPlugin() : ''
+    ...devPlugins
   ],
   output: {
     path: distDir,

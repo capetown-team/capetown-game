@@ -76,6 +76,7 @@ const App = () => {
   );
 };
 
-const withAuthApp = hot(withAuth(App));
+const withAuthApp =
+  process.env.NODE_ENV === 'development' ? hot(withAuth(App)) : withAuth(App);
 
 export { withAuthApp as App };
