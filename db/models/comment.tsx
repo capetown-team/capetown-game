@@ -1,7 +1,6 @@
 import { DataType } from 'sequelize-typescript';
-import { sequelize } from 'server/middlewares/db_connection';
 
-export const Comment = sequelize.define("comment", {
+export const Comment = {
     id: {
       type: DataType.INTEGER,
       autoIncrement: true,
@@ -12,14 +11,20 @@ export const Comment = sequelize.define("comment", {
       type: DataType.STRING,
       allowNull: false
     },
-    id_topic: {
+    topicId: {
       type: DataType.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'topic',
+        key: 'id' 
+      }      
     },
-    id_user: {
+    userId: {
       type: DataType.INTEGER,
-      allowNull: false
+      allowNull: false,
+      references: {
+        model: 'user',
+        key: 'id' 
+      }      
     }
-  }, {
-    timestamps: false
-});
+  };

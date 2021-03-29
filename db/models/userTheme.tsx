@@ -1,7 +1,6 @@
 import { DataType } from 'sequelize-typescript';
-import { sequelize } from 'server/middlewares/db_connection';
 
-export const UserTheme = sequelize.define("users_theme", {
+export const UserTheme = {
     id: {
       type: DataType.INTEGER,
       autoIncrement: true,
@@ -16,7 +15,4 @@ export const UserTheme = sequelize.define("users_theme", {
       type: DataType.INTEGER,
       allowNull: false
     }
-  }, {
-    timestamps: false
-});
-
+  };

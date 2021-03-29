@@ -24,23 +24,23 @@ CREATE TABLE IF NOT EXISTS public.themes
     CONSTRAINT themes_pkey PRIMARY KEY (id)
 );
 
-CREATE SEQUENCE IF NOT EXISTS theme_id_seq;
+CREATE SEQUENCE  IF NOT EXISTS theme_id_seq;
 ALTER TABLE themes ALTER id SET DEFAULT NEXTVAL('theme_id_seq');
 -- Table: public.users_theme
 CREATE TABLE IF NOT EXISTS public.users_theme
 (
     id integer NOT NULL,
-    id_theme integer NOT NULL,
-    id_user integer NOT NULL,
-    CONSTRAINT users_theme_pkey PRIMARY KEY (id_user),
-    CONSTRAINT id_user FOREIGN KEY (id_user)
+    themeid integer NOT NULL,
+    userid integer NOT NULL,
+    CONSTRAINT users_theme_pkey PRIMARY KEY (userid),
+    CONSTRAINT userid FOREIGN KEY (userid)
         REFERENCES public.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
 );
 
-CREATE SEQUENCE IF NOT EXISTS users_theme_id_seq;
+CREATE SEQUENCE  IF NOT EXISTS users_theme_id_seq;
 ALTER TABLE users_theme ALTER id SET DEFAULT NEXTVAL('users_theme_id_seq');
 
 -- Table: public.topics
@@ -49,21 +49,21 @@ CREATE TABLE IF NOT EXISTS public.topics
     id integer NOT NULL,
     name character(100)  NOT NULL,
     content character(400)  NOT NULL,
-    id_author integer,
+    userid integer,
     CONSTRAINT topics_pkey PRIMARY KEY (id),
-    CONSTRAINT id_author FOREIGN KEY (id_author)
+    CONSTRAINT userid FOREIGN KEY (userid)
         REFERENCES public.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
 );
 
-CREATE SEQUENCE IF NOT EXISTS topics_id_seq;
+CREATE SEQUENCE  IF NOT EXISTS topics_id_seq;
 ALTER TABLE topics ALTER id SET DEFAULT NEXTVAL('topics_id_seq');
 
-CREATE INDEX IF NOT EXISTS fki_id_author
+CREATE INDEX IF NOT EXISTS fki_userId
     ON public.topics USING btree
-    (id_author ASC NULLS LAST)
+    (userid ASC NULLS LAST)
     TABLESPACE pg_default;
 
 CREATE INDEX IF NOT EXISTS name
@@ -76,15 +76,15 @@ CREATE TABLE IF NOT EXISTS public.comments
 (
     id integer NOT NULL,
     content character(1000)  NOT NULL,
-    id_topic integer NOT NULL,
-    id_user integer NOT NULL,
+    topicid integer NOT NULL,
+    userid integer NOT NULL,
     CONSTRAINT id PRIMARY KEY (id),
-    CONSTRAINT id_topic FOREIGN KEY (id_topic)
+    CONSTRAINT topidId FOREIGN KEY (topicid)
         REFERENCES public.topics (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID,
-    CONSTRAINT id_user FOREIGN KEY (id_user)
+    CONSTRAINT userId FOREIGN KEY (userid)
         REFERENCES public.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
@@ -94,14 +94,14 @@ CREATE TABLE IF NOT EXISTS public.comments
 CREATE SEQUENCE IF NOT EXISTS comments_id_seq;
 ALTER TABLE comments ALTER id SET DEFAULT NEXTVAL('comments_id_seq');
 
-CREATE INDEX IF NOT EXISTS fki_id_topic
+CREATE INDEX IF NOT EXISTS fki_topicid
     ON public.comments USING btree
-    (id_topic ASC NULLS LAST)
+    (topicid ASC NULLS LAST)
     TABLESPACE pg_default;
 
-CREATE INDEX IF NOT EXISTS fki_id_user
+CREATE INDEX IF NOT EXISTS fki_userid
     ON public.comments USING btree
-    (id_user ASC NULLS LAST)
+    (userId ASC NULLS LAST)
     TABLESPACE pg_default;
 
 -- Table: public.replies
@@ -109,28 +109,28 @@ CREATE INDEX IF NOT EXISTS fki_id_user
 CREATE TABLE IF NOT EXISTS  public.replies
 (
     id integer NOT NULL,
-    id_comment integer NOT NULL,
-    id_user integer NOT NULL,
+    commentid integer NOT NULL,
+    userid integer NOT NULL,
     content character(100),
     CONSTRAINT replies_pkey PRIMARY KEY (id),
-    CONSTRAINT id_comment FOREIGN KEY (id_comment)
+    CONSTRAINT commentid FOREIGN KEY (commentid)
         REFERENCES public.comments (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID,
-    CONSTRAINT id_user FOREIGN KEY (id_user)
+    CONSTRAINT userid FOREIGN KEY (userid)
         REFERENCES public.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
 );
 
-CREATE SEQUENCE IF NOT EXISTS replies_id_seq;
+CREATE SEQUENCE  IF NOT EXISTS replies_id_seq;
 ALTER TABLE replies ALTER id SET DEFAULT NEXTVAL('replies_id_seq');
 
-CREATE INDEX IF NOT EXISTS  fki_id_comment
+CREATE INDEX  IF NOT EXISTS  fki_commentid
     ON public.replies USING btree
-    (id_comment ASC NULLS LAST)
+    (commentId ASC NULLS LAST)
     TABLESPACE pg_default;
 
 
@@ -154,7 +154,7 @@ VALUES
 ('dark', false),
 ('light', false);
 
-INSERT INTO users_theme (id_theme, id_user)
+INSERT INTO users_theme (themeid, userid)
 VALUES
 (1, 1),
 (2, 2),
@@ -167,25 +167,25 @@ VALUES
 (1, 9),
 (2, 10);
 
-INSERT INTO topics (name, content, id_author)
+INSERT INTO topics (name, content, userid)
 VALUES
-('Делимся секретами игры', 'Делимся секретами игры', 1),
-('Кто на каком уровне?', 'Кто на каком уровне?', 2),
-('Как пройти 10 уровень?', 'Как пройти 10 уровень?', 3),
-('Баги в игре', 'Баги в игре', 4),
-('Для новичков: вопросы и ответы', 'Для новичков: вопросы и ответы', 5),
-('Для продвинутых пользователей: решение сложных проблем','Для продвинутых пользователей: решение сложных проблем', 6),
-('Интересные проекты', 'Интересные проекты', 7),
-('Новости', 'Новости', 8),
-('Дополнительно', 'Дополнительно', 9),
-('Общие вопросы разработки игр', 'Общие вопросы разработки игр', 10),
-('2D / 3D Графика, моделирование и рисование', '2D / 3D Графика, моделирование и рисование', 10),
-('Ресурсы для игр', 'Ресурсы для игр', 9),
-('Конкурсы', 'Конкурсы', 8),
-('Статьи', 'Статьи', 7),
-('Оффтоп', 'Оффтоп', 6);
+('Games secret', 'Games secret', 1),
+('Who is at what level?', 'Who is at what level?', 2),
+('How to pass level 10?', 'How to pass level 10?', 3),
+('Bugs in the game', 'Bugs in the game', 4),
+('For beginners: questions and answers', 'For beginners: questions and answers', 5),
+('For advanced users: solving complex problems', 'For advanced users: solving complex problems', 6),
+('Interesting proects', 'Interesting proects', 7),
+('News', 'News', 8),
+('Extra', 'extra', 9),
+('General game development issues', 'General game development issues', 10),
+('2D / 3D Graphics, Modeling and Drawing', '2D / 3D Graphics, Modeling and Drawing', 10),
+('Resources for games', 'Resources for games', 9),
+('Contests', 'Contests', 8),
+('Articles', 'Articles', 7),
+('Offtop', 'Offtop', 6);
 
-INSERT INTO comments (content, id_topic, id_user)
+INSERT INTO comments (content, topicid, userid)
 VALUES
 ('Всем привет, кто нашел какие возможности для успешного проходения игры?', 1, 1),
 ('Только что прошел 1-ый уровень', 2, 2),
@@ -198,9 +198,7 @@ VALUES
 ('По ссылке ниже можно почитать о истории создании игры', 9, 9),
 ('Для игры использовали gameloop', 10, 10);
 
-INSERT INTO replies (content, id_comment, id_user)
+INSERT INTO replies (content, commentid, userid)
 VALUES
 ('Я нашел пару статей об алгоритме движения призрака, думаю, тогда станет понятнее как убегать от них', 1, 1),
 ('А я уже на 2-ом:)', 2, 2);
-
-

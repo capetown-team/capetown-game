@@ -1,7 +1,6 @@
 import { DataType } from 'sequelize-typescript';
-import { sequelize } from 'server/middlewares/db_connection';
 
-export const User = sequelize.define("user", {
+export const User = {
     id: {
       type: DataType.INTEGER,
       autoIncrement: true,
@@ -28,7 +27,5 @@ export const User = sequelize.define("user", {
       type: DataType.STRING,
       allowNull: false
     }
-  }, {
-    timestamps: false
-});
-
+  };
+© 2021 GitHub, Inc.
