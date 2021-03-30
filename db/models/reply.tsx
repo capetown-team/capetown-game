@@ -1,21 +1,25 @@
-import { AllowNull, AutoIncrement, Column, DataType, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import { DataType } from 'sequelize-typescript';
+import { sequelize } from 'server/middlewares/db_connection';
 
-@Table
-export class Reply extends Model<Reply> {
-        @AutoIncrement
-    @PrimaryKey
-    @Column(DataType.INTEGER)
-    id: number;
-
-    @AllowNull(false)
-    @Column(DataType.STRING)
-    content: string;
-
-    @AllowNull(false)
-    @Column(DataType.INTEGER)
-    id_comment: number;
-
-    @AllowNull(false)
-    @Column(DataType.INTEGER)
-    id_user: number;
-}
+export const Reply = sequelize.define("reply", {
+    id: {
+      type: DataType.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+      allowNull: false
+    },
+    content: {
+      type: DataType.STRING,
+      allowNull: false
+    },
+    id_comment: {
+      type: DataType.INTEGER,
+      allowNull: false
+    },
+    id_user: {
+      type: DataType.INTEGER,
+      allowNull: false
+    }
+  }, {
+    timestamps: false
+});

@@ -1,33 +1,34 @@
-import { AllowNull, AutoIncrement, Column, DataType, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import { DataType } from 'sequelize-typescript';
+import { sequelize } from 'server/middlewares/db_connection';
 
-@Table
-export class User extends Model<User> {
-        @AutoIncrement
-    @PrimaryKey
-    @Column(DataType.INTEGER)
-    id: number;
+export const User = sequelize.define("user", {
+    id: {
+      type: DataType.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+      allowNull: false
+    },
+    first_name: {
+      type: DataType.STRING,
+      allowNull: false
+    },
+    second_name: {
+      type: DataType.STRING,
+      allowNull: false
+    },
+    login: {
+      type: DataType.STRING,
+      allowNull: false
+    },
+    phone: {
+      type: DataType.STRING,
+      allowNull: false
+    },
+    password: {
+      type: DataType.STRING,
+      allowNull: false
+    }
+  }, {
+    timestamps: false
+});
 
-    @AllowNull(false)
-    @Column(DataType.STRING)
-    first_name: string;
-
-    @AllowNull(false)
-    @Column(DataType.STRING)
-    second_name: string;
-
-    @AllowNull(false)
-    @Column(DataType.STRING)
-    login: string;
-
-    @AllowNull(false)
-    @Column(DataType.STRING)
-    email: string;
-
-    @AllowNull(true)
-    @Column(DataType.STRING)
-    phone: string;
-
-    @AllowNull(false)
-    @Column(DataType.STRING)
-    password: string;
-}

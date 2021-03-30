@@ -1,21 +1,25 @@
-import { AllowNull, AutoIncrement, Column, DataType, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import { DataType } from 'sequelize-typescript';
+import { sequelize } from 'server/middlewares/db_connection';
 
-@Table
-export class Topic extends Model<Topic> {
-        @AutoIncrement
-    @PrimaryKey
-    @Column(DataType.INTEGER)
-    id: number;
-
-    @AllowNull(false)
-    @Column(DataType.STRING)
-    name: string;
-
-    @AllowNull(false)
-    @Column(DataType.STRING)
-    content: string;
-
-    @AllowNull(true)
-    @Column(DataType.INTEGER)
-    id_author: number;
-}
+export const Topic = sequelize.define("topic", {
+    id: {
+      type: DataType.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+      allowNull: false
+    },
+    name: {
+      type: DataType.STRING,
+      allowNull: false
+    },
+    content: {
+        type: DataType.STRING,
+        allowNull: false
+      },
+    id_author: {
+      type: DataType.INTEGER,
+      allowNull: false
+    }
+  }, {
+    timestamps: false
+});

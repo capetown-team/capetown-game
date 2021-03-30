@@ -1,17 +1,22 @@
-import { AllowNull, AutoIncrement, Column, DataType, Model, PrimaryKey, Table } from 'sequelize-typescript';
+import { DataType } from 'sequelize-typescript';
+import { sequelize } from 'server/middlewares/db_connection';
 
-@Table
-export class UserTheme extends Model<UserTheme> {
-        @AutoIncrement
-    @PrimaryKey
-    @Column(DataType.INTEGER)
-    id: number;
+export const UserTheme = sequelize.define("users_theme", {
+    id: {
+      type: DataType.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+      allowNull: false
+    },
+    id_theme: {
+      type: DataType.INTEGER,
+      allowNull: false
+    },
+    id_user: {
+      type: DataType.INTEGER,
+      allowNull: false
+    }
+  }, {
+    timestamps: false
+});
 
-    @AllowNull(false)
-    @Column(DataType.INTEGER)
-    id_theme: number;
-
-    @AllowNull(false)
-    @Column(DataType.INTEGER)
-    id_user: number;
-}

@@ -11,6 +11,9 @@ CREATE TABLE IF NOT EXISTS public.users
     CONSTRAINT users_pkey PRIMARY KEY (id)
 );
 
+CREATE SEQUENCE IF NOT EXISTS user_id_seq;
+ALTER TABLE users ALTER id SET DEFAULT NEXTVAL('user_id_seq');
+
 -- Table: public.themes
 CREATE TABLE IF NOT EXISTS public.themes
 (
@@ -20,6 +23,9 @@ CREATE TABLE IF NOT EXISTS public.themes
     data json,
     CONSTRAINT themes_pkey PRIMARY KEY (id)
 );
+
+CREATE SEQUENCE  IF NOT EXISTS theme_id_seq;
+ALTER TABLE themes ALTER id SET DEFAULT NEXTVAL('theme_id_seq');
 -- Table: public.users_theme
 CREATE TABLE IF NOT EXISTS public.users_theme
 (
@@ -33,6 +39,9 @@ CREATE TABLE IF NOT EXISTS public.users_theme
         ON DELETE NO ACTION
         NOT VALID
 );
+
+CREATE SEQUENCE  IF NOT EXISTS users_theme_id_seq;
+ALTER TABLE users_theme ALTER id SET DEFAULT NEXTVAL('users_theme_id_seq');
 
 -- Table: public.topics
 CREATE TABLE IF NOT EXISTS public.topics
@@ -48,6 +57,9 @@ CREATE TABLE IF NOT EXISTS public.topics
         ON DELETE NO ACTION
         NOT VALID
 );
+
+CREATE SEQUENCE  IF NOT EXISTS topics_id_seq;
+ALTER TABLE topics ALTER id SET DEFAULT NEXTVAL('topics_id_seq');
 
 CREATE INDEX IF NOT EXISTS fki_id_author
     ON public.topics USING btree
@@ -79,6 +91,9 @@ CREATE TABLE IF NOT EXISTS public.comments
         NOT VALID
 );
 
+CREATE SEQUENCE  IF NOT EXISTS comments_id_seq;
+ALTER TABLE comments ALTER id SET DEFAULT NEXTVAL('comments_id_seq');
+
 CREATE INDEX IF NOT EXISTS fki_id_topic
     ON public.comments USING btree
     (id_topic ASC NULLS LAST)
@@ -87,35 +102,6 @@ CREATE INDEX IF NOT EXISTS fki_id_topic
 CREATE INDEX IF NOT EXISTS fki_id_user
     ON public.comments USING btree
     (id_user ASC NULLS LAST)
-    TABLESPACE pg_default;
-
--- Table: public.topics
-
-CREATE TABLE IF NOT EXISTS public.topics
-(
-    id integer NOT NULL,
-    name character(100)  NOT NULL,
-    content character(400)  NOT NULL,
-    id_author integer,
-    CONSTRAINT topics_pkey PRIMARY KEY (id),
-    CONSTRAINT id_author FOREIGN KEY (id_author)
-        REFERENCES public.users (id) MATCH SIMPLE
-        ON UPDATE NO ACTION
-        ON DELETE NO ACTION
-        NOT VALID
-);
-
-ALTER TABLE public.topics
-    OWNER to postgres;
-
-CREATE INDEX IF NOT EXISTS  fki_id_author
-    ON public.topics USING btree
-    (id_author ASC NULLS LAST)
-    TABLESPACE pg_default;
-
-CREATE INDEX IF NOT EXISTS name
-    ON public.topics USING btree
-    (name  ASC NULLS LAST)
     TABLESPACE pg_default;
 
 -- Table: public.replies
@@ -137,12 +123,10 @@ CREATE TABLE IF NOT EXISTS  public.replies
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID
-)
+);
 
-TABLESPACE pg_default;
-
-ALTER TABLE public.replies
-    OWNER to postgres;
+CREATE SEQUENCE  IF NOT EXISTS replies_id_seq;
+ALTER TABLE replies ALTER id SET DEFAULT NEXTVAL('replies_id_seq');
 
 CREATE INDEX  IF NOT EXISTS  fki_id_comment
     ON public.replies USING btree
@@ -152,71 +136,71 @@ CREATE INDEX  IF NOT EXISTS  fki_id_comment
 
 -- insert data    
 
-INSERT INTO users (id, first_name, second_name, login, email, phone, password)
+INSERT INTO users (first_name, second_name, login, email, phone, password)
 VALUES
-(1, 'Ivanov', 'Ivan', 'IvanovIvan', 'IvanovIvan@mail.ru', '89885678945', 'IvanovIvan'),
-(2, 'Petrov', 'Petr', 'PetrovPetr', 'PetrovPetr@google.ru', '89885678945', 'PetrovPetr'),
-(3, 'Bogdanov', 'Kirill', 'BogdanovKirill', 'BogdanovKirill@rambler.ru', '89885678945', 'BogdanovKirill'),
-(4, 'Kuvaldin', 'igor', 'KuvaldinIgor', 'KuvaldinIgor@mail.ru', '89885678945', 'KuvaldinIgor'),
-(5, 'Fedina', 'Alexandra', 'FedinaAlexandra', 'FedinaAlexandra@yandex.ru', '89885678945', 'FedinaAlexandra'),
-(6, 'Besedin', 'Igor', 'BesedinIgor', 'BesedinIgor@mail.ru', '89885678945', 'BesedinIgor'),
-(7, 'Rostov', 'Andrew', 'RostovAndrew', 'RostovAndrew@mail.ru', '89885678945', 'RostovAndrew'),
-(8, 'ivanov', 'Sergei', 'IvanovSergei', 'IvanovSergei@mail.ru', '89885678945', 'IvanovSergei'),
-(9, 'Dudchenko', 'Pavel', 'DudchenkoPavel', 'DudchenkoPavel@yandex.ru', '89885678945', 'DudchenkoPavel'),
-(10, 'Stepanov', 'Dmitriy', 'StepanovDmitriy', 'StepanovDmitriy@mail.ru', '89885678945', 'StepanovDmitriy');
+('Ivanov', 'Ivan', 'IvanovIvan', 'IvanovIvan@mail.ru', '89885678945', 'IvanovIvan'),
+('Petrov', 'Petr', 'PetrovPetr', 'PetrovPetr@google.ru', '89885678945', 'PetrovPetr'),
+('Bogdanov', 'Kirill', 'BogdanovKirill', 'BogdanovKirill@rambler.ru', '89885678945', 'BogdanovKirill'),
+('Kuvaldin', 'igor', 'KuvaldinIgor', 'KuvaldinIgor@mail.ru', '89885678945', 'KuvaldinIgor'),
+('Fedina', 'Alexandra', 'FedinaAlexandra', 'FedinaAlexandra@yandex.ru', '89885678945', 'FedinaAlexandra'),
+('Besedin', 'Igor', 'BesedinIgor', 'BesedinIgor@mail.ru', '89885678945', 'BesedinIgor'),
+('Rostov', 'Andrew', 'RostovAndrew', 'RostovAndrew@mail.ru', '89885678945', 'RostovAndrew'),
+('ivanov', 'Sergei', 'IvanovSergei', 'IvanovSergei@mail.ru', '89885678945', 'IvanovSergei'),
+('Dudchenko', 'Pavel', 'DudchenkoPavel', 'DudchenkoPavel@yandex.ru', '89885678945', 'DudchenkoPavel'),
+('Stepanov', 'Dmitriy', 'StepanovDmitriy', 'StepanovDmitriy@mail.ru', '89885678945', 'StepanovDmitriy');
 
-INSERT INTO themes (id, name, hidden)
+INSERT INTO themes (name, hidden)
 VALUES
-(1, 'dark', false),
-(2, 'light', false);
+('dark', false),
+('light', false);
 
-INSERT INTO users_theme (id, id_theme, id_user)
+INSERT INTO users_theme (id_theme, id_user)
 VALUES
-(1, 1, 1),
-(2, 2, 2),
-(3, 1, 3),
-(4, 2, 4),
-(5, 1, 5),
-(6, 2, 6),
-(7, 1, 7),
-(8, 2, 8),
-(9, 1, 9),
-(10, 2, 10);
+(1, 1),
+(2, 2),
+(1, 3),
+(2, 4),
+(1, 5),
+(2, 6),
+(1, 7),
+(2, 8),
+(1, 9),
+(2, 10);
 
-INSERT INTO topics (id, name, content, id_author)
+INSERT INTO topics (name, content, id_author)
 VALUES
-(1, 'Делимся секретами игры', 'Делимся секретами игры', 1),
-(2, 'Кто на каком уровне?', 'Кто на каком уровне?', 2),
-(3, 'Как пройти 10 уровень?', 'Как пройти 10 уровень?', 3),
-(4, 'Баги в игре', 'Баги в игре', 4),
-(5, 'Для новичков: вопросы и ответы', 'Для новичков: вопросы и ответы', 5),
-(6, 'Для продвинутых пользователей: решение сложных проблем','Для продвинутых пользователей: решение сложных проблем', 6),
-(7, 'Интересные проекты', 'Интересные проекты', 7),
-(8, 'Новости', 'Новости', 8),
-(9, 'Дополнительно', 'Дополнительно', 9),
-(10, 'Общие вопросы разработки игр', 'Общие вопросы разработки игр', 10),
-(11, '2D / 3D Графика, моделирование и рисование', '2D / 3D Графика, моделирование и рисование', 10),
-(12, 'Ресурсы для игр', 'Ресурсы для игр', 9),
-(13, 'Конкурсы', 'Конкурсы', 8),
-(14, 'Статьи', 'Статьи', 7),
-(15, 'Оффтоп', 'Оффтоп', 6);
+('Делимся секретами игры', 'Делимся секретами игры', 1),
+('Кто на каком уровне?', 'Кто на каком уровне?', 2),
+('Как пройти 10 уровень?', 'Как пройти 10 уровень?', 3),
+('Баги в игре', 'Баги в игре', 4),
+('Для новичков: вопросы и ответы', 'Для новичков: вопросы и ответы', 5),
+('Для продвинутых пользователей: решение сложных проблем','Для продвинутых пользователей: решение сложных проблем', 6),
+('Интересные проекты', 'Интересные проекты', 7),
+('Новости', 'Новости', 8),
+('Дополнительно', 'Дополнительно', 9),
+('Общие вопросы разработки игр', 'Общие вопросы разработки игр', 10),
+('2D / 3D Графика, моделирование и рисование', '2D / 3D Графика, моделирование и рисование', 10),
+('Ресурсы для игр', 'Ресурсы для игр', 9),
+('Конкурсы', 'Конкурсы', 8),
+('Статьи', 'Статьи', 7),
+('Оффтоп', 'Оффтоп', 6);
 
-INSERT INTO comments (id, content, id_topic, id_user)
+INSERT INTO comments (content, id_topic, id_user)
 VALUES
-(1, 'Всем привет, кто нашел какие возможности для успешного проходения игры?', 1, 1),
-(2, 'Только что прошел 1-ый уровень', 2, 2),
-(3, 'Как ты до него дошел?', 3, 3),
-(4, 'Заходит за стены иногда', 4, 4),
-(5, 'Могу скинуть ссылку на алготим движения призраков', 5, 5),
-(6, 'Алгоритм движения красного призрака', 6, 6),
-(7, 'Игры похожие на пакман', 7, 7),
-(8, 'Вышло обновление', 8, 8),
-(9, 'По ссылке ниже можно почитать о истории создании игры', 9, 9),
-(10, 'Для игры использовали gameloop', 10, 10);
+('Всем привет, кто нашел какие возможности для успешного проходения игры?', 1, 1),
+('Только что прошел 1-ый уровень', 2, 2),
+('Как ты до него дошел?', 3, 3),
+('Заходит за стены иногда', 4, 4),
+('Могу скинуть ссылку на алготим движения призраков', 5, 5),
+('Алгоритм движения красного призрака', 6, 6),
+('Игры похожие на пакман', 7, 7),
+('Вышло обновление', 8, 8),
+('По ссылке ниже можно почитать о истории создании игры', 9, 9),
+('Для игры использовали gameloop', 10, 10);
 
-INSERT INTO replies (id, content, id_comment, id_user)
+INSERT INTO replies (content, id_comment, id_user)
 VALUES
-(1, 'Я нашел пару статей об алгоритме движения призрака, думаю, тогда станет понятнее как убегать от них', 1, 1),
-(2, 'А я уже на 2-ом:)', 2, 2);
+('Я нашел пару статей об алгоритме движения призрака, думаю, тогда станет понятнее как убегать от них', 1, 1),
+('А я уже на 2-ом:)', 2, 2);
 
 
