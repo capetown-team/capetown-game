@@ -6,9 +6,6 @@ import cookieParser from 'cookie-parser';
 
 import { serverRenderMiddleware } from './middlewares/server-render-middleware';
 import { serverUserAuthMiddleware } from './middlewares/server-user-auth-middleware';
-import { hmrMiddleware } from './middlewares/hmr-middleware';
-
-import { isDev } from '../webpack/env';
 
 export const app = express();
 
@@ -21,9 +18,6 @@ app.get('/sw.js', (req, res) => {
   res.sendFile(path.join(__dirname, '../sw.js'));
 });
 
-if (isDev) {
-  app.use(hmrMiddleware);
-}
-
 app.use(serverUserAuthMiddleware);
 app.get('/*', serverRenderMiddleware);
+
