@@ -28,4 +28,3 @@ export const User = {
       allowNull: false
     }
   };
-© 2021 GitHub, Inc.
