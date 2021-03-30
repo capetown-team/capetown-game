@@ -27,3 +27,4 @@ if (isDev) {
 
 app.use(serverUserAuthMiddleware);
 app.get('/*', serverRenderMiddleware);
+
