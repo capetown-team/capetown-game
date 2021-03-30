@@ -20,3 +20,4 @@ app.get('/sw.js', (req, res) => {
 
 app.use(serverUserAuthMiddleware);
 app.get('/*', serverRenderMiddleware);
+
