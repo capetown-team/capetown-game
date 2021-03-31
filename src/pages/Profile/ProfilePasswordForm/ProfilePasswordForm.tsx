@@ -2,6 +2,7 @@ import React, { ChangeEvent, FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 
+import { PageMeta } from '@/components/PageMeta';
 import { changePassword } from '@/reducers/user/actions';
 import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
@@ -74,6 +75,7 @@ export const ProfilePasswordForm: FC<Props> = ({ setIsProfileView }) => {
 
   return (
     <form className={b()}>
+      <PageMeta title="Профиль" />
       <div className={b('row')}>
         <div className={b('column')}>
           <div className={b('input')}>

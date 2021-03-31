@@ -1,4 +1,7 @@
 import React, { memo, useEffect, useRef, useState, useCallback } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { userSelector } from '@/reducers/user/selectors';
+
 import block from 'bem-cn-lite';
 
 import { Topping } from '@/components/Topping';
@@ -7,12 +10,17 @@ import { Notification } from '@/components/Notification';
 import { BodyNotification } from '@game/BodyNotification';
 import { Engine } from '@/pages/Game/script/Engine';
 import { toggelFullScreen, HTMLElementFullScreen } from '@/modules/webApi';
+import { setLiderBoardResult } from '@/reducers/leaderBoard/actions';
+import { PageMeta } from '@/components/PageMeta';
 
 import './Game.scss';
 
 const b = block('game');
 
 const Game = () => {
+  const dispatch = useDispatch();
+  const user = useSelector(userSelector);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gameRef = useRef<HTMLElementFullScreen>(null);
 
@@ -31,6 +39,25 @@ const Game = () => {
       setStart(true);
     }
   }, [engine, isStart]);
+
+  const postResult = useCallback(
+    (engine: Engine) => {
+      if (engine !== null && engine !== undefined) {
+        dispatch(
+          setLiderBoardResult({
+            data: {
+              pacmanScore: engine.pacman.score || 0,
+              pacmanPlayer: user?.first_name || '',
+              pacmanAvatar: user?.avatar || '',
+              pacmanID: user?.id || 0
+            },
+            ratingFieldName: 'pacmanScore'
+          })
+        );
+      }
+    },
+    [dispatch, user]
+  );
 
   const handlerPause = useCallback(() => {
     if (engine && !engine.gameOver) {
@@ -57,14 +84,15 @@ const Game = () => {
     setInfo(false);
   }, []);
 
-  const handleStop = useCallback(() => {
+  const handleStop = () => {
     if (engine) {
+      postResult(engine);
       (engine as Engine).finishGame();
     }
 
     setStart(false);
     setPause(false);
-  }, [engine]);
+  };
 
   const handlerFS = useCallback(() => {
     const target = gameRef.current;
@@ -79,20 +107,26 @@ const Game = () => {
     const canvas = canvasRef.current as HTMLCanvasElement;
     const engine = new Engine(
       canvas,
-      canvas.getContext('2d') as CanvasRenderingContext2D
+      canvas.getContext('2d') as CanvasRenderingContext2D,
+      postResult
     );
     setEngine(engine);
-    // engine.startGame();
 
     return () => {
       if (engine && engine.started) {
+        postResult(engine);
         engine.finishGame();
       }
     };
-  }, []);
+  }, [postResult]);
 
   return (
     <div className={b()}>
+      <PageMeta
+        title="Игра Pac-Man"
+        description="Игрок управляет Пакманом через лабиринт, поедая пак-точки во время движения."
+        image="/images/game.png"
+      />
       {isInfo && (
         <Notification
           title="Правила игры"
@@ -134,8 +168,8 @@ const Game = () => {
         <canvas
           className={b('canvas')}
           ref={canvasRef}
-          width={800}
-          height={500}
+          width={540}
+          height={540}
         />
       </div>
     </div>

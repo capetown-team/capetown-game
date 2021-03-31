@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Route, Redirect, RouteProps } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 
 import { ROUTES } from '@/constants';
-import { authSelector } from '@/reducers/user/selectors';
 
-const PrivateRoute = ({ component: Component, ...rest }: RouteProps) => {
-  const [isAuth, setAuth] = useState(true);
-  const auth = useSelector(authSelector);
+type Props = {
+  isAuth: boolean;
+};
 
-  useEffect(() => {
-    setAuth(auth);
-  }, [auth]);
-
+const PrivateRoute = ({
+  component: Component,
+  isAuth,
+  ...rest
+}: Props & RouteProps) => {
   if (!Component) {
     throw new Error('Component is required in PrivateRoute');
   }

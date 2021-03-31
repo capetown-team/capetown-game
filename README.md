@@ -6,7 +6,7 @@
 ## Описание
 Браузерная игра в жанре Pac-Man, в которой необходимо собрать все монеты и обойти монстров
 ## PacMan
-![Main](https://raw.githubusercontent.com/capetown-team/capetown-game/readme/ui/packman.png)
+![Main](/ui/packman.png)
 ## Установка
 1. Клонировать репозиторий
 ```
@@ -18,7 +18,7 @@
 ```
 3. Запустить локальный сервер
 ```
-  npm run dev
+  npm run start
 ```
 4. Собрать проект
 ```
@@ -32,6 +32,18 @@
 ```
   npm run lint:style
 ```
+## Запуск проекта ssr
+- 1. Добавить в etc/hosts `127.0.0.1 local.ya-praktikum.tech`
+- 2. Скачать сертификаты `cert.pem` и `key.pem` в папку server/certificate
+  - [Сгенерировать сертификаты 1 пример](https://www.npmjs.com/package/openssl-self-signed-certificate) 
+    - openssl req -x509 -newkey rsa:2048 -keyout key.pem -out cert.pem -days 999999 -nodes
+  - [Сгенерировать сертификаты 2 пример](https://medium.com/@nitinpatel_20236/how-to-create-an-https-server-on-localhost-using-express-366435d61f28) 
+     - Creating Keys and Cerificate (linux terminal)
+        + openssl req -x509 -newkey rsa:2048 -keyout keytmp.pem -out cert.pem -days 365
+     - Get Decrypted Keys
+        + openssl rsa -in keytmp.pem -out key.pem
+- 3. Запустить проект `npm run start`
+- 4. Открыть страницу в браузере [https://local.ya-praktikum.tech:5000](https://local.ya-praktikum.tech:5000), port может быть другим
 ## Актуальная версия с heroku
 На [demo](https://warm-anchorage-94393.herokuapp.com) пример для ознакомления
 ## Что сделано
@@ -41,6 +53,8 @@
   - обработка css: `css-loader`, `style-loader`, `sass-loader`, `mini-css-extract-plugin`;
   - сборка TS/JS: `babel`, `ts-loader`;
 - Настроен: `server worker`;
+- Защита от DOS атак: `express-rate-limit`;
+- Защита от xss атак: `serialize-javascript`;
 - Добавлены снепшотные тесты ;
 - Код стайлинг: `prettier`, `eslint`;
 - Создана механика игры.;
@@ -53,5 +67,14 @@
   - Регистрация;
   - Профиль;
   - Страницы (404, 500);
+## Утечки памяти
+Для нахождения утечек памяти использовались инструменты вкладки браузера Memory и Perfomance.
+С помощью графиков Perfomance замерялись показатели начала и окончания работы. 
+![Memory timeline](/ui/perfomancegame.png)
+
+На скриншоте видны периодические "пороги" выделения памяти, которые возникают вследствие работы сборщика мусора.
+В целом вся выделяемая память со времени освобождаетмся. Подробнее ниже.
+
+![Memory timeline](/ui/perfomance.png)
 ## **Команда**
 Команда "Кейптаун"

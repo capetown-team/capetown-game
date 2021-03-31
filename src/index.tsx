@@ -1,6 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { hydrate } from 'react-dom';
 import { Provider } from 'react-redux';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { loadableReady } from '@loadable/component';
+
 import { store } from '@/store/store';
 import { App } from '@/components/App';
 
@@ -12,9 +15,13 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
-  document.getElementById('root')
-);
+loadableReady(() => {
+  hydrate(
+    <Provider store={store}>
+      <Router>
+        <App />
+      </Router>
+    </Provider>,
+    document.getElementById('root')
+  );
+});

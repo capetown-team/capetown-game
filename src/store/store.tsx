@@ -4,6 +4,11 @@ import thunk from 'redux-thunk';
 import { reducer } from '@/reducers';
 import { logger } from '@/middlewares/logger';
 import { api } from '@/middlewares/api';
+import { isServer } from '@/modules/isServer';
+import { getInitialState } from './get-initial-state';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const initialState: any = getInitialState();
 
 const middlewares: Middleware[] = [thunk.withExtraArgument(api)];
 
@@ -13,9 +18,10 @@ if (process.env.NODE_ENV === 'development') {
 
 export const store = createStore(
   reducer,
+  initialState,
   compose(
     applyMiddleware(...middlewares),
-    window.__REDUX_DEVTOOLS_EXTENSION__
+    !isServer && window.__REDUX_DEVTOOLS_EXTENSION__
       ? window.__REDUX_DEVTOOLS_EXTENSION__()
       : (f: () => void) => f
   )

@@ -1,4 +1,4 @@
-import { Leaders } from '@/pages/Leaders';
+import { Leaders, fetchData } from '@/pages/Leaders';
 import { Forum } from '@/pages/Forum';
 import { ItemForum } from '@/pages/ItemForum';
 import { Profile } from '@/pages/Profile';
@@ -19,7 +19,8 @@ export const routes = [
   {
     path: ROUTES.LEADERBOARD,
     component: Leaders,
-    isPrivate: true
+    isPrivate: true,
+    fetchData
   },
   {
     path: ROUTES.FORUM,
@@ -53,7 +54,8 @@ export const routes = [
   {
     path: ROUTES.PROFILE,
     component: Profile,
-    isPrivate: true
+    isPrivate: true,
+    exact: true
   },
   {
     path: '/error',

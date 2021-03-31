@@ -2,18 +2,20 @@ import { InitParameters } from '@game/script/Types';
 import { Pacman } from '@game/script/Pacman';
 import { Figure } from '@game/script/Figure';
 import { Ghost } from '@game/script/Ghost';
+import { getDir, getNewDirection } from '@game/script/moveClass';
 import { Header } from '@game/script/Header';
 import { down, left, right, up, drawText } from '@game/script/helpers/action';
 import { ColorType } from '@game/script/helpers/constants';
+import { dataMap } from '@game/script/helpers/data';
 
+type FunctionPostResult = (engine: Engine) => void;
 export class Engine {
   started = false;
   pause = false;
   gameOver = false;
-
-  requestId = 0;
-
+  requestId: null | number = null;
   steps = 0;
+  postResult;
 
   public ctx!: CanvasRenderingContext2D;
   public pacman!: Pacman;
@@ -23,7 +25,11 @@ export class Engine {
 
   readonly initParameters!: InitParameters;
 
-  constructor(canvas: HTMLCanvasElement | null, ctx: CanvasRenderingContext2D) {
+  constructor(
+    canvas: HTMLCanvasElement | null,
+    ctx: CanvasRenderingContext2D,
+    postResult: FunctionPostResult
+  ) {
     if (canvas) {
       this.ctx = ctx;
       this.initParameters = {
@@ -32,9 +38,10 @@ export class Engine {
         head: 25,
         borderWalls: 10
       };
-      this.pacman = new Pacman(this.initParameters);
+      this.pacman = new Pacman(this.initParameters, dataMap);
       this.figure = new Figure(this.ctx, this.initParameters, this.pacman);
-      this.ghost = new Ghost(this.ctx);
+      this.ghost = new Ghost(this.ctx, this.initParameters, dataMap);
+      this.postResult = postResult;
       this.header = new Header(
         this.ctx,
         this.initParameters,
@@ -47,7 +54,7 @@ export class Engine {
   stopAnimation() {
     if (this.requestId) {
       window.cancelAnimationFrame(this.requestId);
-      this.requestId = 0;
+      this.requestId = null;
     }
   }
 
@@ -105,6 +112,8 @@ export class Engine {
     this.figure.updateCoins();
     this.pacman.reset();
     this.pacman.directionWatcher.set(right);
+    this.ghost.reset();
+    this.ghost.directionWatcher.set(right);
 
     this.startGame();
   }
@@ -112,6 +121,7 @@ export class Engine {
   startGame() {
     if (this.started && !this.pause) {
       this.pacman.reset();
+      this.figure.updateCoins();
 
       return;
     }
@@ -120,10 +130,8 @@ export class Engine {
     this.started = true;
     this.gameOver = false;
 
-    this.figure.updateCoins();
-
     if (!this.pacman) {
-      this.pacman = new Pacman(this.initParameters);
+      this.pacman = new Pacman(this.initParameters, dataMap);
     }
     this.pacman.stop();
     this.steps = 0;
@@ -170,11 +178,31 @@ export class Engine {
   }
 
   gameLoop() {
-    this.blank();
+    if (typeof navigator !== 'undefined' && navigator.getGamepads) {
+      const gamepads = navigator.getGamepads();
+
+      if (gamepads && gamepads[0]) {
+        const gp = gamepads[0];
+
+        if (gp.buttons[12].pressed) {
+          this.doKeyDown({ keyCode: 38 });
+        } else if (gp.buttons[13].pressed) {
+          this.doKeyDown({ keyCode: 40 });
+        } else if (gp.buttons[14].pressed) {
+          this.doKeyDown({ keyCode: 37 });
+        } else if (gp.buttons[15].pressed) {
+          this.doKeyDown({ keyCode: 39 });
+        }
+      }
+    }
+
+    this.blank(ColorType.Black);
     this.header.drawHeader();
-    this.figure.drawWalls();
     this.figure.drawCoins();
     this.ghost.drawGhost();
+    this.figure.drawBlocks();
+    this.figure.drawStrength();
+
     this.ctx.fillStyle = ColorType.Gold;
     this.ctx.beginPath();
 
@@ -200,22 +228,41 @@ export class Engine {
         2 * Math.PI
       );
     }
+
     this.pacman.move();
     this.pacman.checkDirectionChange();
     this.pacman.checkCollisions();
+
     this.ctx.fill();
+    this.ctx.closePath();
+
+    const directions = this.ghost.checkCross();
+    let successful = false;
+    while (!successful) {
+      successful = this.ghost.checkCollisions();
+      if (!successful) {
+        const newDir = getNewDirection(
+          directions,
+          getDir(this.ghost.direction)
+        );
+        this.ghost.setDirection(newDir);
+      }
+    }
+
+    this.ghost.move();
 
     this.steps += 1;
     if (this.steps % this.pacman.stepMounth === 0) {
       this.pacman.isMouthOpen = !this.pacman.isMouthOpen;
     }
 
-    if (this.ghost.isTouch(this.pacman, this.ghost.ghost)) {
+    if (this.ghost.isTouch(this.pacman)) {
       if (this.header.hearts > 1) {
         this.header.hearts -= 1;
         this.pacman.startPosition();
         this.pacman.freeze();
       } else {
+        if (this.postResult !== undefined) this.postResult(this);
         this.endGame();
       }
     }
@@ -223,31 +270,31 @@ export class Engine {
     this.requestId = window.requestAnimationFrame(this.gameLoop.bind(this));
   }
 
-  doKeyDown(evt: { keyCode: number; preventDefault(): void }) {
+  doKeyDown(evt: { keyCode: number; preventDefault?: () => void }) {
     this.pacman.unfreeze();
+    this.ghost.unfreeze();
+
+    if (evt.preventDefault) {
+      evt.preventDefault();
+    }
 
     switch (evt.keyCode) {
       case 38:
-        evt.preventDefault();
         this.pacman.moveUpDown();
 
         this.pacman.directionWatcher.set(up);
         break;
       case 40:
-        evt.preventDefault();
         this.pacman.moveUpDown();
 
         this.pacman.directionWatcher.set(down);
         break;
-        evt.preventDefault();
       case 37:
-        evt.preventDefault();
         this.pacman.moveRightLeft();
 
         this.pacman.directionWatcher.set(left);
         break;
       case 39:
-        evt.preventDefault();
         this.pacman.moveRightLeft();
 
         this.pacman.directionWatcher.set(right);
