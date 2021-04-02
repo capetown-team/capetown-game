@@ -1,6 +1,9 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
+import dotenv from 'dotenv';
+
+dotenv.config();
 const { DB_USERNAME, DB_PASSWORD } = process.env;
-console.log(DB_USERNAME,DB_PASSWORD);
+
 const sequelizeOptions: SequelizeOptions = {
     host: 'localhost',
     port: 5436,
