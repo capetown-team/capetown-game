@@ -11,7 +11,7 @@ const sequelizeOptions: SequelizeOptions = {
     password: DB_PASSWORD,
     database: 'pacman',
 
-    dialect: 'postgres', 
+    dialect: 'postgres',
     define: {
     timestamps: false
   }
