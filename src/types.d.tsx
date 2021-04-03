@@ -23,3 +23,35 @@ export type RouterFetchDataArgs = {
   cookies: string;
   match: match<{ slug: string }>;
 };
+
+export type FormType =
+  | 'element'
+  | 'value'
+  | 'config'
+  | 'validation'
+  | 'valid'
+  | 'touched'
+  | 'validationMessage';
+
+export type FormFieldType = {
+  element: string;
+  value: string;
+  config: {
+    label?: string;
+    name: string;
+    type?: string;
+    placeholder: string;
+  };
+  validation: {
+    required: boolean;
+    email?: boolean;
+    minLength?: number;
+  };
+  valid: boolean;
+  touched: boolean;
+  validationMessage: string;
+};
+
+export type FormDataType = {
+  [key: string]: FormFieldType;
+};

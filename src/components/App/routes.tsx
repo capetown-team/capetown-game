@@ -7,6 +7,7 @@ import { Authorization } from '@/pages/Authorization';
 import { Registration } from '@/pages/Registration';
 import { Game } from '@/pages/Game';
 import { Landing } from '@/pages/Landing';
+import { Feedback } from '@/pages/feedback';
 import { ROUTES } from '@/constants';
 
 export const routes = [
@@ -55,6 +56,12 @@ export const routes = [
     path: ROUTES.PROFILE,
     component: Profile,
     isPrivate: true,
+    exact: true
+  },
+  {
+    path: ROUTES.FEEDBACK,
+    component: Feedback,
+    isPrivate: false,
     exact: true
   },
   {

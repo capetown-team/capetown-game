@@ -1,6 +1,37 @@
+@import '../../styles/layout/colors';
 @import '../../styles/layout/variables';
 @import '../../styles/layout/mixins';
 
 .app {
+  padding: 0 10px;
+
   @include wrap;
+
+  &__feedback {
+    width: 40px;
+    height: 40px;
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    background-color: $grey;
+    border-radius: 50%;
+    transition: background .7s;
+
+    &:hover {
+      background-color: $light-blue;
+    }
+  }
+
+  &__feedback-icon {
+    position: absolute;
+    display: block;
+    width: 55%;
+    height: 55%;
+    border-radius: 0;
+    background-color: $light-grey;
+    margin-top: 2px;
+    clip-path: polygon(0% 0%, 100% 0, 100% 75%, 62% 78%, 31% 100%, 33% 76%, 0% 75%);
+
+    @include centered;
+  }
 }
