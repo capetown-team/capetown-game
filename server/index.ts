@@ -1,12 +1,9 @@
 import fs from 'fs';
 import https from 'https';
 import limiter from 'express-rate-limit';
-import dotenv from 'dotenv';
 
 import { isDev } from '../webpack/env';
 import { app } from './server';
-
-dotenv.config();
 
 const port = process.env.PORT || 5000;
 
