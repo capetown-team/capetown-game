@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS public.themes
     CONSTRAINT themes_pkey PRIMARY KEY (id)
 );
 
-CREATE SEQUENCE  IF NOT EXISTS theme_id_seq;
+CREATE SEQUENCE IF NOT EXISTS theme_id_seq;
 ALTER TABLE themes ALTER id SET DEFAULT NEXTVAL('theme_id_seq');
 -- Table: public.users_theme
 CREATE TABLE IF NOT EXISTS public.users_theme
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS public.users_theme
         NOT VALID
 );
 
-CREATE SEQUENCE  IF NOT EXISTS users_theme_id_seq;
+CREATE SEQUENCE IF NOT EXISTS users_theme_id_seq;
 ALTER TABLE users_theme ALTER id SET DEFAULT NEXTVAL('users_theme_id_seq');
 
 -- Table: public.topics
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS public.topics
         NOT VALID
 );
 
-CREATE SEQUENCE  IF NOT EXISTS topics_id_seq;
+CREATE SEQUENCE IF NOT EXISTS topics_id_seq;
 ALTER TABLE topics ALTER id SET DEFAULT NEXTVAL('topics_id_seq');
 
 CREATE INDEX IF NOT EXISTS fki_id_author
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS public.comments
         NOT VALID
 );
 
-CREATE SEQUENCE  IF NOT EXISTS comments_id_seq;
+CREATE SEQUENCE IF NOT EXISTS comments_id_seq;
 ALTER TABLE comments ALTER id SET DEFAULT NEXTVAL('comments_id_seq');
 
 CREATE INDEX IF NOT EXISTS fki_id_topic
@@ -125,10 +125,10 @@ CREATE TABLE IF NOT EXISTS  public.replies
         NOT VALID
 );
 
-CREATE SEQUENCE  IF NOT EXISTS replies_id_seq;
+CREATE SEQUENCE IF NOT EXISTS replies_id_seq;
 ALTER TABLE replies ALTER id SET DEFAULT NEXTVAL('replies_id_seq');
 
-CREATE INDEX  IF NOT EXISTS  fki_id_comment
+CREATE INDEX IF NOT EXISTS  fki_id_comment
     ON public.replies USING btree
     (id_comment ASC NULLS LAST)
     TABLESPACE pg_default;
