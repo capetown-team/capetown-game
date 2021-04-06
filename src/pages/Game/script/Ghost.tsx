@@ -6,7 +6,7 @@ export class Ghost {
   ghost = {
     posX: 390,
     posY: 200,
-    radius: 40,
+    radius: 20,
     image: new Image()
   };
 
@@ -49,4 +49,19 @@ export class Ghost {
       )
     );
   }
+
+  // isTouch(pacman: FigureType, ghost: FigureType): boolean {
+  //   return (
+  //     between(
+  //       pacman.posY + pacman.radius,
+  //       this.getCenterY() - ghost.radius,
+  //       this.getCenterY() + ghost.radius
+  //     ) &&
+  //     between(
+  //       pacman.posX + pacman.radius,
+  //       this.getCenterX() - ghost.radius,
+  //       this.getCenterX() + ghost.radius
+  //     )
+  //   );
+  // }
 }

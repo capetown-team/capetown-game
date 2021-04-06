@@ -26,7 +26,7 @@ export class Header {
   }
 
   drawHeader() {
-    this.ctx.fillStyle = ColorType.White;
+    this.ctx.fillStyle = ColorType.WHITE;
     this.ctx.fillRect(
       0,
       0,
@@ -39,11 +39,11 @@ export class Header {
       this.ctx,
       textScore,
       '15',
-      ColorType.Black,
+      ColorType.BLACK,
       this.initParameters.width / 2 - textScore.length * 4.8,
       15
     );
-    drawText(this.ctx, `Уровень: ${this.level}`, '12', ColorType.Black, 30, 15);
+    drawText(this.ctx, `Уровень: ${this.level}`, '12', ColorType.BLACK, 30, 15);
 
     for (let i = 0; i < this.hearts; i += 1) {
       this.drawHearts(this.initParameters.width - 100 + 30 * i, 0);
@@ -52,10 +52,10 @@ export class Header {
 
   drawHearts(left: number, top: number) {
     this.ctx.beginPath();
-    this.ctx.fillStyle = ColorType.Red;
+    this.ctx.fillStyle = ColorType.RED;
 
-    const radius = 20 + 5 * Math.cos(2);
-    const position = top + 2 * Math.sin(2);
+    const radius = 19 + 5 * Math.cos(2);
+    const position = top * Math.sin(2);
 
     this.ctx.moveTo(position + left, position + radius / 4);
     this.ctx.quadraticCurveTo(

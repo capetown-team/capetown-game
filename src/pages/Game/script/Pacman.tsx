@@ -5,10 +5,10 @@ import { InitParameters } from '@game/script/Types';
 import { DirectionWatch } from '@game/script/Direction/DirectionWatch';
 
 export class Pacman {
-  radius = 20;
+  radius = 10;
   posX = 0;
   posY = 0;
-  speed = 3;
+  speed = 1;
   stepMounth = 12;
   isMouthOpen = false;
   angle1 = right.angle1;
@@ -20,9 +20,12 @@ export class Pacman {
   directionWatcher = new DirectionWatch();
   direction = right.direction;
 
+  stuckX = 0;
+  stuckY = 0;
+
   map = dataMap;
-  row = 12;
-  col = 20;
+  row = dataMap.posY.length;
+  col = dataMap.posY[0].posX.length;
 
   score = 0;
 
@@ -89,28 +92,39 @@ export class Pacman {
       }
 
       if (fieldAhead === 'wall') {
+        this.stuckX = this.dirX;
+        this.stuckY = this.dirY;
+
         this.stop();
+
+        const step = 1;
+        if (this.stuckX === -1) {
+          this.posX += step;
+        }
+        if (this.stuckY === -1) {
+          this.posY += step;
+        }
       }
     }
   }
 
   checkDirectionChange(): void {
-    if (this.directionWatcher.get() !== null) {
-      const dir = this.directionWatcher.get();
+    const dir = this.directionWatcher.get();
+    if (dir !== null && this.isStep()) {
+      const x = this.getGridPosX() + dir.dirX;
+      const y = this.getGridPosY() + dir.dirY;
+      const next = this.map.posY[y]?.posX[x];
 
-      if (dir) {
-        const x = this.getGridPosX() + dir.dirX;
-        const y = this.getGridPosY() + dir.dirY;
-
-        if (x < this.col && x >= 0 && y < this.row && y >= 1) {
-          if (dir) {
-            this.dirX = dir.dirX;
-            this.dirY = dir.dirY;
-            this.direction = dir.direction;
-          }
-        }
+      if (next?.type !== 'wall') {
+        this.dirX = dir.dirX;
+        this.dirY = dir.dirY;
+        this.direction = dir.direction;
       }
     }
+  }
+
+  isStep() {
+    return this.posX % step === 0 && this.posY % step === 0;
   }
 
   setDirection(dir: {
@@ -130,13 +144,15 @@ export class Pacman {
   }
 
   move() {
+    // if (!this.frozen && !this.stopped) {
+    //   console.log('stop', !this.frozen, this.stopped);
     if (!this.frozen) {
       this.posX += this.speed * this.dirX;
       this.posY += this.speed * this.dirY;
       const head = this.initParameters.head * 1.3;
+      const startLoop = 5;
 
       // начальная точка откуда будет появляться персонаж
-      const startLoop = 1;
       if (this.posX >= this.initParameters.width - this.radius) {
         this.posX = startLoop - this.radius;
       }
@@ -153,27 +169,9 @@ export class Pacman {
   }
 
   stop(): void {
+    // this.stopped = true;
     this.dirX = 0;
     this.dirY = 0;
-  }
-
-  moveRightLeft() {
-    if (
-      this.posY <
-        this.initParameters.head + this.initParameters.borderWalls * 2 &&
-      this.dirY === 0 &&
-      this.dirX === 0
-    ) {
-      this.dirY += 1;
-      this.dirX += 1;
-    }
-  }
-
-  moveUpDown() {
-    if (this.posX < step && this.dirY === 0 && this.dirX === 0) {
-      this.dirY -= 1;
-      this.dirX += 1;
-    }
   }
 
   getGridPosX(): number {
@@ -187,7 +185,9 @@ export class Pacman {
   startPosition() {
     const head = this.initParameters.head / 2;
     this.posY = this.initParameters.height / 2 - this.radius + head;
-    this.posX = this.initParameters.borderWalls;
+    // this.posY = 60;
+    this.posX = this.radius * 2;
+    // this.posX = this.initParameters.borderWalls;
     this.setDirection(right);
     this.directionWatcher.set(right);
   }

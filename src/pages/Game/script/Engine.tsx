@@ -29,8 +29,10 @@ export class Engine {
       this.initParameters = {
         width: canvas.width,
         height: canvas.height,
-        head: 25,
-        borderWalls: 10
+        // head: 25,
+        // borderWalls: 10
+        head: 20,
+        borderWalls: 0
       };
       this.pacman = new Pacman(this.initParameters);
       this.figure = new Figure(this.ctx, this.initParameters, this.pacman);
@@ -74,12 +76,12 @@ export class Engine {
 
   finishGame() {
     this.gameOver = true;
-    this.blank(ColorType.LightGrey);
+    this.blank(ColorType.LIGHTGRAY);
     drawText(
       this.ctx,
       'Вы завериши игру',
       '17',
-      ColorType.Black,
+      ColorType.BLACK,
       this.initParameters.width / 2 - 85,
       this.initParameters.height / 2 - 50
     );
@@ -89,7 +91,7 @@ export class Engine {
         this.ctx,
         textScore,
         '15',
-        ColorType.Black,
+        ColorType.BLACK,
         this.initParameters.width / 2 - textScore.length * 4.4,
         this.initParameters.height / 2 - 20
       );
@@ -121,6 +123,8 @@ export class Engine {
     this.gameOver = false;
 
     this.figure.updateCoins();
+    this.figure.getAllCounts();
+    console.log('all', this.figure.allCount);
 
     if (!this.pacman) {
       this.pacman = new Pacman(this.initParameters);
@@ -137,13 +141,13 @@ export class Engine {
   endGame() {
     setTimeout(() => {
       this.stopAnimation();
-      this.blank(ColorType.LightGrey);
+      this.blank(ColorType.LIGHTBLUE);
       this.gameOver = true;
       drawText(
         this.ctx,
         'Игра окончена',
         '17',
-        ColorType.Black,
+        ColorType.BLACK,
         this.initParameters.width / 2 - 70,
         this.initParameters.height / 2 - 50
       );
@@ -152,14 +156,14 @@ export class Engine {
         this.ctx,
         textScore,
         '15',
-        ColorType.Black,
+        ColorType.BLACK,
         this.initParameters.width / 2 - textScore.length * 4.4,
         this.initParameters.height / 2 - 20
       );
     });
   }
 
-  blank(color = ColorType.LightGrey) {
+  blank(color = ColorType.BLACK) {
     this.ctx.fillStyle = color;
     this.ctx.fillRect(
       0,
@@ -171,11 +175,11 @@ export class Engine {
 
   gameLoop() {
     this.blank();
-    this.header.drawHeader();
     this.figure.drawWalls();
     this.figure.drawCoins();
+    this.header.drawHeader();
     this.ghost.drawGhost();
-    this.ctx.fillStyle = ColorType.Gold;
+    this.ctx.fillStyle = ColorType.GOLD;
     this.ctx.beginPath();
 
     if (this.pacman.isMouthOpen) {
@@ -205,6 +209,7 @@ export class Engine {
     this.pacman.checkCollisions();
     this.ctx.fill();
 
+    // частота открытия рота
     this.steps += 1;
     if (this.steps % this.pacman.stepMounth === 0) {
       this.pacman.isMouthOpen = !this.pacman.isMouthOpen;
@@ -225,30 +230,26 @@ export class Engine {
 
   doKeyDown(evt: { keyCode: number; preventDefault(): void }) {
     this.pacman.unfreeze();
+    this.started = false;
 
     switch (evt.keyCode) {
       case 38:
         evt.preventDefault();
-        this.pacman.moveUpDown();
 
         this.pacman.directionWatcher.set(up);
         break;
       case 40:
         evt.preventDefault();
-        this.pacman.moveUpDown();
 
         this.pacman.directionWatcher.set(down);
         break;
-        evt.preventDefault();
       case 37:
         evt.preventDefault();
-        this.pacman.moveRightLeft();
 
         this.pacman.directionWatcher.set(left);
         break;
       case 39:
         evt.preventDefault();
-        this.pacman.moveRightLeft();
 
         this.pacman.directionWatcher.set(right);
         break;
