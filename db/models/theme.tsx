@@ -19,3 +19,4 @@ export const Theme = {
       type: DataType.JSON,
       allowNull: false
     }
+  };

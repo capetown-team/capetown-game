@@ -27,3 +27,4 @@ export const User = {
       type: DataType.STRING,
       allowNull: false
     }
+};
