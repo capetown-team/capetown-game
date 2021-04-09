@@ -35,7 +35,7 @@ export const forumService = () => {
   };
 
   const addTopic = (req: Request, res: Response) => {
-    const { name, content, id_author } = req.body;
+    const { name, content, userid } = req.body;
 
     const isNameValid = name.length > 0;
     const isContentValid = content.length > 2;
@@ -50,7 +50,7 @@ export const forumService = () => {
     }
 
     return topic
-    .add(name, content, id_author)
+    .add(name, content, userid)
     .then(topic => {
       res.status(200).send(topic);
     })
@@ -71,7 +71,7 @@ export const forumService = () => {
 
   
   const addComment = (req: Request, res: Response) => {
-    const { content, idTopic, idUser } = req.body;
+    const { content, topicid, userid } = req.body;
 
     const isContentValid = content.length > 0;
 
@@ -85,7 +85,7 @@ export const forumService = () => {
     }
 
     return comment
-    .add(content, idTopic, idUser)
+    .add(content, topicid, userid)
     .then(topic => {
       res.status(200).send(topic);
     })
@@ -97,15 +97,15 @@ export const forumService = () => {
   };
 
   const getReplies = (req: Request, res: Response) => {
-    const { idComment } = req.body;
+    const { commentid } = req.body;
     reply
-      .getAll(idComment)
+      .getAll(commentid)
       .then((replies) => res.status(200).json(replies))
       .catch((err) => res.status(500).json({ error: ['db error', err] }));
   };
 
   const addReply = (req: Request, res: Response) => {
-    const { content, idComment, idUser } = req.body;
+    const { content, commentid, userid } = req.body;
 
     const isContentValid = content.length > 0;
 
@@ -119,7 +119,7 @@ export const forumService = () => {
     }
 
     return reply
-    .add(content, idComment, idUser)
+    .add(content, commentid, userid)
     .then(reply => {
       res.status(200).send(reply);
     })
