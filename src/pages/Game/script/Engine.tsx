@@ -56,6 +56,8 @@ export class Engine {
         this.pacman,
         this.figure
       );
+
+      this.createGhost();
     }
   }
 
@@ -126,6 +128,8 @@ export class Engine {
     this.pacman.score = 0;
     this.pacman.directionWatcher.set(right);
 
+    this.createGhost();
+
     this.startGame();
   }
 
@@ -194,7 +198,6 @@ export class Engine {
     }
     this.pacman.stop();
     this.steps = 0;
-    this.createGhost();
     this.figure.getAllCounts();
 
     this.gameLoop();
