@@ -2,13 +2,17 @@ import { InitParameters } from '@game/script/Types';
 import { Pacman } from '@game/script/Pacman';
 import { Figure } from '@game/script/Figure';
 import { Ghost } from '@game/script/Ghost';
-import { getDir, getNewDirection } from '@game/script/moveClass';
 import { Header } from '@game/script/Header';
 import { down, left, right, up, drawText } from '@game/script/helpers/action';
 import { ColorType } from '@game/script/helpers/constants';
-import { dataMap } from '@game/script/helpers/data';
+
+import ghostPinkyIcon from '@game/script/images/ghost-pinky.png';
+import ghostBlinkyIcon from '@game/script/images/ghost-blinky.png';
+import ghostGlydeIcon from '@game/script/images/ghost-glyde.png';
+import ghostInkyIcon from '@game/script/images/ghost-inky.png';
 
 type FunctionPostResult = (engine: Engine) => void;
+
 export class Engine {
   started = false;
   pause = false;
@@ -20,8 +24,12 @@ export class Engine {
   public ctx!: CanvasRenderingContext2D;
   public pacman!: Pacman;
   public figure!: Figure;
-  public ghost!: Ghost;
   public header!: Header;
+
+  public pinky!: Ghost;
+  public blinky!: Ghost;
+  public glyde!: Ghost;
+  public inky!: Ghost;
 
   readonly initParameters!: InitParameters;
 
@@ -35,12 +43,12 @@ export class Engine {
       this.initParameters = {
         width: canvas.width,
         height: canvas.height,
-        head: 25,
-        borderWalls: 10
+        head: 20,
+        level: 1,
+        allCount: 0
       };
-      this.pacman = new Pacman(this.initParameters, dataMap);
+      this.pacman = new Pacman(this.initParameters);
       this.figure = new Figure(this.ctx, this.initParameters, this.pacman);
-      this.ghost = new Ghost(this.ctx, this.initParameters, dataMap);
       this.postResult = postResult;
       this.header = new Header(
         this.ctx,
@@ -81,13 +89,16 @@ export class Engine {
 
   finishGame() {
     this.gameOver = true;
-    this.blank(ColorType.LightGrey);
+    this.blank(ColorType.LIGHTGRAY);
+
+    const textInfo =
+      this.initParameters.level > 2 ? 'Вы прошли игру' : 'Вы завершили игру';
     drawText(
       this.ctx,
-      'Вы завершили игру',
+      textInfo,
       '17',
-      ColorType.Black,
-      this.initParameters.width / 2 - 85,
+      ColorType.BLACK,
+      this.initParameters.width / 2 - textInfo.length * 5.3,
       this.initParameters.height / 2 - 50
     );
     if (this.pacman.score > 0) {
@@ -96,7 +107,7 @@ export class Engine {
         this.ctx,
         textScore,
         '15',
-        ColorType.Black,
+        ColorType.BLACK,
         this.initParameters.width / 2 - textScore.length * 4.4,
         this.initParameters.height / 2 - 20
       );
@@ -109,13 +120,61 @@ export class Engine {
     this.reset();
     this.gameOver = false;
     this.header.hearts = 3;
+    this.initParameters.level = 1;
+    this.figure.updateCoins();
+    this.pacman.reset();
+    this.pacman.score = 0;
+    this.pacman.directionWatcher.set(right);
+
+    this.startGame();
+  }
+
+  newLevel() {
+    this.reset();
     this.figure.updateCoins();
     this.pacman.reset();
     this.pacman.directionWatcher.set(right);
-    this.ghost.reset();
-    this.ghost.directionWatcher.set(right);
+    this.figure.getAllCounts();
 
-    this.startGame();
+    this.initParameters.level += 1;
+
+    this.createGhost();
+    // this.startGame();
+  }
+
+  createGhost() {
+    this.pinky = new Ghost(
+      this.ctx,
+      this.initParameters,
+      14,
+      14,
+      ghostPinkyIcon,
+      down
+    );
+    this.blinky = new Ghost(
+      this.ctx,
+      this.initParameters,
+      13,
+      14,
+      ghostBlinkyIcon,
+      down
+    );
+    this.glyde = new Ghost(
+      this.ctx,
+      this.initParameters,
+      12,
+      14,
+      ghostGlydeIcon,
+      right
+    );
+    this.inky = new Ghost(
+      this.ctx,
+      this.initParameters,
+      15,
+      14,
+      ghostInkyIcon,
+      left
+    );
   }
 
   startGame() {
@@ -131,11 +190,12 @@ export class Engine {
     this.gameOver = false;
 
     if (!this.pacman) {
-      this.pacman = new Pacman(this.initParameters, dataMap);
+      this.pacman = new Pacman(this.initParameters);
     }
     this.pacman.stop();
     this.steps = 0;
-    this.ghost.drawGhost();
+    this.createGhost();
+    this.figure.getAllCounts();
 
     this.gameLoop();
 
@@ -145,13 +205,13 @@ export class Engine {
   endGame() {
     setTimeout(() => {
       this.stopAnimation();
-      this.blank(ColorType.LightGrey);
+      this.blank(ColorType.LIGHTGRAY);
       this.gameOver = true;
       drawText(
         this.ctx,
         'Игра окончена',
         '17',
-        ColorType.Black,
+        ColorType.BLACK,
         this.initParameters.width / 2 - 70,
         this.initParameters.height / 2 - 50
       );
@@ -160,14 +220,14 @@ export class Engine {
         this.ctx,
         textScore,
         '15',
-        ColorType.Black,
+        ColorType.BLACK,
         this.initParameters.width / 2 - textScore.length * 4.4,
         this.initParameters.height / 2 - 20
       );
     });
   }
 
-  blank(color = ColorType.LightGrey) {
+  blank(color = ColorType.LIGHTGRAY) {
     this.ctx.fillStyle = color;
     this.ctx.fillRect(
       0,
@@ -196,14 +256,13 @@ export class Engine {
       }
     }
 
-    this.blank(ColorType.Black);
-    this.header.drawHeader();
+    this.blank(ColorType.BLACK);
     this.figure.drawCoins();
-    this.ghost.drawGhost();
-    this.figure.drawBlocks();
-    this.figure.drawStrength();
+    this.figure.drawWalls();
+    this.header.drawHeader();
 
-    this.ctx.fillStyle = ColorType.Gold;
+    // пакмен начало
+    this.ctx.fillStyle = ColorType.GOLD;
     this.ctx.beginPath();
 
     if (this.pacman.isMouthOpen) {
@@ -234,37 +293,52 @@ export class Engine {
     this.pacman.checkCollisions();
 
     this.ctx.fill();
-    this.ctx.closePath();
-
-    const directions = this.ghost.checkCross();
-    let successful = false;
-    while (!successful) {
-      successful = this.ghost.checkCollisions();
-      if (!successful) {
-        const newDir = getNewDirection(
-          directions,
-          getDir(this.ghost.direction)
-        );
-        this.ghost.setDirection(newDir);
-      }
-    }
-
-    this.ghost.move();
 
     this.steps += 1;
     if (this.steps % this.pacman.stepMounth === 0) {
       this.pacman.isMouthOpen = !this.pacman.isMouthOpen;
     }
+    // пакмен конец
 
-    if (this.ghost.isTouch(this.pacman)) {
+    // призраки начало
+    this.pinky.draw();
+    this.pinky.move();
+
+    this.blinky.draw();
+    this.blinky.move();
+
+    this.glyde.draw();
+    this.glyde.move();
+
+    this.inky.draw();
+    this.inky.move();
+
+    if (
+      this.pinky.isTouch(this.pacman) ||
+      this.blinky.isTouch(this.pacman) ||
+      this.glyde.isTouch(this.pacman) ||
+      this.inky.isTouch(this.pacman)
+    ) {
       if (this.header.hearts > 1) {
         this.header.hearts -= 1;
         this.pacman.startPosition();
         this.pacman.freeze();
       } else {
-        if (this.postResult !== undefined) this.postResult(this);
+        if (this.postResult !== undefined) {
+          this.postResult(this);
+        }
         this.endGame();
       }
+    }
+
+    // призраки конец
+
+    // общий счет
+    if (this.initParameters.allCount === 0 && this.initParameters.level <= 2) {
+      this.newLevel();
+    }
+    if (this.initParameters.allCount === 0 && this.initParameters.level > 2) {
+      this.finishGame();
     }
 
     this.requestId = window.requestAnimationFrame(this.gameLoop.bind(this));
@@ -272,31 +346,30 @@ export class Engine {
 
   doKeyDown(evt: { keyCode: number; preventDefault?: () => void }) {
     this.pacman.unfreeze();
-    this.ghost.unfreeze();
-
-    if (evt.preventDefault) {
-      evt.preventDefault();
-    }
 
     switch (evt.keyCode) {
       case 38:
-        this.pacman.moveUpDown();
-
+        if (evt.preventDefault) {
+          evt.preventDefault();
+        }
         this.pacman.directionWatcher.set(up);
         break;
       case 40:
-        this.pacman.moveUpDown();
-
+        if (evt.preventDefault) {
+          evt.preventDefault();
+        }
         this.pacman.directionWatcher.set(down);
         break;
       case 37:
-        this.pacman.moveRightLeft();
-
+        if (evt.preventDefault) {
+          evt.preventDefault();
+        }
         this.pacman.directionWatcher.set(left);
         break;
       case 39:
-        this.pacman.moveRightLeft();
-
+        if (evt.preventDefault) {
+          evt.preventDefault();
+        }
         this.pacman.directionWatcher.set(right);
         break;
 

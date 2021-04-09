@@ -1,11 +1,16 @@
-import { ColorType } from '@game/script/helpers/constants';
-import { buildBlock, toPixelPos } from '@game/script/helpers/action';
+import { ColorType, step } from '@game/script/helpers/constants';
+import {
+  // buildBlock,
+  toPixelPos
+} from '@game/script/helpers/action';
 import { dataMap } from '@game/script/helpers/data';
 import { InitParameters } from '@game/script/Types';
 import { Pacman } from '@game/script/Pacman';
 
 export class Figure {
   map = dataMap;
+
+  // allCount = 0;
   radiusCount = 3;
 
   initParameters: InitParameters;
@@ -22,10 +27,10 @@ export class Figure {
     this.pacman = pacman;
   }
 
-  drawCoins() {
+  drawWalls() {
     let posY = 0;
-    this.ctx.strokeStyle = ColorType.White;
-    this.ctx.fillStyle = ColorType.White;
+    this.ctx.fillStyle = ColorType.GRAY;
+
     this.ctx.beginPath();
 
     if (this.map && this.map.posY && this.map.posY.length > 0) {
@@ -33,74 +38,56 @@ export class Figure {
         posY = row.row;
 
         row.posX.forEach((column) => {
+          const y = toPixelPos(posY - 1); // top
+          const x = toPixelPos(column.col - 1); // left
+
+          if (column.type === 'wall') {
+            this.ctx.fillRect(
+              x - 10 + this.pacman.radius,
+              y - 5 + this.pacman.radius / 2,
+              step,
+              step
+            );
+          }
+        });
+      });
+    }
+
+    this.ctx.fill();
+  }
+
+  drawCoins() {
+    let posY = 0;
+    this.ctx.strokeStyle = ColorType.YELLOW;
+    this.ctx.fillStyle = ColorType.YELLOW;
+    this.ctx.beginPath();
+
+    if (this.map && this.map.posY && this.map.posY.length > 0) {
+      this.map.posY.forEach((row) => {
+        posY = row.row;
+
+        row.posX.forEach((column) => {
+          const y = toPixelPos(posY - 1); // top
+          const x = toPixelPos(column.col - 1); // left
+
+          if (column.type === 'null') {
+            this.ctx.fillRect(
+              x + this.pacman.radius,
+              y + 3 + this.pacman.radius / 2,
+              1,
+              1
+            );
+          }
+
           if (column.type === 'pill') {
             this.ctx.arc(
-              toPixelPos(column.col) + this.pacman.radius,
-              toPixelPos(posY) +
-                this.pacman.radius / 2 +
-                this.initParameters.head +
-                5,
+              x + this.pacman.radius,
+              y + 4 + this.pacman.radius / 2,
               this.radiusCount,
               0,
               2 * Math.PI
             );
-            this.ctx.moveTo(toPixelPos(column.col), toPixelPos(posY));
-          }
-        });
-      });
-    }
-
-    this.ctx.fill();
-  }
-
-  drawBlocks() {
-    let posY = 0;
-    this.ctx.strokeStyle = ColorType.Gray;
-    this.ctx.fillStyle = ColorType.Gray;
-    this.ctx.beginPath();
-
-    if (this.map && this.map.posY && this.map.posY.length > 0) {
-      this.map.posY.forEach((row) => {
-        posY = row.row;
-
-        row.posX.forEach((column) => {
-          if (column.type === 'block') {
-            buildBlock(
-              this.ctx,
-              toPixelPos(column.col),
-              toPixelPos(posY) + this.initParameters.head
-            );
-          }
-        });
-      });
-    }
-
-    this.ctx.fill();
-  }
-
-  drawStrength() {
-    let posY = 0;
-    this.ctx.strokeStyle = ColorType.Red;
-    this.ctx.fillStyle = ColorType.Red;
-    this.ctx.beginPath();
-
-    if (this.map && this.map.posY && this.map.posY.length > 0) {
-      this.map.posY.forEach((row) => {
-        posY = row.row;
-
-        row.posX.forEach((column) => {
-          if (column.type === 'strength') {
-            this.ctx.arc(
-              toPixelPos(column.col) + this.pacman.radius,
-              toPixelPos(posY) +
-                this.pacman.radius / 2 +
-                this.initParameters.head +
-                3,
-              7,
-              0,
-              2 * Math.PI
-            );
-            this.ctx.moveTo(toPixelPos(column.col), toPixelPos(posY));
+            this.ctx.moveTo(x, y);
           }
         });
       });
@@ -115,6 +102,19 @@ export class Figure {
         row.posX.forEach((column, inx2) => {
           if (this.map.posY[inx1].posX[inx2].type === 'null') {
             this.map.posY[inx1].posX[inx2].type = 'pill';
+          }
+        });
+      });
+    }
+  }
+
+  getAllCounts() {
+    this.initParameters.allCount = 0;
+    if (this.map && this.map.posY && this.map.posY.length > 0) {
+      this.map.posY.forEach((row, inx1) => {
+        row.posX.forEach((column, inx2) => {
+          if (this.map.posY[inx1].posX[inx2].type === 'pill') {
+            this.initParameters.allCount += 1;
           }
         });
       });
