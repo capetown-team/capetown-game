@@ -15,7 +15,7 @@
   &__wrapper {
     width: 369px;
     min-height: 450px;
-    background: $light-grey;
+    background: var(--background);
     text-align: center;
     padding: 48px 44px;
     border-radius: 5px;
@@ -43,5 +43,9 @@
     margin: auto;
     margin-top: 10px;
     width: 180px;
+  }
+
+  &__title-input {
+    padding-left: .5rem;
   }
 }

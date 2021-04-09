@@ -3,7 +3,8 @@
 @import '../../styles/layout/mixins';
 
 .header {
-  background-color: $light-grey;
+  background-color: var(--background-secondary);
+  // background-color: $light-grey;
 
   &__wrap {
     height: $headerHeight;
@@ -18,10 +19,9 @@
     display: block;
     border: 2px solid $white;
     border-radius: 3px;
-    color: $black;
     padding: 5px 15px;
     font-size: 1.5em;
-    transition: border .7s, color .5s;
+    transition: border .3s, color .3s;
     font-family: 'Cabin Sketch', cursive;
 
     &:hover {

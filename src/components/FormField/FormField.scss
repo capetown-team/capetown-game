@@ -4,9 +4,19 @@
   margin-bottom: 15px;
   text-align: left;
 
+  &__input {
+    margin-bottom: .5rem;
+  }
+
   &__label {
     display: block;
-    margin-bottom: .1em;
+    font-size: 1.6rem;
+    color: $grey;
+    width: 280px;
+  }
+
+  &__label-text {
+    padding-left: .5rem;
   }
 
   &__textarea {
@@ -26,7 +36,8 @@
   }
 
   &__error {
-    padding-top: .1em;
+    font-size: 1.6rem;
     color: $red;
+    padding-left: .5rem;
   }
 }

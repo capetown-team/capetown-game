@@ -2,6 +2,13 @@
 @import '../../styles/layout/variables';
 @import '../../styles/layout/mixins';
 
+.app-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--background);
+  color: var(--text);
+}
+
 .app {
   padding: 0 10px;
 

@@ -34,21 +34,21 @@ const FormField: FC<Props> = ({ formdata, change, id, disabled }) => {
     switch (formdata.element) {
       case 'input':
         formTemplate = (
-          <div className={b()}>
-            {formdata.config.label && (
-              <label htmlFor={id} className={b('label')}>
-                {formdata.config.label}
-              </label>
-            )}
-            <Input
-              id={id}
-              type={formdata.config.type}
-              disabled={disabled}
-              value={formdata.value}
-              placeholder={formdata.config.placeholder}
-              onBlur={(event) => change({ event, id, blur: true })}
-              onChange={(event) => change({ event, id })}
-            />
+          <div className={b('input')}>
+            <label htmlFor={id} className={b('label')}>
+              {formdata.config.label && (
+                <span className={b('label-text')}>{formdata.config.label}</span>
+              )}
+              <Input
+                id={id}
+                type={formdata.config.type}
+                disabled={disabled}
+                value={formdata.value}
+                placeholder={formdata.config.placeholder}
+                onBlur={(event) => change({ event, id, blur: true })}
+                onChange={(event) => change({ event, id })}
+              />
+            </label>
             {showError()}
           </div>
         );
