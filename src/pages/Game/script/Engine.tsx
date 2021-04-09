@@ -5,6 +5,10 @@ import { Ghost } from '@game/script/Ghost';
 import { Header } from '@game/script/Header';
 import { down, left, right, up, drawText } from '@game/script/helpers/action';
 import { ColorType } from '@game/script/helpers/constants';
+import ghostPinkyIcon from '@game/script/images/ghost-pinky.png';
+import ghostBlinkyIcon from '@game/script/images/ghost-blinky.png';
+import ghostGlydeIcon from '@game/script/images/ghost-glyde.png';
+import ghostInkyIcon from '@game/script/images/ghost-inky.png';
 
 export class Engine {
   started = false;
@@ -21,6 +25,11 @@ export class Engine {
   public ghost!: Ghost;
   public header!: Header;
 
+  public pinky!: Ghost;
+  public blinky!: Ghost;
+  public glyde!: Ghost;
+  public inky!: Ghost;
+
   readonly initParameters!: InitParameters;
 
   constructor(canvas: HTMLCanvasElement | null, ctx: CanvasRenderingContext2D) {
@@ -29,20 +38,19 @@ export class Engine {
       this.initParameters = {
         width: canvas.width,
         height: canvas.height,
-        // head: 25,
-        // borderWalls: 10
         head: 20,
         borderWalls: 0
       };
       this.pacman = new Pacman(this.initParameters);
       this.figure = new Figure(this.ctx, this.initParameters, this.pacman);
-      this.ghost = new Ghost(this.ctx);
+      // this.ghost = new Ghost(this.ctx);
       this.header = new Header(
         this.ctx,
         this.initParameters,
         this.pacman,
         this.figure
       );
+      this.createGhost();
     }
   }
 
@@ -111,6 +119,41 @@ export class Engine {
     this.startGame();
   }
 
+  createGhost() {
+    this.pinky = new Ghost(
+      this.ctx,
+      this.initParameters,
+      20,
+      13,
+      ghostPinkyIcon,
+      down
+    );
+    this.blinky = new Ghost(
+      this.ctx,
+      this.initParameters,
+      19,
+      13,
+      ghostBlinkyIcon,
+      down
+    );
+    this.glyde = new Ghost(
+      this.ctx,
+      this.initParameters,
+      18,
+      13,
+      ghostGlydeIcon,
+      right
+    );
+    this.inky = new Ghost(
+      this.ctx,
+      this.initParameters,
+      21,
+      13,
+      ghostInkyIcon,
+      left
+    );
+  }
+
   startGame() {
     if (this.started && !this.pause) {
       this.pacman.reset();
@@ -124,14 +167,13 @@ export class Engine {
 
     this.figure.updateCoins();
     this.figure.getAllCounts();
-    console.log('all', this.figure.allCount);
 
     if (!this.pacman) {
       this.pacman = new Pacman(this.initParameters);
     }
     this.pacman.stop();
     this.steps = 0;
-    this.ghost.drawGhost();
+    this.createGhost();
 
     this.gameLoop();
 
@@ -178,7 +220,6 @@ export class Engine {
     this.figure.drawWalls();
     this.figure.drawCoins();
     this.header.drawHeader();
-    this.ghost.drawGhost();
     this.ctx.fillStyle = ColorType.GOLD;
     this.ctx.beginPath();
 
@@ -215,7 +256,24 @@ export class Engine {
       this.pacman.isMouthOpen = !this.pacman.isMouthOpen;
     }
 
-    if (this.ghost.isTouch(this.pacman, this.ghost.ghost)) {
+    this.pinky.draw();
+    this.pinky.move();
+
+    this.blinky.draw();
+    this.blinky.move();
+
+    this.glyde.draw();
+    this.glyde.move();
+
+    this.inky.draw();
+    this.inky.move();
+
+    if (
+      this.pinky.isTouch(this.pacman) ||
+      this.blinky.isTouch(this.pacman) ||
+      this.glyde.isTouch(this.pacman) ||
+      this.inky.isTouch(this.pacman)
+    ) {
       if (this.header.hearts > 1) {
         this.header.hearts -= 1;
         this.pacman.startPosition();
@@ -230,7 +288,6 @@ export class Engine {
 
   doKeyDown(evt: { keyCode: number; preventDefault(): void }) {
     this.pacman.unfreeze();
-    this.started = false;
 
     switch (evt.keyCode) {
       case 38:

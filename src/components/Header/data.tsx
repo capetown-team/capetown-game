@@ -8,6 +8,10 @@ export type LinkType = {
 
 export const overLinks: LinkType[] = [
   {
+    name: 'Игра',
+    linkTo: ROUTES.GAME
+  },
+  {
     name: 'Авторизация',
     linkTo: ROUTES.SIGNIN
   },

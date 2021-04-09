@@ -36,7 +36,7 @@ export const routes = [
   {
     path: ROUTES.GAME,
     component: Game,
-    isPrivate: true
+    isPrivate: false
   },
   {
     path: ROUTES.SIGNIN,

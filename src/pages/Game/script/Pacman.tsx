@@ -144,13 +144,11 @@ export class Pacman {
   }
 
   move() {
-    // if (!this.frozen && !this.stopped) {
-    //   console.log('stop', !this.frozen, this.stopped);
     if (!this.frozen) {
       this.posX += this.speed * this.dirX;
       this.posY += this.speed * this.dirY;
       const head = this.initParameters.head * 1.3;
-      const startLoop = 5;
+      const startLoop = 1;
 
       // начальная точка откуда будет появляться персонаж
       if (this.posX >= this.initParameters.width - this.radius) {
@@ -169,7 +167,6 @@ export class Pacman {
   }
 
   stop(): void {
-    // this.stopped = true;
     this.dirX = 0;
     this.dirY = 0;
   }
@@ -186,7 +183,7 @@ export class Pacman {
     const head = this.initParameters.head / 2;
     this.posY = this.initParameters.height / 2 - this.radius + head;
     // this.posY = 60;
-    this.posX = this.radius * 2;
+    this.posX = 0;
     // this.posX = this.initParameters.borderWalls;
     this.setDirection(right);
     this.directionWatcher.set(right);
