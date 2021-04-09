@@ -13,5 +13,8 @@ export const forumRouter = (apiRouter: Router) => {
   router.get("/comments", isAuthMiddleware, forum.getComments);
   router.post("/comment", isAuthMiddleware, forum.addComment);
 
+  router.get("/replies", isAuthMiddleware, forum.getReplies);
+  router.post("/reply", isAuthMiddleware, forum.addReply);
+
   apiRouter.use("/forum", router);
 };

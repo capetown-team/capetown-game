@@ -43,7 +43,6 @@ const isAuthUser = (res: Response) => {
 };
 
 export const isAuthMiddleware = ( req: Request, res: Response, next: NextFunction) => {
-  console.log('locals1', res.locals.user,  res.locals.cookies,  req.cookies);
   next();
   /*if (isAuthUser(res)) { 
     next();
