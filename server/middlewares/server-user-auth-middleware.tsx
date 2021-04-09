@@ -36,3 +36,19 @@ export const serverUserAuthMiddleware = async (
 
   next();
 };
+
+const isAuthUser = (res: Response) => {
+  if (res.locals.user !== undefined && res.locals.user !== null) return true;
+  else return false;
+};
+
+export const isAuthMiddleware = ( req: Request, res: Response, next: NextFunction) => {
+  console.log('locals1', res.locals.user,  res.locals.cookies,  req.cookies);
+  next();
+  /*if (isAuthUser(res)) { 
+    next();
+  } else {
+    res.status(401).send('not authorized');
+  }
+  */
+}

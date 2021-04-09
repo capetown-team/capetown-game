@@ -1,4 +1,4 @@
--- Table: public.users
+﻿-- Table: public.users
 CREATE TABLE IF NOT EXISTS public.users
 (
     id integer NOT NULL,

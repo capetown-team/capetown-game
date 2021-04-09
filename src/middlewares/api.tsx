@@ -1,4 +1,4 @@
-import { client, path } from '@/api';
+import { client, localClient, path } from '@/api';
 import {
   UserType,
   SignInType,
@@ -11,6 +11,10 @@ import {
   LeaderBoardType,
   LeaderBoardAllType
 } from '@/reducers/leaderBoard/types';
+
+import { Props as TopicProps } from '@/reducers/forum/topic/types';
+
+import { Props as CommentProps } from '@/reducers/forum/comment/types';
 
 export type ResponseUserType = {
   data: UserType;
@@ -27,6 +31,14 @@ export type ResponseLeaders = {
   data: LeaderBoardType[];
 };
 
+export type ResponseTopic = {
+  data: TopicProps[];
+};
+
+export type ResponseComment = {
+  data: CommentProps[];
+};
+
 export interface IApi {
   getUserInfo(): Promise<ResponseUserType>;
   logOut(): Promise<ResponseType>;
@@ -40,7 +52,11 @@ export interface IApi {
     data: LeaderBoardAllType,
     cookies?: string
   ): Promise<ResponseLeaders>;
+  getTopics(): Promise<ResponseTopic>;
+  getComments(): Promise<ResponseComment>;
   postClientID(body: string): Promise<ResponseType>;
+  addTopic(): Promise<TopicProps>;
+  addComment(): Promise<CommentProps>;
 }
 
 const context = (): IApi => {
@@ -96,6 +112,27 @@ const context = (): IApi => {
     return client.post(`${path}/leaderboard/all`, data);
   };
 
+  const getTopics = (cookies: string) => {
+    if (cookies) {
+      return localClient.get(`/forum/topics`, {
+        headers: { Cookie: cookies }
+      });
+    }
+    return localClient.get(`/forum/topics`);
+  };
+
+  const getComments = (data: TopicProps) => {
+    return localClient.get(`/forum/comments`, data);
+  };
+
+  const addTopic = (data: TopicProps) => {
+    return localClient.post(`/forum/topic`, data);
+  };
+
+  const addComment = (data: CommentProps) => {
+    return localClient.post(`/forum/comment`, data);
+  };
+
   return {
     getUserInfo,
     logOut,
@@ -105,15 +142,13 @@ const context = (): IApi => {
     changePassword,
     changeAvatar,
     getLiderBoardAll,
+    getTopics,
+    getComments,
+    addTopic,
+    addComment,
     setLiderBoardResult,
     postClientID
   };
-};
-
-export const getLiderBoardAll = async (data: LeaderBoardAllType) => {
-  return client.post(`${path}/leaderboard/all`, data, {
-    withCredentials: true
-  });
 };
 
 export const api = context();

@@ -1,0 +1,3 @@
+export const FORUM_REQUEST = 'FORUM_REQUEST';
+export const FORUM_SUCCESS = 'FORUM_SUCCESS';
+export const FORUM_FAILURE = 'FORUM_FAILURE';

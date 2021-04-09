@@ -1,7 +1,7 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import block from 'bem-cn-lite';
 
-import { data as DataForum } from '@/pages/Forum/data';
 import { usePagination } from '@/hooks/usePagination';
 import { Topping } from '@/components/Topping';
 import { Loading } from '@/components/Loading';
@@ -11,17 +11,34 @@ import { PageMeta } from '@/components/PageMeta';
 
 import './Forum.scss';
 
+import {
+  topicsSelector,
+  pendingSelector
+} from '@/reducers/forum/topic/selectors';
+import { getForum } from '@/reducers/forum/topic/actions';
+import { AppState } from '@/reducers';
+
 const b = block('table');
 
 export type Props = {
   id: number;
-  title: string;
+  name: string;
   message: number;
 };
 
 const Forum = () => {
-  const loading = false;
-  const data: Props[] = DataForum;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getForum());
+  }, [dispatch]);
+
+  const { data, loading } = useSelector((state: AppState) => {
+    return {
+      data: topicsSelector(state),
+      loading: pendingSelector(state)
+    };
+  });
 
   const usersPerPage = 7;
 
@@ -56,7 +73,7 @@ const Forum = () => {
           <ForumList
             key={item.id}
             id={item.id}
-            title={item.title}
+            title={item.name}
             message={item.message}
           />
         ))}
