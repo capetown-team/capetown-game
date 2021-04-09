@@ -1,24 +1,24 @@
-import { CommentAction } from './actions';
-import { COMMENT_REQUEST, COMMENT_SUCCESS, COMMENT_FAILURE } from './constants';
+import { ReplyAction } from './actions';
+import { REPLY_REQUEST, REPLY_SUCCESS, REPLY_FAILURE } from './constants';
 
 export const initialState = {
-  comments: [],
+  REPLYs: [],
   isSuccessResult: false,
   pending: false,
   error: null
 };
 
-export const commentReducer = (state = initialState, action: CommentAction) => {
+export const replyReducer = (state = initialState, action: ReplyAction) => {
   switch (action.type) {
-    case COMMENT_REQUEST:
+    case REPLY_REQUEST:
       return { ...state, error: null, pending: true };
-    case COMMENT_FAILURE:
+    case REPLY_FAILURE:
       return { ...state, pending: false, isSuccessResult: false };
-    case COMMENT_SUCCESS: {
+    case REPLY_SUCCESS: {
       return {
         ...state,
         isSuccessResult: true,
-        comments: action.payload.comments,
+        replies: action.payload.replies,
         pending: false,
         error: false
       };

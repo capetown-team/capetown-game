@@ -1,5 +1,5 @@
-export type CommentState = {
-  comments: Props[];
+export type ReplyState = {
+  replies: Props[];
   isSuccessResult: boolean;
   pending: boolean;
   error: boolean | null;

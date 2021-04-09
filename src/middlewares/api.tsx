@@ -13,8 +13,8 @@ import {
 } from '@/reducers/leaderBoard/types';
 
 import { Props as TopicProps } from '@/reducers/forum/topic/types';
-
 import { Props as CommentProps } from '@/reducers/forum/comment/types';
+import { Props as ReplyProps } from '@/reducers/forum/reply/types';
 
 export type ResponseUserType = {
   data: UserType;
@@ -54,9 +54,11 @@ export interface IApi {
   ): Promise<ResponseLeaders>;
   getTopics(): Promise<ResponseTopic>;
   getComments(): Promise<ResponseComment>;
+  getReplies(): Promise<ResponseComment>;
   postClientID(body: string): Promise<ResponseType>;
   addTopic(): Promise<TopicProps>;
   addComment(): Promise<CommentProps>;
+  addReply(): Promise<ReplyProps>;
 }
 
 const context = (): IApi => {
@@ -125,12 +127,20 @@ const context = (): IApi => {
     return localClient.get(`/forum/comments`, data);
   };
 
+  const getReplies = (data: CommentProps) => {
+    return localClient.get(`/forum/replies`, data);
+  };
+
   const addTopic = (data: TopicProps) => {
     return localClient.post(`/forum/topic`, data);
   };
 
   const addComment = (data: CommentProps) => {
     return localClient.post(`/forum/comment`, data);
+  };
+
+  const addReply = (data: ReplyProps) => {
+    return localClient.post(`/forum/reply`, data);
   };
 
   return {
@@ -144,8 +154,10 @@ const context = (): IApi => {
     getLiderBoardAll,
     getTopics,
     getComments,
+    getReplies,
     addTopic,
     addComment,
+    addReply,
     setLiderBoardResult,
     postClientID
   };

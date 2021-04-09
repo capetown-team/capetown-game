@@ -4,41 +4,41 @@ import { ThunkAction } from 'redux-thunk';
 import { IApi } from '@/middlewares/api';
 import { Props } from './types';
 
-import { COMMENT_REQUEST, COMMENT_SUCCESS, COMMENT_FAILURE } from './constants';
+import { REPLY_REQUEST, REPLY_SUCCESS, REPLY_FAILURE } from './constants';
 
-type CommentRequest = {
-  type: typeof COMMENT_REQUEST;
+type ReplyRequest = {
+  type: typeof REPLY_REQUEST;
 };
 
-const commentRequest = (): CommentRequest => {
+const replyRequest = (): ReplyRequest => {
   return {
-    type: COMMENT_REQUEST
+    type: REPLY_REQUEST
   };
 };
 
-type CommentSuccess = {
-  type: typeof COMMENT_SUCCESS;
-  payload: { comments: Props[] };
+type ReplySuccess = {
+  type: typeof REPLY_SUCCESS;
+  payload: { replies: Props[] };
 };
 
-const commentSuccess = (comments: Props[]): CommentSuccess => {
+const replySuccess = (replies: Props[]): ReplySuccess => {
   return {
-    type: COMMENT_SUCCESS,
-    payload: { comments }
+    type: REPLY_SUCCESS,
+    payload: { replies }
   };
 };
 
-type CommentFailure = {
-  type: typeof COMMENT_FAILURE;
+type ReplyFailure = {
+  type: typeof REPLY_FAILURE;
 };
 
-const commentFailure = (): CommentFailure => {
+const replyFailure = (): ReplyFailure => {
   return {
-    type: COMMENT_FAILURE
+    type: REPLY_FAILURE
   };
 };
 
-export const getComments = <S,>(): ThunkAction<
+export const getReplies = <S,>(): ThunkAction<
   void,
   () => S,
   IApi,
@@ -47,19 +47,19 @@ export const getComments = <S,>(): ThunkAction<
   return async (
     dispatch: Dispatch,
     getState,
-    { getComments }
+    { getReplies }
   ): Promise<void> => {
-    dispatch(commentRequest());
-    getComments()
+    dispatch(replyRequest());
+    getReplies()
       .then((response) => {
         if (response.data) {
-          dispatch(commentSuccess(response.data));
+          dispatch(replySuccess(response.data));
         }
       })
       .catch(() => {
-        dispatch(commentFailure());
+        dispatch(replyFailure());
       });
   };
 };
 
-export type CommentAction = CommentRequest | CommentSuccess | CommentFailure;
+export type REPLYAction = ReplyRequest | ReplySuccess | ReplyFailure;
