@@ -44,8 +44,13 @@
         + openssl rsa -in keytmp.pem -out key.pem
 - 3. Запустить проект `npm run start`
 - 4. Открыть страницу в браузере [https://local.ya-praktikum.tech:5000](https://local.ya-praktikum.tech:5000), port может быть другим
+
 ## Работа с БД
+1. В консоли запустить docker-образ с помощью команды `docker-compose up`
+2. После запуска образа подключиться к БД с помощью команды `psql postgres://admin:admin@localhost:5436/pacman`    
 3. Скопировать и выполнить в консоли код из migration.sql
+
+## Актуальная версия с heroku
 На [demo](https://warm-anchorage-94393.herokuapp.com) пример для ознакомления
 ## Что сделано
 - Приложение написано на : `React`, `Redux`, `TypeScript`, `БЭМ` и библиотеки `bem-cn-lite`;
@@ -72,10 +77,8 @@
 Для нахождения утечек памяти использовались инструменты вкладки браузера Memory и Perfomance.
 С помощью графиков Perfomance замерялись показатели начала и окончания работы. 
 ![Memory timeline](/ui/perfomancegame.png)
-
 На скриншоте видны периодические "пороги" выделения памяти, которые возникают вследствие работы сборщика мусора.
 В целом вся выделяемая память со времени освобождаетмся. Подробнее ниже.
-
 ![Memory timeline](/ui/perfomance.png)
 ## **Команда**
 Команда "Кейптаун"
