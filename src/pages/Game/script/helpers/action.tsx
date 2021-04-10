@@ -14,24 +14,6 @@ export const toPixelPos = (gridPos: number) => {
   return gridPos * step;
 };
 
-export const buildWall = (
-  context: CanvasRenderingContext2D,
-  gridX: number,
-  gridY: number,
-  width: number,
-  height: number
-) => {
-  context.fillRect(gridX, gridY, width, height);
-};
-
-export const buildBlock = (
-  context: CanvasRenderingContext2D,
-  gridX: number,
-  gridY: number
-) => {
-  context.fillRect(gridX, gridY, step, step);
-};
-
 export const drawText = (
   context: CanvasRenderingContext2D,
   text: string,
@@ -44,4 +26,44 @@ export const drawText = (
   context.font = `${size}pt Source Sans Pro`;
   context.fillStyle = color;
   context.fillText(textScore, x, y);
+};
+
+export const getRandomDir = (
+  minPar: number,
+  maxPar: number,
+  directions: number[]
+): number => {
+  const min = Math.ceil(minPar);
+  const max = Math.floor(maxPar);
+  const result = Math.floor(Math.random() * (max - min + 1)) + min;
+  if (directions.includes(result)) {
+    return getRandomDir(min, max, directions);
+  }
+  return result;
+};
+
+export const nextDir = (directions: number[]) => {
+  return getRandomDir(0, 3, directions);
+};
+
+export const setDirectionGhost = (newDir: number) => {
+  let r: Direction | null = null;
+
+  switch (newDir) {
+    case DirectionType.UP:
+      r = up;
+      break;
+    case DirectionType.LEFT:
+      r = left;
+      break;
+    case DirectionType.DOWN:
+      // this.stop = true;
+      r = down;
+      break;
+    case DirectionType.RIGHT:
+      r = right;
+      break;
+    // no default
+  }
+  return r;
 };

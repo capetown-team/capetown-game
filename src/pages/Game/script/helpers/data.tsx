@@ -17,49 +17,48 @@ const getType = (item: string) => {
 
 const prepareData = () => {
   const map = [
-    'bbbbbbbbbbbbbebbbbbbbbbbbbb',
-    'bspppppppppppppppppppppppsb',
-    'bpbbbbpbbbbpbbpbbbbpbbbbbpb',
-    'bpppppppppppbbppppppppppbpb',
-    'bpbbpbbbbbbpbbpbbbbbbpbbbpb',
-    'bpppppppppppbbppppppppppppb',
-    'bpbbbbbbpbbpbbpbbpbbbbbbbpb',
-    'bpppppppppppppppppppppppppb',
-    'bpbpbbbbbbpbbbbbpbpbbbbbbpb',
-    'bpbpppppppppppppppppppppbpb',
-    'bpbpbbbbpbpbbbbbpbpbbbbpbpb',
-    'bpbppppbpbpppppppbppppppbpb',
-    'bpbbbbpbpbpbbebbpbpbbbbbbpb',
-    'eppppppppbpbeeebpbppppppppe',
-    'bpbbbbpbpbpbeeebpbpbbbbbbpb',
-    'bpbppppbpbpbbbbbpbppppppppb',
-    'bpbpbbbbpbpppppppbpbbbbbbpb',
-    'bpbppppppbpbbbbbpbpbbbbbbpb',
-    'bpppbbbbppppppppppppppppppb',
-    'bpbbbbbbpbbpbbpbbpbbbbbbbpb',
-    'bpppppppppppppppppppppppppb',
-    'bpbbpbbbbbbpbbpbbbbbbpbbbpb',
-    'bpppppppppppbbppppppppppppb',
-    'bpbbbbpbbbbpbbpbbbbpbbbbbpb',
-    'bspppppppppppppppppppppppsb',
-    'bbbbbbbbbbbbbebbbbbbbbbbbbb'
+    'wwwwwwwwwwwwwewwwwwwwwwwwww',
+    'wwwwwwwwwwwwwewwwwwwwwwwwww',
+    'wppppwpppppppppwppppppppppw',
+    'wpwwpwpwwwwpwwpwpwwpwwwwwpw',
+    'wppppppwppppwwppppwppppwppw',
+    'wpwwpwwwpwwpwwpwwpwwwwpwpww',
+    'wpppppppppppwwpppppppwppppw',
+    'wpwwpwwwpwwpwwpwwwpwpwpwwpw',
+    'wppppwpppppppppwpppwppppppw',
+    'wwwwpwpwwwpwwwwwpwpwpwwwwpw',
+    'wppppppwpppppppppppwppppwpw',
+    'wpwpwwpwpwpwwwwwpwpppwwpwpw',
+    'wpwppppwpwppppppppwpppppwpw',
+    'wpwwwwpwpwpwwwwwwpppwwwwwpw',
+    'eppppppppwpweeeewpwwppppppe',
+    'wpwwwwpwpwpwweewwppwpwwwwpw',
+    'wpwppppwpwpppppppppwppppppw',
+    'wpwpwwwwpwpwwpwwpwpwpwwwwpw',
+    'wpwppppppwpwwpwppwpwpwwwwpw',
+    'wpppwwwwppppppppwppppwppppw',
+    'wpwwwwwwpwwpwwwwwpwpwwpwwww',
+    'wppppppppwwpwpppppwpppppppw',
+    'wwwwpwwwwwwpwpwwpwwpwpwwwpw',
+    'wppppwppppppwpwwppppwpppppw',
+    'wpwwwwpwwpwpwpwwwwwpwpwwwpw',
+    'wpppppppppwpppppppppwpppppw',
+    'wwwwwwwwwwwwwewwwwwwwwwwwww'
   ];
   const result = [];
-  for (let i = 0; i < map.length; ) {
+  for (let i = 0; i < map.length; i += 1) {
     const mapItemX = [];
-    for (let j = 0; j < map[i].length; ) {
+    for (let j = 0; j < map[i].length; j += 1) {
       const item = getType(map[i][j]);
-      mapItemX.push({ col: j, type: item });
-      j += 1;
+      mapItemX.push({ col: j + 1, type: item });
     }
 
     const mapItem = {
-      row: i,
+      row: i + 1,
       posX: mapItemX
     };
 
     result.push(mapItem);
-    i += 1;
   }
 
   return { posY: result };
