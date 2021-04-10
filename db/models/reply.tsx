@@ -19,7 +19,7 @@ export const Reply = {
         key: 'id' 
       }      
     },
-    userid: {
+    userId: {
       type: DataType.INTEGER,
       allowNull: false,
       references: {

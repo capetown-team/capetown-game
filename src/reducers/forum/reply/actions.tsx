@@ -62,4 +62,4 @@ export const getReplies = <S,>(): ThunkAction<
   };
 };
 
-export type REPLYAction = ReplyRequest | ReplySuccess | ReplyFailure;
+export type ReplyAction = ReplyRequest | ReplySuccess | ReplyFailure;

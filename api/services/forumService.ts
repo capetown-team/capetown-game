@@ -2,11 +2,11 @@ import { Request, Response } from 'express';
 import { topicRepository } from '../../db/repositories/topicRepository';
 import { commentRepository } from '../../db/repositories/commentRepository';
 import { replyRepository } from '../../db/repositories/replyRepository';
-import sequelize, { modelTopic, modelComment, modelReply } from '../../db/init/db_init';
+import sequelize, { modelUser, modelTopic, modelComment, modelReply } from '../../db/init/db_init';
 
 export const forumService = () => {
   const topic = topicRepository(sequelize, modelTopic, modelComment, modelReply);
-  const comment = commentRepository(modelTopic);
+  const comment = commentRepository(modelComment, modelUser);
   const reply = replyRepository(modelReply);
 
   const getTopics = (req: Request, res: Response) => {
@@ -35,7 +35,7 @@ export const forumService = () => {
   };
 
   const addTopic = (req: Request, res: Response) => {
-    const { name, content, userid } = req.body;
+    const { name, content, userId } = req.body;
 
     const isNameValid = name.length > 0;
     const isContentValid = content.length > 2;
@@ -50,7 +50,7 @@ export const forumService = () => {
     }
 
     return topic
-    .add(name, content, userid)
+    .add(name, content, userId)
     .then(topic => {
       res.status(200).send(topic);
     })
@@ -62,16 +62,16 @@ export const forumService = () => {
   };
 
   const getComments = (req: Request, res: Response) => {
-    const { idTopic } = req.body;
+    const topicId = Number(req.params.id);
     comment
-      .getAll(idTopic)
+      .getAll(topicId)
       .then((comments) => res.status(200).json(comments))
       .catch((err) => res.status(500).json({ error: ['db error', err] }));
   };
 
   
   const addComment = (req: Request, res: Response) => {
-    const { content, topicid, userid } = req.body;
+    const { content, topicId, userId } = req.body;
 
     const isContentValid = content.length > 0;
 
@@ -85,7 +85,7 @@ export const forumService = () => {
     }
 
     return comment
-    .add(content, topicid, userid)
+    .add(content, topicId, userId)
     .then(topic => {
       res.status(200).send(topic);
     })
@@ -97,15 +97,15 @@ export const forumService = () => {
   };
 
   const getReplies = (req: Request, res: Response) => {
-    const { commentid } = req.body;
+    const commentId = Number(req.params.id);
     reply
-      .getAll(commentid)
+      .getAll(commentId)
       .then((replies) => res.status(200).json(replies))
       .catch((err) => res.status(500).json({ error: ['db error', err] }));
   };
 
   const addReply = (req: Request, res: Response) => {
-    const { content, commentid, userid } = req.body;
+    const { content, commentId, userId } = req.body;
 
     const isContentValid = content.length > 0;
 
@@ -119,7 +119,7 @@ export const forumService = () => {
     }
 
     return reply
-    .add(content, commentid, userid)
+    .add(content, commentId, userId)
     .then(reply => {
       res.status(200).send(reply);
     })

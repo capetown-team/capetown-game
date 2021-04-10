@@ -56,7 +56,7 @@ export interface IApi {
   getComments(): Promise<ResponseComment>;
   getReplies(): Promise<ResponseComment>;
   postClientID(body: string): Promise<ResponseType>;
-  addTopic(): Promise<TopicProps>;
+  addTopic(topic: TopicProps): Promise<TopicProps>;
   addComment(): Promise<CommentProps>;
   addReply(): Promise<ReplyProps>;
 }
@@ -123,12 +123,12 @@ const context = (): IApi => {
     return localClient.get(`/forum/topics`);
   };
 
-  const getComments = (data: TopicProps) => {
-    return localClient.get(`/forum/comments`, data);
+  const getComments = () => {
+    return localClient.get(`/forum/comments`);
   };
 
-  const getReplies = (data: CommentProps) => {
-    return localClient.get(`/forum/replies`, data);
+  const getReplies = () => {
+    return localClient.get(`/forum/replies`);
   };
 
   const addTopic = (data: TopicProps) => {

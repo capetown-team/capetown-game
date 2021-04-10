@@ -7,13 +7,12 @@ export const forumRouter = (apiRouter: Router) => {
   const forum = forumService();
 
   router.get("/topics", isAuthMiddleware, forum.getTopics);
-  router.get("/topic/:id", isAuthMiddleware, forum.getTopic);
+  router.get("/topic/:id", isAuthMiddleware, forum.getComments);
   router.post("/topic", isAuthMiddleware, forum.addTopic);
 
-  router.get("/comments", isAuthMiddleware, forum.getComments);
   router.post("/comment", isAuthMiddleware, forum.addComment);
+  router.get("/comment/:id", isAuthMiddleware, forum.getReplies);
 
-  router.get("/replies", isAuthMiddleware, forum.getReplies);
   router.post("/reply", isAuthMiddleware, forum.addReply);
 
   apiRouter.use("/forum", router);

@@ -7,11 +7,11 @@ export const UserTheme = {
       primaryKey: true,
       allowNull: false
     },
-    id_theme: {
+    themeId: {
       type: DataType.INTEGER,
       allowNull: false
     },
-    id_user: {
+    userId: {
       type: DataType.INTEGER,
       allowNull: false
     }

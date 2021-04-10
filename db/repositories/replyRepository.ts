@@ -1,17 +1,19 @@
+import { Model, ModelCtor } from "sequelize-typescript";
+
 export type ReplyType = {
   id: number;
   content: string;
-  id_comment: number;
-  id_user: number;
+  commentId: number;
+  userId: number;
 };
 
-export const replyRepository = (Reply) => {
-  const getAll = (idComment: number) => {
-    return Reply.findAll({ where: {id_comment: idComment}});
+export const replyRepository = (Reply: ModelCtor<Model<any, any>>) => {
+  const getAll = (commentId: number) => {
+    return Reply.findAll({ where: {commentId: commentId}});
   };
 
- const add = (content: string, id_comment: number, id_user: number) => {
-    return Reply.create({ content, id_comment, id_user });
+ const add = (content: string, commentId: number, userId: number) => {
+    return Reply.create({ content, commentId, userId });
   };
 
   return {

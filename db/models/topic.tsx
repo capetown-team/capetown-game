@@ -15,7 +15,7 @@ export const Topic = {
         type: DataType.STRING,
         allowNull: false
       },
-    userid: {
+    userId: {
       type: DataType.INTEGER,
       allowNull: false,
       references: {

@@ -1,17 +1,31 @@
+import { Model, ModelCtor } from 'sequelize-typescript';
+
 export type CommentType = {
   id: number;
   content: string;
-  id_topic: number;
-  id_user: number;
+  topicId: number;
+  userId: number;
 };
 
-export const commentRepository = (Comment) => {
-  const getAll = (idTopic: number) => {
-    return Comment.findAll({ where: { id_topic: idTopic } });
+export const commentRepository = (
+  Comment: ModelCtor<Model<any, any>>,
+  User: ModelCtor<Model<any, any>>
+) => {
+  const getAll = (topicId: number) => {
+    return Comment.findAll({
+      attributes: ['id', 'content'],
+      where: { topicId: topicId },
+      include: [
+        {
+          attributes: ['first_name', 'second_name'],
+          model: User
+        }
+      ]
+    });
   };
 
-  const add = (content: string, id_topic: number, id_user: number) => {
-    return Comment.create({ content, id_topic, id_user });
+  const add = (content: string, topicId: number, userId: number) => {
+    return Comment.create({ content, topicId, userId });
   };
 
   return {

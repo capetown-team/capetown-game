@@ -30,10 +30,10 @@ ALTER TABLE themes ALTER id SET DEFAULT NEXTVAL('theme_id_seq');
 CREATE TABLE IF NOT EXISTS public.users_theme
 (
     id integer NOT NULL,
-    themeid integer NOT NULL,
-    userid integer NOT NULL,
-    CONSTRAINT users_theme_pkey PRIMARY KEY (userid),
-    CONSTRAINT userid FOREIGN KEY (userid)
+    themeId integer NOT NULL,
+    userId integer NOT NULL,
+    CONSTRAINT users_theme_pkey PRIMARY KEY (userId),
+    CONSTRAINT userId FOREIGN KEY (userId)
         REFERENCES public.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
@@ -49,9 +49,9 @@ CREATE TABLE IF NOT EXISTS public.topics
     id integer NOT NULL,
     name character(100)  NOT NULL,
     content character(400)  NOT NULL,
-    userid integer,
+    userId integer,
     CONSTRAINT topics_pkey PRIMARY KEY (id),
-    CONSTRAINT userid FOREIGN KEY (userid)
+    CONSTRAINT userId FOREIGN KEY (userId)
         REFERENCES public.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
@@ -63,7 +63,7 @@ ALTER TABLE topics ALTER id SET DEFAULT NEXTVAL('topics_id_seq');
 
 CREATE INDEX IF NOT EXISTS fki_userId
     ON public.topics USING btree
-    (userid ASC NULLS LAST)
+    (userId ASC NULLS LAST)
     TABLESPACE pg_default;
 
 CREATE INDEX IF NOT EXISTS name
@@ -76,15 +76,15 @@ CREATE TABLE IF NOT EXISTS public.comments
 (
     id integer NOT NULL,
     content character(1000)  NOT NULL,
-    topicid integer NOT NULL,
-    userid integer NOT NULL,
+    topicId integer NOT NULL,
+    userId integer NOT NULL,
     CONSTRAINT id PRIMARY KEY (id),
-    CONSTRAINT topidId FOREIGN KEY (topicid)
+    CONSTRAINT topicId FOREIGN KEY (topicId)
         REFERENCES public.topics (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID,
-    CONSTRAINT userId FOREIGN KEY (userid)
+    CONSTRAINT userId FOREIGN KEY (userId)
         REFERENCES public.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
@@ -96,7 +96,7 @@ ALTER TABLE comments ALTER id SET DEFAULT NEXTVAL('comments_id_seq');
 
 CREATE INDEX IF NOT EXISTS fki_topicid
     ON public.comments USING btree
-    (topicid ASC NULLS LAST)
+    (topicId ASC NULLS LAST)
     TABLESPACE pg_default;
 
 CREATE INDEX IF NOT EXISTS fki_userid
@@ -109,16 +109,16 @@ CREATE INDEX IF NOT EXISTS fki_userid
 CREATE TABLE IF NOT EXISTS  public.replies
 (
     id integer NOT NULL,
-    commentid integer NOT NULL,
-    userid integer NOT NULL,
+    commentId integer NOT NULL,
+    userId integer NOT NULL,
     content character(100),
     CONSTRAINT replies_pkey PRIMARY KEY (id),
-    CONSTRAINT commentid FOREIGN KEY (commentid)
+    CONSTRAINT commentId FOREIGN KEY (commentId)
         REFERENCES public.comments (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
         NOT VALID,
-    CONSTRAINT userid FOREIGN KEY (userid)
+    CONSTRAINT userId FOREIGN KEY (userId)
         REFERENCES public.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
@@ -154,7 +154,7 @@ VALUES
 ('dark', false),
 ('light', false);
 
-INSERT INTO users_theme (themeid, userid)
+INSERT INTO users_theme (themeId, userId)
 VALUES
 (1, 1),
 (2, 2),
@@ -167,7 +167,7 @@ VALUES
 (1, 9),
 (2, 10);
 
-INSERT INTO topics (name, content, userid)
+INSERT INTO topics (name, content, userId)
 VALUES
 ('Games secret', 'Games secret', 1),
 ('Who is at what level?', 'Who is at what level?', 2),
@@ -185,7 +185,7 @@ VALUES
 ('Articles', 'Articles', 7),
 ('Offtop', 'Offtop', 6);
 
-INSERT INTO comments (content, topicid, userid)
+INSERT INTO comments (content, topicId, userId)
 VALUES
 ('Всем привет, кто нашел какие возможности для успешного проходения игры?', 1, 1),
 ('Только что прошел 1-ый уровень', 2, 2),
@@ -198,7 +198,7 @@ VALUES
 ('По ссылке ниже можно почитать о истории создании игры', 9, 9),
 ('Для игры использовали gameloop', 10, 10);
 
-INSERT INTO replies (content, commentid, userid)
+INSERT INTO replies (content, commentId, userId)
 VALUES
 ('Я нашел пару статей об алгоритме движения призрака, думаю, тогда станет понятнее как убегать от них', 1, 1),
 ('А я уже на 2-ом:)', 2, 2);
