@@ -55,15 +55,25 @@
 ## Что сделано
 - Приложение написано на : `React`, `Redux`, `TypeScript`, `БЭМ` и библиотеки `bem-cn-lite`;
 - Настроен Webpack:
-  - html: `HtmlWebpackPlugin`;
-  - обработка css: `css-loader`, `style-loader`, `sass-loader`, `mini-css-extract-plugin`;
-  - сборка TS/JS: `babel`, `ts-loader`;
+  - Написан полностью на `typescript`;
+  - обработка css: `css-loader`, `sass-loader`, `csso-webpack-plugin`, `mini-css-extract-plugin`;
+  - сборка TS/JS: `babel-loader`, дополнительные плагины используются в файле `.babelrc`;
+- Настроен: `server side rendering` или `ssr`;
+  - Написан полностью на `typescript`;
+  - Инструкция для запуска, описана выше;
+  - Настроен `HMR` и `dev-server` для Express;
+  - Добавлены `cookie` на сервере;
+  - Добавлена проверка авторизации на сервере
 - Настроен: `server worker`;
 - Защита от DOS атак: `express-rate-limit`;
 - Защита от xss атак: `serialize-javascript`;
 - Добавлены снепшотные тесты ;
-- Код стайлинг: `prettier`, `eslint`;
-- Создана механика игры.;
+- Код стайлинг: `prettier`, `eslint`, `stylelint`;
+- Создана механика игры:
+    - Построены: стены, монеты
+    - Реализовано управление персонажем через стрелки или джойстик
+    - Созданы 4 призрака, которые бегают по лабиринту и могут убить пакмана при столкновении
+- Проверен проект на утечки памяти;
 - Реализованы страницы:
   - Главная;
   - Игра;
