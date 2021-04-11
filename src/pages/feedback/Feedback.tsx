@@ -1,10 +1,13 @@
 import React, { memo, useState, ChangeEvent } from 'react';
+import { useSelector } from 'react-redux';
 import block from 'bem-cn-lite';
 
 import { PageMeta } from '@/components/PageMeta';
 // import { Loading } from '@/components/Loading';
 import { FormField } from '@/components/FormField';
 import { Button } from '@/components/Button';
+import { userSelector, authSelector } from '@/reducers/user/selectors';
+import { AppState } from '@/reducers';
 import { update, generateData, isFormValid } from '@/modules/formActions';
 import { data } from './data';
 
@@ -15,6 +18,13 @@ const b = block('form');
 const Feedback = () => {
   const [formdata, setFormdata] = useState(data);
   const [error, setError] = useState(false);
+
+  const { user, isAuth } = useSelector((state: AppState) => {
+    return {
+      user: userSelector(state),
+      isAuth: authSelector(state)
+    };
+  });
 
   const updateForm = (element: {
     blur?: boolean;
@@ -40,6 +50,11 @@ const Feedback = () => {
       setError(true);
     }
   };
+
+  if (isAuth) {
+    data.name.value = user?.first_name || '';
+    data.email.value = user?.email || '';
+  }
 
   return (
     <div className={b()}>

@@ -8,6 +8,8 @@ import { Button } from '@/components/Button';
 import { Input } from '@/components/Input';
 import { isValidPassword, isValidPasswordConfirm } from '@/modules/validation';
 
+// import { passwordData } from '@/pages/Profile/data';
+
 type StateObj = {
   [name: string]: string;
 };
@@ -125,6 +127,7 @@ export const ProfilePasswordForm: FC<Props> = ({ setIsProfileView }) => {
               </div>
             )}
           </div>
+
           <div className={b('btn')}>
             <Button type="button" size="m" onClick={handleChangePassword}>
               Сохранить

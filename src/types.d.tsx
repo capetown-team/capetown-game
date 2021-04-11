@@ -43,9 +43,12 @@ export type FormFieldType = {
     placeholder: string;
   };
   validation: {
-    required: boolean;
+    required?: boolean;
     email?: boolean;
     minLength?: number;
+    phone?: boolean;
+    password?: boolean;
+    confirm?: string;
   };
   valid: boolean;
   touched: boolean;

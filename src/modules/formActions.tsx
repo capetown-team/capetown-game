@@ -1,7 +1,7 @@
 import { ChangeEvent } from 'react';
 
 import { FormFieldType, FormType, FormDataType } from '@/types.d';
-import { REXP_EMAIL } from '@/modules/regExps';
+import { REXP_EMAIL, REXPPHONE } from '@/modules/regExps';
 
 export const validate = (element: FormFieldType) => {
   let error = [true, ''];
@@ -13,9 +13,9 @@ export const validate = (element: FormFieldType) => {
     error = !valid ? [valid, message] : error;
   }
 
-  if (element.validation.required) {
-    const valid = value !== '';
-    const message = `${!valid ? 'Обязательное поле' : ''}`;
+  if (element.validation.phone) {
+    const valid = REXPPHONE.test(element.value);
+    const message = `${!valid ? 'Телефон не верный' : ''}`;
     error = !valid ? [valid, message] : error;
   }
 
@@ -25,6 +25,12 @@ export const validate = (element: FormFieldType) => {
     const message = `${
       !valid ? `Длина не может быть меньше ${minLength}` : ''
     }`;
+    error = !valid ? [valid, message] : error;
+  }
+
+  if (element.validation.required) {
+    const valid = value !== '';
+    const message = `${!valid ? 'Обязательное поле' : ''}`;
     error = !valid ? [valid, message] : error;
   }
 
@@ -75,6 +81,14 @@ export const generateData = (formdata: FormDataType) => {
 
 export const isFormValid = (formdata: FormDataType) => {
   let formIsValid = true;
+  const newFormdate: FormDataType = {
+    ...formdata
+  };
+
+  (Object.keys(formdata) as Array<FormType>).forEach((key) => {
+    const validData = validate(formdata[key]);
+    ((newFormdate[key] as unknown) as FormFieldType).valid = !!validData[0];
+  });
 
   (Object.keys(formdata) as Array<FormType>).forEach((key) => {
     formIsValid =

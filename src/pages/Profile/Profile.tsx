@@ -5,13 +5,14 @@ import block from 'bem-cn-lite';
 
 import { PageMeta } from '@/components/PageMeta';
 import { AppState } from '@/reducers';
-import { userSelector } from '@/reducers/user/selectors';
+import { authSelector, userSelector } from '@/reducers/user/selectors';
 import { changeProfileAvatar } from '@/reducers/user/actions';
 import { baseUrl } from '@/constants';
 import { FilePopup } from '@/components/FilePopup';
 import { ProfileForm } from './ProfileForm';
 import { ProfilePasswordForm } from './ProfilePasswordForm';
 
+import { formData } from './data';
 import './Profile.scss';
 
 const b = block('user-profile');
@@ -21,23 +22,25 @@ export const Profile = () => {
   const [isShowPopup, setIsShowPopup] = useState(false);
 
   const dispatch = useDispatch();
-  const { user } = useSelector((state: AppState) => {
+  const { user, isAuth } = useSelector((state: AppState) => {
     return {
-      user: userSelector(state)
+      user: userSelector(state),
+      isAuth: authSelector(state)
     };
   });
 
+  if (isAuth) {
+    formData.first_name.value = user?.first_name || '';
+    formData.second_name.value = user?.second_name || '';
+    formData.display_name.value = user?.display_name || '';
+    formData.email.value = user?.email || '';
+    formData.login.value = user?.login || '';
+    formData.phone.value = user?.phone || '';
+  }
+
   const state = {
     avatar: user?.avatar || '',
-    id: user?.id,
-    data: {
-      first_name: user?.first_name || '',
-      second_name: user?.second_name || '',
-      display_name: user?.display_name || '',
-      email: user?.email || '',
-      login: user?.login || '',
-      phone: user?.phone || ''
-    }
+    id: user?.id
   };
 
   const handleAvatarChange = (file: File) => {
@@ -56,7 +59,7 @@ export const Profile = () => {
               {state.avatar ? (
                 <img src={`${baseUrl}${state.avatar}`} alt="avatar" />
               ) : (
-                <span>{state.data.first_name.charAt(0)}</span>
+                <span>{formData.first_name.value}</span>
               )}
               <button
                 onClick={() => setIsShowPopup(true)}
@@ -67,7 +70,7 @@ export const Profile = () => {
               </button>
             </div>
             <div className={b('avatar-name')}>
-              {`${state.data.first_name} ${state.data.second_name}`}
+              {`${formData.first_name.value} ${formData.second_name.value}`}
             </div>
           </div>
           <div>
@@ -78,7 +81,7 @@ export const Profile = () => {
         </div>
         {isProfileView ? (
           <ProfileForm
-            profileData={state.data}
+            profileData={formData}
             setIsProfileView={setIsProfileView}
           />
         ) : (

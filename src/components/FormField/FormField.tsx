@@ -1,5 +1,6 @@
 import React, { FC, memo, ChangeEvent } from 'react';
 import block from 'bem-cn-lite';
+
 import { FormFieldType } from '@/types.d';
 
 import './FormField.scss';
@@ -11,12 +12,13 @@ type Props = {
   change: (p: {
     blur?: boolean;
     id: string;
-    event: ChangeEvent<HTMLTextAreaElement> | ChangeEvent<HTMLInputElement>;
+    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>;
   }) => void;
   id: string;
+  disabled?: boolean;
 };
 
-const FormField: FC<Props> = ({ formdata, change, id }) => {
+const FormField: FC<Props> = ({ formdata, change, id, disabled }) => {
   const showError = () => {
     let errorMessate = null;
 
@@ -43,8 +45,10 @@ const FormField: FC<Props> = ({ formdata, change, id }) => {
             )}
             <input
               id={id}
+              type={formdata.config.type}
+              disabled={disabled}
               className={b('input')}
-              // value={formdata.value}
+              value={formdata.value}
               placeholder={formdata.config.placeholder}
               onBlur={(event) => change({ event, id, blur: true })}
               onChange={(event) => change({ event, id })}
@@ -63,6 +67,8 @@ const FormField: FC<Props> = ({ formdata, change, id }) => {
             )}
             <textarea
               id={id}
+              value={formdata.value}
+              disabled={disabled}
               className={b('textarea')}
               placeholder={formdata.config.placeholder}
               onBlur={(event) => change({ event, id, blur: true })}
