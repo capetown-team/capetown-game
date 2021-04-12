@@ -19,11 +19,11 @@ export const Comment = {
         key: 'id' 
       }      
     },
-    userId: {
+    pacmanuserId: {
       type: DataType.INTEGER,
       allowNull: false,
       references: {
-        model: 'user',
+        model: 'pacmanuser',
         key: 'id' 
       }      
     }

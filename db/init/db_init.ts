@@ -24,8 +24,8 @@ export const modelUserTheme = sequelize.define('users_theme', UserTheme, {
 });
 
 modelUser.hasMany(modelTopic);
-//modelUser.hasMany(modelComment);
-modelComment.hasOne(modelUser);
+modelUser.hasMany(modelComment);
+//modelComment.hasOne(modelUser);
 modelTopic.hasMany(modelComment);
 modelComment.hasMany(modelReply);
 

@@ -19,7 +19,7 @@ export const Topic = {
       type: DataType.INTEGER,
       allowNull: false,
       references: {
-        model: 'user',
+        model: 'pacmanuser',
         key: 'id' 
       }       
     }

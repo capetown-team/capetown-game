@@ -14,13 +14,7 @@ export const commentRepository = (
   const getAll = (topicId: number) => {
     return Comment.findAll({
       attributes: ['id', 'content'],
-      where: { topicId: topicId },
-      include: [
-        {
-          attributes: ['first_name', 'second_name'],
-          model: User
-        }
-      ]
+      where: { topicId: topicId }
     });
   };
 
