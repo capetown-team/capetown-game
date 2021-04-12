@@ -1,7 +1,8 @@
-import React, { FC, memo, ChangeEvent } from 'react';
+import React, { FC, memo } from 'react';
 import block from 'bem-cn-lite';
 
-import { FormFieldType } from '@/types.d';
+import { FormFieldType, FormFieldEventType } from '@/types.d';
+import { Input } from '@/components/Input';
 
 import './FormField.scss';
 
@@ -12,7 +13,7 @@ type Props = {
   change: (p: {
     blur?: boolean;
     id: string;
-    event: ChangeEvent<HTMLInputElement> | ChangeEvent<HTMLTextAreaElement>;
+    event: FormFieldEventType;
   }) => void;
   id: string;
   disabled?: boolean;
@@ -43,16 +44,40 @@ const FormField: FC<Props> = ({ formdata, change, id, disabled }) => {
                 {formdata.config.label}
               </label>
             )}
-            <input
+            <Input
               id={id}
               type={formdata.config.type}
               disabled={disabled}
-              className={b('input')}
               value={formdata.value}
               placeholder={formdata.config.placeholder}
               onBlur={(event) => change({ event, id, blur: true })}
               onChange={(event) => change({ event, id })}
             />
+            {showError()}
+          </div>
+        );
+        break;
+      case 'select':
+        formTemplate = (
+          <div className="formBlock">
+            {formdata.config.label && (
+              <label htmlFor={id} className={b('label')}>
+                {formdata.config.label}
+              </label>
+            )}
+            <select
+              value={formdata.value}
+              onBlur={(event) => change({ event, id, blur: true })}
+              onChange={(event) => change({ event, id })}
+            >
+              <option value="">Select one</option>
+              {formdata.config.options &&
+                formdata.config.options.map((item) => (
+                  <option key={item.key} value={item.key}>
+                    {item.value}
+                  </option>
+                ))}
+            </select>
             {showError()}
           </div>
         );

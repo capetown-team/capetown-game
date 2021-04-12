@@ -1,4 +1,4 @@
-import React, { memo, useState, ChangeEvent } from 'react';
+import React, { memo, useState } from 'react';
 import { useSelector } from 'react-redux';
 import block from 'bem-cn-lite';
 
@@ -9,8 +9,9 @@ import { Button } from '@/components/Button';
 import { userSelector, authSelector } from '@/reducers/user/selectors';
 import { AppState } from '@/reducers';
 import { update, generateData, isFormValid } from '@/modules/formActions';
-import { data } from './data';
+import { FormFieldEventType } from '@/types.d';
 
+import { data } from './data';
 import './Feedback.scss';
 
 const b = block('form');
@@ -29,7 +30,7 @@ const Feedback = () => {
   const updateForm = (element: {
     blur?: boolean;
     id: string;
-    event: ChangeEvent<HTMLTextAreaElement> | ChangeEvent<HTMLInputElement>;
+    event: FormFieldEventType;
   }) => {
     const newFormdata = update(element, formdata);
 

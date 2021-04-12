@@ -1,18 +1,15 @@
-import React, { ChangeEvent, FC, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 
 import { PageMeta } from '@/components/PageMeta';
 import { changePassword } from '@/reducers/user/actions';
 import { Button } from '@/components/Button';
-import { Input } from '@/components/Input';
-import { isValidPassword, isValidPasswordConfirm } from '@/modules/validation';
+import { FormField } from '@/components/FormField';
+import { generateData, isFormValid, update } from '@/modules/formActions';
+import { FormFieldEventType } from '@/types.d';
 
-// import { passwordData } from '@/pages/Profile/data';
-
-type StateObj = {
-  [name: string]: string;
-};
+import { passwordData } from '../data';
 
 const b = block('user-form');
 
@@ -23,113 +20,58 @@ type Props = {
 export const ProfilePasswordForm: FC<Props> = ({ setIsProfileView }) => {
   const dispatch = useDispatch();
 
-  const stateObj: StateObj = {
-    oldPassword: '',
-    newPassword: '',
-    newPasswordConfirm: ''
-  };
-  const [state, setState] = useState(stateObj);
-  const [validState, setValidState] = useState(stateObj);
+  const [formdata, setFormdata] = useState(passwordData);
 
-  const validateInput = (name: string) => {
-    let validStr = '';
-    if (name === 'newPasswordConfirm') {
-      validStr = isValidPasswordConfirm(state.newPassword, state[name]);
-    } else {
-      validStr = isValidPassword(state[name]);
+  const submitForm = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+
+    const dataToSubmit = generateData(formdata);
+    const formIsValid = isFormValid(formdata);
+
+    if (formIsValid) {
+      dispatch(
+        changePassword({
+          oldPassword: String(dataToSubmit.oldPassword),
+          newPassword: String(dataToSubmit.password)
+        })
+      );
+      setIsProfileView(true);
     }
-
-    setValidState({
-      ...validState,
-      [name]: validStr
-    });
-
-    return !validStr;
   };
 
-  const handleChangePassword = () => {
-    let isValid = true;
+  const updateForm = (element: {
+    blur?: boolean;
+    id: string;
+    event: FormFieldEventType;
+  }) => {
+    const newFormdata = update(element, formdata);
 
-    Object.keys(state).forEach((key) => {
-      if (!validateInput(key)) {
-        isValid = false;
-      }
-    });
-
-    if (!isValid) return;
-
-    dispatch(
-      changePassword({
-        oldPassword: state.oldPassword,
-        newPassword: state.newPassword
-      })
-    );
-    setIsProfileView(true);
-  };
-
-  const handleChange = ({ target }: ChangeEvent) => {
-    if (target && target instanceof HTMLInputElement) {
-      const { value, name } = target;
-
-      setState({ ...state, [name]: value });
-    }
+    setFormdata(newFormdata);
   };
 
   return (
-    <form className={b()}>
+    <form className={b()} onSubmit={(event) => submitForm(event)}>
       <PageMeta title="Профиль" />
       <div className={b('row')}>
         <div className={b('column')}>
-          <div className={b('input')}>
-            <label className={b('label')}>
-              Старый пароль
-              <Input
-                type="password"
-                value={state.oldPassword}
-                name="oldPassword"
-                onChange={handleChange}
-                onBlur={() => validateInput('oldPassword')}
-              />
-            </label>
-            {validState.oldPassword && (
-              <div className={b('invalid')}>{validState.oldPassword}</div>
-            )}
-          </div>
-          <div className={b('input')}>
-            <label className={b('label')}>
-              Новый пароль
-              <Input
-                type="password"
-                value={state.newPassword}
-                name="newPassword"
-                onChange={handleChange}
-                onBlur={() => validateInput('newPassword')}
-              />
-            </label>
-            {validState.newPassword && (
-              <div className={b('invalid')}>{validState.newPassword}</div>
-            )}
-          </div>
-          <div className={b('input')}>
-            <label className={b('label')}>
-              Новый пароль (ещё раз)
-              <Input
-                type="password"
-                value={state.newPasswordConfirm}
-                name="newPasswordConfirm"
-                onChange={handleChange}
-                onBlur={() => validateInput('newPasswordConfirm')}
-              />
-            </label>
-            {validState.newPasswordConfirm && (
-              <div className={b('invalid')}>
-                {validState.newPasswordConfirm}
-              </div>
-            )}
-          </div>
+          <FormField
+            id="oldPassword"
+            formdata={formdata.oldPassword}
+            change={(element) => updateForm(element)}
+          />
+          <FormField
+            id="password"
+            formdata={formdata.password}
+            change={(element) => updateForm(element)}
+          />
+          <FormField
+            id="confirmPassword"
+            formdata={formdata.confirmPassword}
+            change={(element) => updateForm(element)}
+          />
 
           <div className={b('btn')}>
-            <Button type="button" size="m" onClick={handleChangePassword}>
+            <Button type="submit" size="m">
               Сохранить
             </Button>
           </div>

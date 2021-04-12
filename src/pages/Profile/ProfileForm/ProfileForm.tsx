@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
@@ -11,7 +11,7 @@ import { Button } from '@/components/Button';
 import { Loading } from '@/components/Loading';
 import { FormField } from '@/components/FormField';
 import { generateData, isFormValid, update } from '@/modules/formActions';
-import { FormDataType } from '@/types.d';
+import { FormDataType, FormFieldEventType } from '@/types.d';
 
 type Props = {
   profileData: FormDataType;
@@ -45,7 +45,7 @@ export const ProfileForm = ({ profileData, setIsProfileView }: Props) => {
   const updateForm = (element: {
     blur?: boolean;
     id: string;
-    event: ChangeEvent<HTMLTextAreaElement> | ChangeEvent<HTMLInputElement>;
+    event: FormFieldEventType;
   }) => {
     const newFormdata = update(element, state);
 
@@ -59,7 +59,16 @@ export const ProfileForm = ({ profileData, setIsProfileView }: Props) => {
     const formIsValid = isFormValid(state);
 
     if (formIsValid) {
-      dispatch(changeProfile(dataToSubmit));
+      dispatch(
+        changeProfile({
+          first_name: String(dataToSubmit.first_name),
+          second_name: String(dataToSubmit.second_name),
+          display_name: String(dataToSubmit.display_name),
+          login: String(dataToSubmit.login),
+          email: String(dataToSubmit.email),
+          phone: String(dataToSubmit.phone)
+        })
+      );
       setIsСhangeable(false);
     }
   };
@@ -83,6 +92,7 @@ export const ProfileForm = ({ profileData, setIsProfileView }: Props) => {
           <FormField
             id="login"
             formdata={state.login}
+            disabled={!isСhangeable}
             change={(element) => updateForm(element)}
           />
         </div>

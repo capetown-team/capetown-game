@@ -24,6 +24,15 @@ export type RouterFetchDataArgs = {
   match: match<{ slug: string }>;
 };
 
+export type FormOptionType = {
+  [key: string]: string;
+};
+
+export type FormFieldEventType =
+  | ChangeEvent<HTMLTextAreaElement>
+  | ChangeEvent<HTMLInputElement>
+  | ChangeEvent<HTMLSelectElement>;
+
 export type FormType =
   | 'element'
   | 'value'
@@ -41,6 +50,7 @@ export type FormFieldType = {
     name: string;
     type?: string;
     placeholder: string;
+    options?: FormOptionType[];
   };
   validation: {
     required?: boolean;

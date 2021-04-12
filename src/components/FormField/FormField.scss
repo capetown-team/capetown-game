@@ -9,21 +9,6 @@
     margin-bottom: .1em;
   }
 
-  &__input {
-    width: 100%;
-    height: 38px;
-    display: block;
-    background-color: $white;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: .25rem;
-
-    &:focus {
-      border-color: $light-blue;
-      box-shadow: 0 0 5px 0.2em rgba($light-blue, .25);
-    }
-  }
-
   &__textarea {
     max-width: 100%;
     min-width: 100%;
