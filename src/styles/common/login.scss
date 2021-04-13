@@ -26,6 +26,10 @@
     color: $light-blue;
   }
 
+  &__error {
+    color: $red;
+  }
+
   &__row {
     margin-top: 15px;
     text-align: left;

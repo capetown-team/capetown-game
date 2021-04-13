@@ -112,9 +112,7 @@ export class Ghost {
   }
 
   inGrid() {
-    if (this.posX % this.radius === 0 && this.posY % this.radius === 0)
-      return true;
-    return false;
+    return this.posX % this.radius === 0 && this.posY % this.radius === 0;
   }
 
   checkDirectionChange() {
