@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { hot } from 'react-hot-loader/root';
+import block from 'bem-cn-lite';
 
 import { errorSelector, authSelector } from '@/reducers/user/selectors';
 import { withAuth } from '@/hocs/withAuth';
@@ -15,6 +16,8 @@ import { getCode } from '@/modules/OAuth';
 import { routes } from './routes';
 
 import './App.scss';
+
+const b = block('app');
 
 const App = () => {
   const dispatch = useDispatch();
@@ -55,7 +58,7 @@ const App = () => {
         />
       )}
       <Header isAuth={isAuth} />
-      <div className="app">
+      <div className={b()}>
         <Switch>
           {routes.map(({ path, component, isPrivate, ...rest }) => {
             const RouteComponent = isPrivate ? PrivateRoute : Route;
@@ -71,6 +74,9 @@ const App = () => {
             );
           })}
         </Switch>
+        <Link className={b('feedback')} to="/feedback">
+          <span className={b('feedback-icon')} />
+        </Link>
       </div>
     </>
   );

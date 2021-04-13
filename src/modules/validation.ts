@@ -3,8 +3,8 @@ import {
   REXP_LOGIN,
   REXP_LITERAL,
   REXP_NUMERAL,
-  REXP_GAP,
-  REXP_PHONE
+  REXPGAP,
+  REXPPHONE
 } from './regExps';
 
 const typeValidErrors = {
@@ -22,7 +22,7 @@ export const isValidEmail = (email: string) => {
   if (!REXP_EMAIL.test(email)) {
     return typeValidErrors.FORMAT_ERROR;
   }
-  if (email.search(REXP_GAP) >= 0) {
+  if (email.search(REXPGAP) >= 0) {
     return typeValidErrors.GAP_ERROR;
   }
 
@@ -30,7 +30,7 @@ export const isValidEmail = (email: string) => {
 };
 
 export const isValidPhone = (phone: string) => {
-  if (!REXP_PHONE.test(phone)) {
+  if (!REXPPHONE.test(phone)) {
     return typeValidErrors.FORMAT_ERROR;
   }
 
@@ -44,7 +44,7 @@ export const isValidLogin = (login: string) => {
   if (!REXP_LOGIN.test(login)) {
     return typeValidErrors.FORMAT_ERROR;
   }
-  if (login.search(REXP_GAP) >= 0) {
+  if (login.search(REXPGAP) >= 0) {
     return typeValidErrors.GAP_ERROR;
   }
 
@@ -56,7 +56,7 @@ export const isValidName = (name: string) => {
     return 'Длина не может быть меньше 2';
   }
 
-  if (name.search(REXP_GAP) >= 0) {
+  if (name.search(REXPGAP) >= 0) {
     return typeValidErrors.GAP_ERROR;
   }
 
@@ -67,7 +67,7 @@ export const isValidPassword = (password: string) => {
   if (password.length < 8) {
     return 'Длина не может быть меньше 8';
   }
-  if (password.search(REXP_GAP) >= 0) {
+  if (password.search(REXPGAP) >= 0) {
     return typeValidErrors.GAP_ERROR;
   }
   if (password.search(REXP_LITERAL) < 0) {

@@ -1,11 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  FocusEvent,
-  ChangeEvent,
-  MouseEvent,
-  useCallback
-} from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import block from 'bem-cn-lite';
@@ -18,18 +11,14 @@ import {
 } from '@/reducers/user/selectors';
 import { signUp } from '@/reducers/user/actions';
 import { Button } from '@/components/Button';
-import { Input } from '@/components/Input';
 import { Loading } from '@/components/Loading';
-import {
-  isValidLogin,
-  isValidName,
-  isValidEmail,
-  isValidPassword,
-  isValidPasswordConfirm
-} from '@/modules/validation';
 import { ROUTES } from '@/constants';
 import { PageMeta } from '@/components/PageMeta';
+import { FormField } from '@/components/FormField';
+import { update, generateData, isFormValid } from '@/modules/formActions';
+import { FormFieldEventType } from '@/types.d';
 
+import { data } from './data';
 import './Registration.scss';
 
 const b = block('form');
@@ -39,28 +28,7 @@ export const Registration = () => {
   const history = useHistory();
 
   const [loading, setLoading] = useState(true);
-  const [login, setLogin] = useState('');
-  const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [passwordConfirm, setpasswordConfirm] = useState('');
-
-  const [loginDirty, setLoginDirty] = useState(false);
-  const [passwordDirty, setPasswordDirty] = useState(false);
-  const [emailDirty, setEmailDirty] = useState(false);
-  const [nameDirty, setNameDirty] = useState(false);
-  const [passwordConfirmDirty, setPasswordConfirmDirty] = useState(false);
-
-  const [loginError, setLoginError] = useState('Логин не может быть пустым');
-  const [passwordError, setPasswordError] = useState(
-    'Пароль не может быть пустым'
-  );
-  const [emailError, setEmailError] = useState('Email не может быть пустым');
-  const [nameError, setNameError] = useState('Имя не может быть пустым');
-  const [passwordConfirmError, setPasswordConfirmError] = useState(
-    'Пароль не может быть пустым'
-  );
-
+  const [formdata, setFormdata] = useState(data);
   const [formValid, setFormValid] = useState(false);
   const [regValid, setRegValid] = useState(true);
 
@@ -77,20 +45,6 @@ export const Registration = () => {
   }, [pending]);
 
   useEffect(() => {
-    if (
-      loginError ||
-      passwordError ||
-      emailError ||
-      nameError ||
-      passwordConfirmError
-    ) {
-      setFormValid(false);
-    } else {
-      setFormValid(true);
-    }
-  }, [loginError, passwordError, passwordConfirmError, emailError, nameError]);
-
-  useEffect(() => {
     if (isAuth) {
       history.replace(ROUTES.GAME);
     }
@@ -100,170 +54,79 @@ export const Registration = () => {
     setRegValid(!error);
   }, [error]);
 
-  const blurHandler = useCallback((e: FocusEvent<Element>) => {
-    switch ((e.target as HTMLInputElement).name) {
-      case 'login':
-        setLoginDirty(true);
-        break;
-      case 'password':
-        setPasswordDirty(true);
-        break;
-      case 'passwordConfirm':
-        setPasswordConfirmDirty(true);
-        break;
-      case 'email':
-        setEmailDirty(true);
-        break;
-      case 'name':
-        setNameDirty(true);
-        break;
-      default:
+  const updateForm = (element: {
+    blur?: boolean;
+    id: string;
+    event: FormFieldEventType;
+  }) => {
+    const newFormdata = update(element, formdata);
+
+    setFormdata(newFormdata);
+  };
+
+  const submitForm = (event: { preventDefault: () => void }) => {
+    event.preventDefault();
+
+    const { first_name, login, email, password } = generateData(formdata);
+    const formIsValid = isFormValid(formdata);
+
+    if (formIsValid) {
+      setFormValid(false);
+      dispatch(
+        signUp({
+          first_name: String(first_name),
+          second_name: String(first_name),
+          login: String(login),
+          email: String(email),
+          phone: '+79191234567',
+          password: String(password)
+        })
+      );
+    } else {
+      setFormValid(true);
     }
-  }, []);
-
-  const loginHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value;
-    setLogin(text);
-    const loginErr = isValidLogin(text);
-    setLoginError(loginErr);
-  }, []);
-
-  const passwordHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value;
-    setPassword(text);
-    const passwordErr = isValidPassword(text);
-    setPasswordError(passwordErr);
-  }, []);
-
-  const passwordConfirmHandler = useCallback(
-    (e: ChangeEvent<HTMLInputElement>) => {
-      const text = e.target.value;
-      setpasswordConfirm(text);
-      const passwordErr = isValidPasswordConfirm(text, password);
-      setPasswordConfirmError(passwordErr);
-    },
-    [password]
-  );
-
-  const emailHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value;
-    setEmail(text);
-    const emailErr = isValidEmail(text);
-    setEmailError(emailErr);
-  }, []);
-
-  const nameHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-    const text = e.target.value;
-    setName(text);
-    const nameErr = isValidName(text);
-    setNameError(nameErr);
-  }, []);
-
-  const submitHandler = useCallback(
-    (e: MouseEvent) => {
-      e.preventDefault();
-      const user = {
-        first_name: name,
-        second_name: name,
-        login,
-        email,
-        phone: '+79191234567',
-        password
-      };
-
-      dispatch(signUp(user));
-    },
-    [dispatch, name, login, email, password]
-  );
+  };
 
   return (
     <div className={b()}>
       <PageMeta title="Регистрация" />
       {loading && <Loading />}
-      <form className={b('wrapper')}>
-        <div className={b('title')}>Регистрация</div>
-        <div className={b('row')}>
-          <div className={b('title-input')}>Email</div>
-          {emailDirty && emailError && (
-            <div style={{ color: 'red' }}>{emailError}</div>
-          )}
-          <Input
-            id="email"
-            value={email}
-            name="email"
-            onChange={emailHandler}
-            onBlur={(e) => blurHandler(e)}
-            placeholder="Email"
-          />
-        </div>
-        <div className={b('row')}>
-          <div className={b('title-input')}>Логин</div>
-          {loginDirty && loginError && (
-            <div style={{ color: 'red' }}>{loginError}</div>
-          )}
-          <Input
-            id="login"
-            value={login}
-            name="login"
-            onChange={loginHandler}
-            onBlur={(e) => blurHandler(e)}
-            placeholder="Логин"
-          />
-        </div>
-        <div className={b('row')}>
-          <div className={b('title-input')}>Имя</div>
-          {nameDirty && nameError && (
-            <div style={{ color: 'red' }}>{nameError}</div>
-          )}
-          <Input
-            id="name"
-            value={name}
-            name="name"
-            onChange={nameHandler}
-            onBlur={(e) => blurHandler(e)}
-            placeholder="Имя"
-          />
-        </div>
-        <div className={b('row')}>
-          <div className={b('title-input')}>Пароль</div>
-          {passwordDirty && passwordError && (
-            <div style={{ color: 'red' }}>{passwordError}</div>
-          )}
-          <Input
-            id="password"
-            type="password"
-            value={password}
-            name="password"
-            onChange={passwordHandler}
-            onBlur={(e) => blurHandler(e)}
-            placeholder="Пароль"
-          />
-        </div>
-        <div className={b('row')}>
-          <div className={b('title-input')}>Пароль (еще раз)</div>
-          {passwordConfirmDirty && passwordConfirmError && (
-            <div style={{ color: 'red' }}>{passwordConfirmError}</div>
-          )}
-          <Input
-            value={passwordConfirm}
-            id="passwordConfirm"
-            type="password"
-            name="passwordConfirm"
-            onChange={passwordConfirmHandler}
-            onBlur={(e) => blurHandler(e)}
-            placeholder="Пароль (еще раз)"
-          />
-        </div>
+
+      <form className={b('wrapper')} onSubmit={(event) => submitForm(event)}>
+        <h3 className={b('title')}>Регистрация</h3>
+
+        <FormField
+          id="email"
+          formdata={formdata.email}
+          change={(element) => updateForm(element)}
+        />
+        <FormField
+          id="login"
+          formdata={formdata.login}
+          change={(element) => updateForm(element)}
+        />
+        <FormField
+          id="first_name"
+          formdata={formdata.first_name}
+          change={(element) => updateForm(element)}
+        />
+        <FormField
+          id="password"
+          formdata={formdata.password}
+          change={(element) => updateForm(element)}
+        />
+        <FormField
+          id="confirmPassword"
+          formdata={formdata.confirmPassword}
+          change={(element) => updateForm(element)}
+        />
+
         {!regValid && (
           <div style={{ color: 'red' }}>Такой пользователь уже существует</div>
         )}
+        {formValid && <div style={{ color: 'red' }}>Не все поля заполнены</div>}
         <div className={b('row-button')}>
-          <Button
-            disabled={!formValid}
-            type="submit"
-            size="m"
-            onClick={submitHandler}
-          >
+          <Button type="submit" size="m">
             Зарегистрироваться
           </Button>
         </div>
