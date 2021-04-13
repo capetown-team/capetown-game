@@ -67,19 +67,19 @@ export const Registration = () => {
   const submitForm = (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
-    const dataToSubmit = generateData(formdata);
+    const { first_name, login, email, password } = generateData(formdata);
     const formIsValid = isFormValid(formdata);
 
     if (formIsValid) {
       setFormValid(false);
       dispatch(
         signUp({
-          first_name: String(dataToSubmit.first_name),
-          second_name: String(dataToSubmit.first_name),
-          login: String(dataToSubmit.login),
-          email: String(dataToSubmit.email),
+          first_name: String(first_name),
+          second_name: String(first_name),
+          login: String(login),
+          email: String(email),
           phone: '+79191234567',
-          password: String(dataToSubmit.password)
+          password: String(password)
         })
       );
     } else {

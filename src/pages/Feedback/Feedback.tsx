@@ -1,5 +1,5 @@
-import React, { memo, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { memo, useMemo, useState } from 'react';
+import { shallowEqual, useSelector } from 'react-redux';
 import block from 'bem-cn-lite';
 
 import { PageMeta } from '@/components/PageMeta';
@@ -25,7 +25,7 @@ const Feedback = () => {
       user: userSelector(state),
       isAuth: authSelector(state)
     };
-  });
+  }, shallowEqual);
 
   const updateForm = (element: {
     blur?: boolean;
@@ -52,10 +52,12 @@ const Feedback = () => {
     }
   };
 
-  if (isAuth) {
-    data.name.value = user?.first_name || '';
-    data.email.value = user?.email || '';
-  }
+  useMemo(() => {
+    if (isAuth) {
+      data.name.value = user?.first_name || '';
+      data.email.value = user?.email || '';
+    }
+  }, [isAuth, user]);
 
   return (
     <div className={b()}>

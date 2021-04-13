@@ -55,18 +55,25 @@ export const ProfileForm = ({ profileData, setIsProfileView }: Props) => {
   const submitForm = (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
-    const dataToSubmit = generateData(state);
+    const {
+      first_name,
+      second_name,
+      display_name,
+      login,
+      email,
+      phone
+    } = generateData(state);
     const formIsValid = isFormValid(state);
 
     if (formIsValid) {
       dispatch(
         changeProfile({
-          first_name: String(dataToSubmit.first_name),
-          second_name: String(dataToSubmit.second_name),
-          display_name: String(dataToSubmit.display_name),
-          login: String(dataToSubmit.login),
-          email: String(dataToSubmit.email),
-          phone: String(dataToSubmit.phone)
+          first_name: String(first_name),
+          second_name: String(second_name),
+          display_name: String(display_name),
+          login: String(login),
+          email: String(email),
+          phone: String(phone)
         })
       );
       setIsСhangeable(false);

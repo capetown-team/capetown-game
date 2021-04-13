@@ -21,15 +21,11 @@ type Props = {
 
 const FormField: FC<Props> = ({ formdata, change, id, disabled }) => {
   const showError = () => {
-    let errorMessate = null;
-
     if (formdata.validation && !formdata.valid) {
-      errorMessate = (
-        <div className={b('error')}>{formdata.validationMessage}</div>
-      );
+      return <div className={b('error')}>{formdata.validationMessage}</div>;
     }
 
-    return errorMessate;
+    return null;
   };
 
   const renderTemplate = () => {
@@ -103,8 +99,7 @@ const FormField: FC<Props> = ({ formdata, change, id, disabled }) => {
           </div>
         );
         break;
-      default:
-        formTemplate = null;
+      // no default
     }
 
     return formTemplate;

@@ -25,14 +25,14 @@ export const ProfilePasswordForm: FC<Props> = ({ setIsProfileView }) => {
   const submitForm = (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
-    const dataToSubmit = generateData(formdata);
+    const { oldPassword, password } = generateData(formdata);
     const formIsValid = isFormValid(formdata);
 
     if (formIsValid) {
       dispatch(
         changePassword({
-          oldPassword: String(dataToSubmit.oldPassword),
-          newPassword: String(dataToSubmit.password)
+          oldPassword: String(oldPassword),
+          newPassword: String(password)
         })
       );
       setIsProfileView(true);

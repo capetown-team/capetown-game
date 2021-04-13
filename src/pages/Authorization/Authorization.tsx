@@ -68,15 +68,15 @@ export const Authorization = () => {
   const submitForm = (event: { preventDefault: () => void }) => {
     event.preventDefault();
 
-    const dataToSubmit = generateData(formdata);
+    const { login, password } = generateData(formdata);
     const formIsValid = isFormValid(formdata);
 
     if (formIsValid) {
       setFormValid(false);
       dispatch(
         signIn({
-          login: String(dataToSubmit.login),
-          password: String(dataToSubmit.password)
+          login: String(login),
+          password: String(password)
         })
       );
     } else {

@@ -7,7 +7,7 @@ import { Authorization } from '@/pages/Authorization';
 import { Registration } from '@/pages/Registration';
 import { Game } from '@/pages/Game';
 import { Landing } from '@/pages/Landing';
-import { Feedback } from '@/pages/feedback';
+import { Feedback } from '@/pages/Feedback';
 import { ROUTES } from '@/constants';
 
 export const routes = [
