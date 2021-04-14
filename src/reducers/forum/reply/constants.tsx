@@ -1,3 +1,0 @@
-export const REPLY_REQUEST = 'REPLY_REQUEST';
-export const REPLY_SUCCESS = 'REPLY_SUCCESS';
-export const REPLY_FAILURE = 'REPLY_FAILURE';

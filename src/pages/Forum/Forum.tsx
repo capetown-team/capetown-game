@@ -11,26 +11,18 @@ import { PageMeta } from '@/components/PageMeta';
 
 import './Forum.scss';
 
-import {
-  topicsSelector,
-  pendingSelector
-} from '@/reducers/forum/topic/selectors';
-import { getForum } from '@/reducers/forum/topic/actions';
+import { topicsSelector, pendingSelector } from '@/reducers/forum/selectors';
+import { getTopics } from '@/reducers/forum/actions';
 import { AppState } from '@/reducers';
+import { TopicProps } from '@/reducers/forum/types';
 
 const b = block('table');
-
-export type Props = {
-  id: number;
-  name: string;
-  message: number;
-};
 
 const Forum = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getForum());
+    dispatch(getTopics());
   }, [dispatch]);
 
   const { data, loading } = useSelector((state: AppState) => {
@@ -69,7 +61,7 @@ const Forum = () => {
           <div className={b('item', { main: true })}>Тема</div>
           <div className={b('item', { message: true })}>Сообщения</div>
         </li>
-        {currentData.map((item: Props) => (
+        {currentData.map((item: TopicProps) => (
           <ForumList
             key={item.id}
             id={item.id}

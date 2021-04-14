@@ -12,9 +12,12 @@ import {
   LeaderBoardAllType
 } from '@/reducers/leaderBoard/types';
 
-import { Props as TopicProps } from '@/reducers/forum/topic/types';
-import { Props as CommentProps } from '@/reducers/forum/comment/types';
-import { Props as ReplyProps } from '@/reducers/forum/reply/types';
+import {
+  TopicProps,
+  CommentProps,
+  ReplyProps,
+  EmotionProps
+} from '@/reducers/forum/types';
 
 export type ResponseUserType = {
   data: UserType;
@@ -39,6 +42,14 @@ export type ResponseComment = {
   data: CommentProps[];
 };
 
+export type ResponseReply = {
+  data: ReplyProps[];
+};
+
+export type ResponseEmotion = {
+  data: EmotionProps[];
+};
+
 export interface IApi {
   getUserInfo(): Promise<ResponseUserType>;
   logOut(): Promise<ResponseType>;
@@ -56,9 +67,10 @@ export interface IApi {
   getComments(): Promise<ResponseComment>;
   getReplies(): Promise<ResponseComment>;
   postClientID(body: string): Promise<ResponseType>;
-  addTopic(topic: TopicProps): Promise<TopicProps>;
-  addComment(): Promise<CommentProps>;
-  addReply(): Promise<ReplyProps>;
+  addTopic(topic: TopicProps): Promise<ResponseTopic>;
+  addComment(comment: CommentProps): Promise<ResponseComment>;
+  addReply(reply: ReplyProps): Promise<ResponseReply>;
+  addEmotion(reply: EmotionProps): Promise<ResponseEmotion>;
 }
 
 const context = (): IApi => {
@@ -114,12 +126,7 @@ const context = (): IApi => {
     return client.post(`${path}/leaderboard/all`, data);
   };
 
-  const getTopics = (cookies: string) => {
-    if (cookies) {
-      return localClient.get(`/forum/topics`, {
-        headers: { Cookie: cookies }
-      });
-    }
+  const getTopics = () => {
     return localClient.get(`/forum/topics`);
   };
 
@@ -143,6 +150,10 @@ const context = (): IApi => {
     return localClient.post(`/forum/reply`, data);
   };
 
+  const addEmotion = (data: EmotionProps) => {
+    return localClient.post(`/forum/emotion`, data);
+  };
+
   return {
     getUserInfo,
     logOut,
@@ -158,6 +169,7 @@ const context = (): IApi => {
     addTopic,
     addComment,
     addReply,
+    addEmotion,
     setLiderBoardResult,
     postClientID
   };
