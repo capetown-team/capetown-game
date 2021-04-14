@@ -7,10 +7,7 @@ export type CommentType = {
   userId: number;
 };
 
-export const commentRepository = (
-  Comment: ModelCtor<Model<any, any>>,
-  User: ModelCtor<Model<any, any>>
-) => {
+export const commentRepository = (Comment: ModelCtor<Model<any, any>>) => {
   const getAll = (topicId: number) => {
     return Comment.findAll({
       attributes: ['id', 'content'],
