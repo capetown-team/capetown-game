@@ -136,6 +136,7 @@ CREATE INDEX  IF NOT EXISTS  fki_commentid
 -- Table: public.users_theme
 CREATE TABLE IF NOT EXISTS public.emotions
 (
+    id integer NOT NULL,
     userId integer NOT NULL,
     commentId integer NOT NULL,
     CONSTRAINT userId FOREIGN KEY (userId)
@@ -149,6 +150,9 @@ CREATE TABLE IF NOT EXISTS public.emotions
         ON DELETE NO ACTION
         NOT VALID        
 );
+
+CREATE SEQUENCE IF NOT EXISTS emotion_id_seq;
+ALTER TABLE emotions ALTER id SET DEFAULT NEXTVAL('emotion_id_seq');
 
 -- insert data    
 

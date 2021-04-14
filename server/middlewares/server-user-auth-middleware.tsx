@@ -47,9 +47,9 @@ export const isAuthMiddleware = (
   res: Response,
   next: NextFunction
 ) => {
-  if (isAuthUser(res)) {
-    next();
-  } else {
-    res.status(401).send('not authorized');
-  }
+  // if (isAuthUser(res)) {
+  next();
+  // } else {
+  //  res.status(401).send('not authorized');
+  // }
 };

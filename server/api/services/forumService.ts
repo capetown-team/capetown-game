@@ -4,7 +4,6 @@ import { commentRepository } from '../../db/repositories/commentRepository';
 import { replyRepository } from '../../db/repositories/replyRepository';
 import { emotionRepository } from '../../db/repositories/emotionRepository';
 import sequelize, {
-  modelUser,
   modelTopic,
   modelComment,
   modelReply,
@@ -18,7 +17,7 @@ export const forumService = () => {
     modelComment,
     modelReply
   );
-  const comment = commentRepository(modelComment, modelUser);
+  const comment = commentRepository(modelComment);
   const reply = replyRepository(modelReply);
   const emotion = emotionRepository(modelEmotion);
 
@@ -142,12 +141,19 @@ export const forumService = () => {
       });
   };
 
-  const getEmotions = (req: Request, res: Response) => {
-    const commentId = Number(req.params.id);
-    emotion
-      .getAll(commentId)
-      .then((comments) => res.status(200).json(comments))
-      .catch((err) => res.status(500).json({ error: ['db error', err] }));
+  const addEmotion = (req: Request, res: Response) => {
+    const { userId, commentId } = req.body;
+
+    return emotion
+      .add(userId, commentId)
+      .then((emotion) => {
+        res.status(200).send(emotion);
+      })
+      .catch((err) => {
+        res
+          .status(500)
+          .json({ error: { type: 'db error', data: JSON.stringify(err) } });
+      });
   };
 
   return {
@@ -158,6 +164,6 @@ export const forumService = () => {
     addComment,
     getReplies,
     addReply,
-    getEmotions
+    addEmotion
   };
 };

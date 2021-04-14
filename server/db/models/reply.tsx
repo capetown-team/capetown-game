@@ -23,7 +23,7 @@ export const Reply = {
     type: DataType.INTEGER,
     allowNull: false,
     references: {
-      model: 'pacmanuser',
+      model: 'user',
       key: 'id'
     }
   }
