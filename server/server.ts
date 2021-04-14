@@ -8,7 +8,7 @@ import { serverRenderMiddleware } from './middlewares/server-render-middleware';
 import { serverUserAuthMiddleware } from './middlewares/server-user-auth-middleware';
 import { hmrMiddleware } from './middlewares/hmr-middleware';
 
-import apiRouter from '../api/routing';
+import apiRouter from './api/routing';
 
 import { isDev } from '../webpack/env';
 

@@ -1,5 +1,5 @@
-import { Router } from "express";
-import { forumRouter } from "./forumRouter";
+import { Router } from 'express';
+import { forumRouter } from './forumRouter';
 
 const apiRouter: Router = Router();
 

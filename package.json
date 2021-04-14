@@ -11,7 +11,7 @@
     "build": "npm run clean  && cross-env NODE_ENV=production && webpack --mode production",
     "build:serve": "node -r esm dist/server.bundle.js",
     "lint:style": "stylelint --fix ./src/**/*.scss",
-    "lint:ts": "eslint ./src --ext .tsx,.ts,.js",
+    "lint:ts": "eslint . --ext .tsx,.ts,.js",
     "test": "jest --runInBand --config .jest/config.json",
     "pre-commit": "npm-run-all lint:* test",
     "pre-push": "npm-run-all lint:*"

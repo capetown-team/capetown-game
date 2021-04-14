@@ -2,12 +2,25 @@ import { Request, Response } from 'express';
 import { topicRepository } from '../../db/repositories/topicRepository';
 import { commentRepository } from '../../db/repositories/commentRepository';
 import { replyRepository } from '../../db/repositories/replyRepository';
-import sequelize, { modelUser, modelTopic, modelComment, modelReply } from '../../db/init/db_init';
+import { emotionRepository } from '../../db/repositories/emotionRepository';
+import sequelize, {
+  modelUser,
+  modelTopic,
+  modelComment,
+  modelReply,
+  modelEmotion
+} from '../../db/init/db_init';
 
 export const forumService = () => {
-  const topic = topicRepository(sequelize, modelTopic, modelComment, modelReply);
+  const topic = topicRepository(
+    sequelize,
+    modelTopic,
+    modelComment,
+    modelReply
+  );
   const comment = commentRepository(modelComment, modelUser);
   const reply = replyRepository(modelReply);
+  const emotion = emotionRepository(modelEmotion);
 
   const getTopics = (req: Request, res: Response) => {
     topic
@@ -50,15 +63,15 @@ export const forumService = () => {
     }
 
     return topic
-    .add(name, content, userId)
-    .then(topic => {
-      res.status(200).send(topic);
-    })
-    .catch(err => {
-      res
-        .status(500)
-        .json({ error: { type: "db error", data: JSON.stringify(err) } });
-    });
+      .add(name, content, userId)
+      .then((topic) => {
+        res.status(200).send(topic);
+      })
+      .catch((err) => {
+        res
+          .status(500)
+          .json({ error: { type: 'db error', data: JSON.stringify(err) } });
+      });
   };
 
   const getComments = (req: Request, res: Response) => {
@@ -69,7 +82,6 @@ export const forumService = () => {
       .catch((err) => res.status(500).json({ error: ['db error', err] }));
   };
 
-  
   const addComment = (req: Request, res: Response) => {
     const { content, topicId, userId } = req.body;
 
@@ -85,15 +97,15 @@ export const forumService = () => {
     }
 
     return comment
-    .add(content, topicId, userId)
-    .then(topic => {
-      res.status(200).send(topic);
-    })
-    .catch(err => {
-      res
-        .status(500)
-        .json({ error: { type: "db error", data: JSON.stringify(err) } });
-    });
+      .add(content, topicId, userId)
+      .then((topic) => {
+        res.status(200).send(topic);
+      })
+      .catch((err) => {
+        res
+          .status(500)
+          .json({ error: { type: 'db error', data: JSON.stringify(err) } });
+      });
   };
 
   const getReplies = (req: Request, res: Response) => {
@@ -119,16 +131,33 @@ export const forumService = () => {
     }
 
     return reply
-    .add(content, commentId, userId)
-    .then(reply => {
-      res.status(200).send(reply);
-    })
-    .catch(err => {
-      res
-        .status(500)
-        .json({ error: { type: "db error", data: JSON.stringify(err) } });
-    });
+      .add(content, commentId, userId)
+      .then((reply) => {
+        res.status(200).send(reply);
+      })
+      .catch((err) => {
+        res
+          .status(500)
+          .json({ error: { type: 'db error', data: JSON.stringify(err) } });
+      });
   };
 
-  return { getTopics, getTopic, addTopic, getComments, addComment, getReplies, addReply };
+  const getEmotion = (req: Request, res: Response) => {
+    const commentId = Number(req.params.id);
+    emotion
+      .getAll(commentId)
+      .then((comments) => res.status(200).json(comments))
+      .catch((err) => res.status(500).json({ error: ['db error', err] }));
+  };
+
+  return {
+    getTopics,
+    getTopic,
+    addTopic,
+    getComments,
+    addComment,
+    getReplies,
+    addReply,
+    getEmotion
+  };
 };

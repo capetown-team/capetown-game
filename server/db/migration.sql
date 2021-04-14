@@ -133,6 +133,22 @@ CREATE INDEX  IF NOT EXISTS  fki_commentid
     (commentId ASC NULLS LAST)
     TABLESPACE pg_default;
 
+-- Table: public.users_theme
+CREATE TABLE IF NOT EXISTS public.emotions
+(
+    userId integer NOT NULL,
+    commentId integer NOT NULL,
+    CONSTRAINT userId FOREIGN KEY (userId)
+        REFERENCES public.users (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID 
+    CONSTRAINT commentId FOREIGN KEY (commentId)
+        REFERENCES public.comments (id) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+        NOT VALID        
+);
 
 -- insert data    
 

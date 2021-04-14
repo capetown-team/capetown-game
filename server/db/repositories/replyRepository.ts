@@ -1,4 +1,4 @@
-import { Model, ModelCtor } from "sequelize-typescript";
+import { Model, ModelCtor } from 'sequelize-typescript';
 
 export type ReplyType = {
   id: number;
@@ -9,17 +9,15 @@ export type ReplyType = {
 
 export const replyRepository = (Reply: ModelCtor<Model<any, any>>) => {
   const getAll = (commentId: number) => {
-    return Reply.findAll({ where: {commentId: commentId}});
+    return Reply.findAll({ where: { commentId } });
   };
 
- const add = (content: string, commentId: number, userId: number) => {
+  const add = (content: string, commentId: number, userId: number) => {
     return Reply.create({ content, commentId, userId });
   };
 
   return {
     getAll,
     add
-  }
-}
-
-
+  };
+};

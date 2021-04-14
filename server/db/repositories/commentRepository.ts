@@ -14,7 +14,7 @@ export const commentRepository = (
   const getAll = (topicId: number) => {
     return Comment.findAll({
       attributes: ['id', 'content'],
-      where: { topicId: topicId }
+      where: { topicId }
     });
   };
 

@@ -5,6 +5,7 @@ import { Comment } from '../models/comment';
 import { Reply } from '../models/reply';
 import { Theme } from '../models/theme';
 import { UserTheme } from '../models/userTheme';
+import { Emotion } from '../models/emotion';
 
 export const modelUser = sequelize.define('user', User, { timestamps: false });
 export const modelTopic = sequelize.define('topic', Topic, {
@@ -22,10 +23,13 @@ export const modelTheme = sequelize.define('theme', Theme, {
 export const modelUserTheme = sequelize.define('users_theme', UserTheme, {
   timestamps: false
 });
+export const modelEmotion = sequelize.define('emotion', Emotion, {
+  timestamps: false
+});
 
 modelUser.hasMany(modelTopic);
 modelUser.hasMany(modelComment);
-//modelComment.hasOne(modelUser);
+// modelComment.hasOne(modelUser);
 modelTopic.hasMany(modelComment);
 modelComment.hasMany(modelReply);
 

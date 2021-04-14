@@ -1,5 +1,4 @@
-import { Sequelize } from 'sequelize-typescript';
-import { ModelCtor, Model } from 'sequelize/types';
+import { Sequelize, ModelCtor, Model } from 'sequelize-typescript';
 
 export const topicRepository = (
   sequelize: Sequelize,

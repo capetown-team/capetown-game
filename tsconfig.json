@@ -24,8 +24,6 @@
     "typeRoots": ["typings/**/*.d.ts", "node_modules/@types"]
   },
   "include": [
-    "api",
-    "db",
     "src",
     "webpack.config.ts",
     "webpack/**/*.ts",
