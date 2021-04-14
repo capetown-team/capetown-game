@@ -142,7 +142,7 @@ export const forumService = () => {
       });
   };
 
-  const getEmotion = (req: Request, res: Response) => {
+  const getEmotions = (req: Request, res: Response) => {
     const commentId = Number(req.params.id);
     emotion
       .getAll(commentId)
@@ -158,6 +158,6 @@ export const forumService = () => {
     addComment,
     getReplies,
     addReply,
-    getEmotion
+    getEmotions
   };
 };

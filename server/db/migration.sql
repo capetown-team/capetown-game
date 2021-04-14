@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS public.emotions
         REFERENCES public.users (id) MATCH SIMPLE
         ON UPDATE NO ACTION
         ON DELETE NO ACTION
-        NOT VALID 
+        NOT VALID, 
     CONSTRAINT commentId FOREIGN KEY (commentId)
         REFERENCES public.comments (id) MATCH SIMPLE
         ON UPDATE NO ACTION
