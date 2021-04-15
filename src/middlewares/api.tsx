@@ -1,4 +1,4 @@
-import { client, path } from '@/api';
+import { client, localClient, path } from '@/api';
 import {
   UserType,
   SignInType,
@@ -11,6 +11,13 @@ import {
   LeaderBoardType,
   LeaderBoardAllType
 } from '@/reducers/leaderBoard/types';
+
+import {
+  TopicProps,
+  CommentProps,
+  ReplyProps,
+  EmotionProps
+} from '@/reducers/forum/types';
 
 export type ResponseUserType = {
   data: UserType;
@@ -27,6 +34,22 @@ export type ResponseLeaders = {
   data: LeaderBoardType[];
 };
 
+export type ResponseTopic = {
+  data: TopicProps[];
+};
+
+export type ResponseComment = {
+  data: CommentProps[];
+};
+
+export type ResponseReply = {
+  data: ReplyProps[];
+};
+
+export type ResponseEmotion = {
+  data: EmotionProps[];
+};
+
 export interface IApi {
   getUserInfo(): Promise<ResponseUserType>;
   logOut(): Promise<ResponseType>;
@@ -40,7 +63,14 @@ export interface IApi {
     data: LeaderBoardAllType,
     cookies?: string
   ): Promise<ResponseLeaders>;
+  getTopics(): Promise<ResponseTopic>;
+  getComments(): Promise<ResponseComment>;
+  getReplies(): Promise<ResponseComment>;
   postClientID(body: string): Promise<ResponseType>;
+  addTopic(topic: TopicProps): Promise<ResponseTopic>;
+  addComment(comment: CommentProps): Promise<ResponseComment>;
+  addReply(reply: ReplyProps): Promise<ResponseReply>;
+  addEmotion(reply: EmotionProps): Promise<ResponseEmotion>;
 }
 
 const context = (): IApi => {
@@ -96,6 +126,34 @@ const context = (): IApi => {
     return client.post(`${path}/leaderboard/all`, data);
   };
 
+  const getTopics = () => {
+    return localClient.get(`/forum/topics`);
+  };
+
+  const getComments = () => {
+    return localClient.get(`/forum/comments`);
+  };
+
+  const getReplies = () => {
+    return localClient.get(`/forum/replies`);
+  };
+
+  const addTopic = (data: TopicProps) => {
+    return localClient.post(`/forum/topic`, data);
+  };
+
+  const addComment = (data: CommentProps) => {
+    return localClient.post(`/forum/comment`, data);
+  };
+
+  const addReply = (data: ReplyProps) => {
+    return localClient.post(`/forum/reply`, data);
+  };
+
+  const addEmotion = (data: EmotionProps) => {
+    return localClient.post(`/forum/emotion`, data);
+  };
+
   return {
     getUserInfo,
     logOut,
@@ -105,15 +163,16 @@ const context = (): IApi => {
     changePassword,
     changeAvatar,
     getLiderBoardAll,
+    getTopics,
+    getComments,
+    getReplies,
+    addTopic,
+    addComment,
+    addReply,
+    addEmotion,
     setLiderBoardResult,
     postClientID
   };
-};
-
-export const getLiderBoardAll = async (data: LeaderBoardAllType) => {
-  return client.post(`${path}/leaderboard/all`, data, {
-    withCredentials: true
-  });
 };
 
 export const api = context();
