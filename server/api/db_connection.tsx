@@ -2,17 +2,18 @@ import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
 import dotenv from 'dotenv';
 
 dotenv.config();
-const { DB_USERNAME, DB_PASSWORD } = process.env;
+const { DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT } = process.env;
 
 const sequelizeOptions: SequelizeOptions = {
-    host: 'localhost',
-    port: 5436,
-    username: DB_USERNAME,
-    password: DB_PASSWORD,
-    database: 'pacman',
+  host: DB_HOST,
+  port: Number(DB_PORT),
+  username: DB_USERNAME,
+  password: DB_PASSWORD,
+  database: 'pacman',
 
-    dialect: 'postgres', 
-    define: {
+  dialect: 'postgres',
+  quoteIdentifiers: false,
+  define: {
     timestamps: false
   }
 };

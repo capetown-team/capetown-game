@@ -1,7 +1,7 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import block from 'bem-cn-lite';
 
-import { data as DataForum } from '@/pages/Forum/data';
 import { usePagination } from '@/hooks/usePagination';
 import { Topping } from '@/components/Topping';
 import { Loading } from '@/components/Loading';
@@ -11,17 +11,26 @@ import { PageMeta } from '@/components/PageMeta';
 
 import './Forum.scss';
 
+import { topicsSelector, pendingSelector } from '@/reducers/forum/selectors';
+import { getTopics } from '@/reducers/forum/actions';
+import { AppState } from '@/reducers';
+import { TopicProps } from '@/reducers/forum/types';
+
 const b = block('table');
 
-export type Props = {
-  id: number;
-  title: string;
-  message: number;
-};
-
 const Forum = () => {
-  const loading = false;
-  const data: Props[] = DataForum;
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getTopics());
+  }, [dispatch]);
+
+  const { data, loading } = useSelector((state: AppState) => {
+    return {
+      data: topicsSelector(state),
+      loading: pendingSelector(state)
+    };
+  });
 
   const usersPerPage = 7;
 
@@ -52,11 +61,11 @@ const Forum = () => {
           <div className={b('item', { main: true })}>Тема</div>
           <div className={b('item', { message: true })}>Сообщения</div>
         </li>
-        {currentData.map((item: Props) => (
+        {currentData.map((item: TopicProps) => (
           <ForumList
             key={item.id}
             id={item.id}
-            title={item.title}
+            title={item.name}
             message={item.message}
           />
         ))}

@@ -5,6 +5,9 @@ import dotenv from 'dotenv';
 
 import { isDev } from '../webpack/env';
 import { app } from './server';
+import { initDataBase } from './db/init/db_init';
+
+dotenv.config();
 
 dotenv.config();
 
@@ -40,3 +43,5 @@ if (isDev && certificateIsExist) {
     console.log(`Listening on port: ${port}`);
   });
 }
+
+initDataBase();

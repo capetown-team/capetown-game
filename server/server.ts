@@ -8,6 +8,8 @@ import { serverRenderMiddleware } from './middlewares/server-render-middleware';
 import { serverUserAuthMiddleware } from './middlewares/server-user-auth-middleware';
 import { hmrMiddleware } from './middlewares/hmr-middleware';
 
+import apiRouter from './api/routing';
+
 import { isDev } from '../webpack/env';
 
 export const app = express();
@@ -26,4 +28,5 @@ if (isDev) {
 }
 
 app.use(serverUserAuthMiddleware);
+app.use('/api', apiRouter);
 app.get('/*', serverRenderMiddleware);
