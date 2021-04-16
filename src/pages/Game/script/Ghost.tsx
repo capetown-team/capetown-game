@@ -208,7 +208,6 @@ export class Ghost {
       this.posY === 280 &&
       (this.posX === 280 || this.posX === 260)
     ) {
-      // console.log('--');
       r = down;
     }
 
@@ -229,7 +228,6 @@ export class Ghost {
       this.stop = false;
     }, 100);
 
-    // console.log('new r', r);
     if (r) {
       this.directionWatcher.set(r);
     }
