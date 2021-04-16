@@ -1,0 +1,49 @@
+@import '../../styles/layout/colors';
+
+.editor {
+  display: flex;
+  width: 100%;
+  margin: 0 auto;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 1em 0;
+
+  &__body {
+    background-color: rgba(221, 221, 221, 0.8);
+    border-radius: 10px;
+    flex: 1 1 auto;
+    padding: 8px 15px;
+    margin: 0 10px;
+  }
+
+  &__value {
+    border: none;
+    outline: none;
+    min-height: 55px;
+    max-height: 300px;
+    white-space: pre-wrap;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    &_small {
+      min-height: 20px;
+      max-height: 50px;
+    }
+
+    &::-webkit-scrollbar {
+      width: 7px;
+      background-color: transparent;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      width: 8px;
+      background-color: $grey;
+      cursor: pointer;
+    }
+  }
+
+  &__btn {
+    position: relative;
+    top: -5px;
+  }
+}

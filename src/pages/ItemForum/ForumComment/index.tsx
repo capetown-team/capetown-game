@@ -1,0 +1,1 @@
+export { ForumComment } from './ForumComment';
