@@ -7,7 +7,7 @@ import React, {
   ChangeEvent,
   useEffect
 } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import block from 'bem-cn-lite';
 
 import {
@@ -47,7 +47,7 @@ const Leaders: FC = () => {
       usersData: leadersSelector(state),
       loading: pendingSelector(state)
     };
-  });
+  }, shallowEqual);
 
   const dispatch = useDispatch();
 
