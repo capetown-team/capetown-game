@@ -7,6 +7,8 @@ import {
   UserPasswordType
 } from '@/reducers/user/types';
 
+import { ThemeListType } from '@/reducers/theme/types';
+
 import {
   LeaderBoardType,
   LeaderBoardAllType
@@ -49,6 +51,18 @@ export type ResponseReply = {
 export type ResponseEmotion = {
   data: EmotionProps[];
 };
+export type ResponseThemeType = {
+  data: {
+    theme: {
+      id: number;
+      data: { [name: string]: string };
+    };
+  };
+};
+
+export type ResponseThemeListType = {
+  data: ThemeListType;
+};
 
 export interface IApi {
   getUserInfo(): Promise<ResponseUserType>;
@@ -58,6 +72,12 @@ export interface IApi {
   changeUser(body: UserProfileType): Promise<ResponseUserType>;
   changePassword(body: UserPasswordType): Promise<ResponseType>;
   changeAvatar(avatar: File): Promise<ResponseUserType>;
+  themesListRequest(): Promise<ResponseThemeListType>;
+  userThemeRequest(userId: number): Promise<ResponseThemeType>;
+  changeThemeRequest(
+    userId: number,
+    themeId: number
+  ): Promise<ResponseThemeType>;
   setLiderBoardResult(body: LeaderBoardType): Promise<ResponseType>;
   getLiderBoardAll(
     data: LeaderBoardAllType,
@@ -113,6 +133,18 @@ const context = (): IApi => {
     });
   };
 
+  const themesListRequest = async () => {
+    return localClient.get(`/theme/list`);
+  };
+
+  const userThemeRequest = async (userId: number) => {
+    return localClient.get(`/theme/${userId}`);
+  };
+
+  const changeThemeRequest = async (userId: number, themeId: number) => {
+    return localClient.post(`/theme/change`, { userId, themeId });
+  };
+
   const setLiderBoardResult = async (data: LeaderBoardType) => {
     return client.post(`${path}/leaderboard`, data);
   };
@@ -162,6 +194,9 @@ const context = (): IApi => {
     changeUser,
     changePassword,
     changeAvatar,
+    themesListRequest,
+    userThemeRequest,
+    changeThemeRequest,
     getLiderBoardAll,
     getTopics,
     getComments,

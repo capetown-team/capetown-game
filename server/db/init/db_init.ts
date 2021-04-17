@@ -29,9 +29,10 @@ export const modelEmotion = sequelize.define('emotion', Emotion, {
 
 modelUser.hasMany(modelTopic);
 modelUser.hasMany(modelComment);
-// modelComment.hasOne(modelUser);
 modelTopic.hasMany(modelComment);
 modelComment.hasMany(modelReply);
+modelTheme.hasOne(modelUserTheme, { foreignKey: 'themeId' });
+modelUserTheme.belongsTo(modelTheme, { foreignKey: 'themeId' });
 
 export const initDataBase = () => {
   return sequelize
