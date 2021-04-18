@@ -2,8 +2,11 @@ import { Sequelize, ModelCtor, Model } from 'sequelize-typescript';
 
 export const topicRepository = (
   sequelize: Sequelize,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Topic: ModelCtor<Model<any, any>>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Comment: ModelCtor<Model<any, any>>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Reply: ModelCtor<Model<any, any>>
 ) => {
   const getAll = () => {

@@ -7,7 +7,10 @@ export type ReplyType = {
   userId: number;
 };
 
-export const replyRepository = (Reply: ModelCtor<Model<any, any>>) => {
+export const replyRepository = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Reply: ModelCtor<Model<any, any>>
+) => {
   const getAll = (commentId: number) => {
     return Reply.findAll({ where: { commentId } });
   };

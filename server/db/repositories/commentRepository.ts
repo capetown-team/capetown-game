@@ -7,7 +7,10 @@ export type CommentType = {
   userId: number;
 };
 
-export const commentRepository = (Comment: ModelCtor<Model<any, any>>) => {
+export const commentRepository = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Comment: ModelCtor<Model<any, any>>
+) => {
   const getAll = (topicId: number) => {
     return Comment.findAll({
       attributes: ['id', 'content'],

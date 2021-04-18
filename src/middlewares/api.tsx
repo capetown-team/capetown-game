@@ -14,6 +14,7 @@ import {
 } from '@/reducers/leaderBoard/types';
 import {
   TopicProps,
+  TopicTableProps,
   CommentProps,
   ReplyProps,
   EmotionProps
@@ -97,12 +98,13 @@ export interface IApi {
   getComments(): Promise<ResponseComment>;
   getReplies(): Promise<ResponseComment>;
   postClientID(body: string): Promise<ResponseType>;
-  addTopic(topic: TopicProps): Promise<ResponseTopic>;
+  addTopic(topic: TopicTableProps): Promise<ResponseTopic>;
   addComment(comment: CommentProps): Promise<ResponseComment>;
   addReply(reply: ReplyProps): Promise<ResponseReply>;
   addEmotion(reply: EmotionProps): Promise<ResponseEmotion>;
   addFeedback(reply: FeedbackCreateType): Promise<ResponseFeedbackAdd>;
   getFeedbackList(): Promise<ResponseFeedback>;
+  addUser(user: UserType): Promise<ResponseUserType>;
 }
 
 const context = (): IApi => {
@@ -182,7 +184,7 @@ const context = (): IApi => {
     return localClient.get(`/forum/replies`);
   };
 
-  const addTopic = (data: TopicProps) => {
+  const addTopic = (data: TopicTableProps) => {
     return localClient.post(`/forum/topic`, data);
   };
 
@@ -206,6 +208,10 @@ const context = (): IApi => {
     return localClient.get('/feedback/list');
   };
 
+  const addUser = (data: UserType) => {
+    console.log('userdata2', data);
+    return localClient.post(`/forum/user`, data);
+  };
   return {
     getUserInfo,
     logOut,
@@ -228,7 +234,8 @@ const context = (): IApi => {
     setLiderBoardResult,
     postClientID,
     addFeedback,
-    getFeedbackList
+    getFeedbackList,
+    addUser
   };
 };
 

@@ -8,6 +8,7 @@ import { Registration } from '@/pages/Registration';
 import { Game } from '@/pages/Game';
 import { Landing } from '@/pages/Landing';
 import { Feedback } from '@/pages/Feedback';
+import { InputForm } from '@/pages/InputForm';
 import { ROUTES } from '@/constants';
 
 export const routes = [
@@ -61,6 +62,12 @@ export const routes = [
   {
     path: ROUTES.FEEDBACK,
     component: Feedback,
+    isPrivate: false,
+    exact: true
+  },
+  {
+    path: ROUTES.INPUTFORM,
+    component: InputForm,
     isPrivate: false,
     exact: true
   },

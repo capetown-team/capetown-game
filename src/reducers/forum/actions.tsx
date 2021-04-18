@@ -2,7 +2,13 @@ import { Dispatch, Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
 import { IApi } from '@/middlewares/api';
-import { TopicProps, CommentProps, ReplyProps, EmotionProps } from './types';
+import {
+  TopicProps,
+  TopicTableProps,
+  CommentProps,
+  ReplyProps,
+  EmotionProps
+} from './types';
 
 import {
   TOPIC_REQUEST,
@@ -172,19 +178,13 @@ export const getTopics = <S,>(): ThunkAction<
 };
 
 export const addTopic = <S,>(
-  topic: TopicProps
+  topic: TopicTableProps
 ): ThunkAction<void, () => S, IApi, Action<string>> => {
   return async (dispatch: Dispatch, getState, { addTopic }): Promise<void> => {
     dispatch(topicRequest());
-    addTopic(topic)
-      .then((response) => {
-        if (response) {
-          dispatch(topicSuccess(response.data));
-        }
-      })
-      .catch(() => {
-        dispatch(topicFailure());
-      });
+    addTopic(topic).catch(() => {
+      dispatch(topicFailure());
+    });
   };
 };
 

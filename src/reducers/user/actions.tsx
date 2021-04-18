@@ -163,7 +163,11 @@ export const signIn = <S,>(
 export const signUp = <S,>(
   userSignup: SignUpType
 ): ThunkAction<void, () => S, IApi, Action<string>> => {
-  return async (dispatch: Dispatch, getState, { signUp }): Promise<void> => {
+  return async (
+    dispatch: Dispatch,
+    getState,
+    { signUp, addUser }
+  ): Promise<void> => {
     dispatch(userRequest());
     signUp(userSignup)
       .then((response) => {
@@ -181,6 +185,20 @@ export const signUp = <S,>(
             }
           };
           dispatch(authorize(user));
+          const newUser = {
+            id: response.data.id,
+            login: userSignup.login,
+            avatar: '',
+            first_name: userSignup.first_name,
+            second_name: userSignup.second_name,
+            display_name: '',
+            email: userSignup.email,
+            phone: userSignup.phone,
+            password: userSignup.password
+          };
+          console.log('newuser', newUser);
+
+          dispatch(addUser({ user: newUser }));
         }
       })
       .catch((error) => {

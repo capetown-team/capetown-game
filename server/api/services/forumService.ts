@@ -3,7 +3,9 @@ import { topicRepository } from '../../db/repositories/topicRepository';
 import { commentRepository } from '../../db/repositories/commentRepository';
 import { replyRepository } from '../../db/repositories/replyRepository';
 import { emotionRepository } from '../../db/repositories/emotionRepository';
+import { userRepository } from '../../db/repositories/userRepository';
 import sequelize, {
+  modelUser,
   modelTopic,
   modelComment,
   modelReply,
@@ -17,6 +19,8 @@ export const forumService = () => {
     modelComment,
     modelReply
   );
+
+  const user = userRepository(modelUser);
   const comment = commentRepository(modelComment);
   const reply = replyRepository(modelReply);
   const emotion = emotionRepository(modelEmotion);
@@ -48,7 +52,7 @@ export const forumService = () => {
 
   const addTopic = (req: Request, res: Response) => {
     const { name, content, userId } = req.body;
-
+    console.log('addtopic', name, content, userId);
     const isNameValid = name.length > 0;
     const isContentValid = content.length > 2;
 
@@ -156,14 +160,38 @@ export const forumService = () => {
       });
   };
 
+  const getUsers = (req: Request, res: Response) => {
+    user
+      .getAll()
+      .then((users) => res.status(200).json(users))
+      .catch((err) => res.status(500).json({ error: ['db error', err] }));
+  };
+
+  const addUser = (req: Request, res: Response) => {
+    const userData = req.body.user;
+
+    return user
+      .add(userData)
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        res
+          .status(500)
+          .json({ error: { type: 'db error', data: JSON.stringify(err) } });
+      });
+  };
+
   return {
     getTopics,
     getTopic,
-    addTopic,
     getComments,
-    addComment,
     getReplies,
+    addComment,
+    addTopic,
     addReply,
-    addEmotion
+    addEmotion,
+    addUser,
+    getUsers
   };
 };

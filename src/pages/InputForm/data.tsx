@@ -2,10 +2,10 @@ import { FormDataType } from '@/types.d';
 
 export const data: FormDataType = {
   name: {
-    element: 'name',
+    element: 'input',
     value: '',
     config: {
-      name: 'name_input',
+      name: 'name',
       type: 'text',
       placeholder: 'Введите название',
       label: 'Название'
@@ -18,11 +18,11 @@ export const data: FormDataType = {
     touched: false,
     validationMessage: ''
   },
-  text: {
-    element: 'content',
+  content: {
+    element: 'textarea',
     value: '',
     config: {
-      name: 'text_textarea',
+      name: 'content',
       placeholder: 'Текст',
       label: 'Введите содержание'
     },
