@@ -15,4 +15,8 @@
   &:disabled {
     color: inherit;
   }
+
+  &:focus {
+    box-shadow: 0 0 10px 1px var(--background-secondary);
+  }
 }

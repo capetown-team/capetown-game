@@ -83,7 +83,10 @@ export const Profile = () => {
           <div className={b('avatar')}>
             <div className={b('avatar-img')}>
               {state.avatar ? (
-                <img src={`${baseUrl}${state.avatar}`} alt="avatar" />
+                <img
+                  src={`${baseUrl}/api/v2/resources/${state.avatar}`}
+                  alt="avatar"
+                />
               ) : (
                 <span>{formData.first_name.value}</span>
               )}

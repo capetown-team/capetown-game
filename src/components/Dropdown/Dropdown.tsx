@@ -52,7 +52,7 @@ const Dropdown: FC<Props> = ({ name, avatar, nav }) => {
         <div className={b('avatar')}>
           <img
             className={b('img')}
-            src={avatar ? `${baseUrl}${avatar}` : ''}
+            src={avatar ? `${baseUrl}/api/v2/resources/${avatar}` : ''}
             alt=""
           />
         </div>
