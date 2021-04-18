@@ -16,7 +16,7 @@ import './Forum.scss';
 
 import { topicsSelector, pendingSelector } from '@/reducers/forum/selectors';
 
-import { getTopics, addTopic } from '@/reducers/forum/actions';
+import { getTopics } from '@/reducers/forum/actions';
 import { AppState } from '@/reducers';
 
 const b = block('table');
@@ -33,7 +33,7 @@ const Forum = () => {
   const submitHandler = useCallback(
     (e: MouseEvent<Element>) => {
       e.preventDefault();
-      history.replace(ROUTES.INPUTFORUM);
+      history.replace(ROUTES.INPUTFORM);
     },
     [history]
   );

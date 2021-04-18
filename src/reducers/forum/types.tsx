@@ -14,6 +14,11 @@ export type TopicProps = {
   message: number;
 };
 
+export type TopicTableProps = {
+  name: string;
+  content: string;
+};
+
 export type ReplyProps = {
   id: number;
   name: string;

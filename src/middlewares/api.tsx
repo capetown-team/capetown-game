@@ -14,6 +14,7 @@ import {
 
 import {
   TopicProps,
+  TopicTableProps,
   CommentProps,
   ReplyProps,
   EmotionProps
@@ -67,10 +68,11 @@ export interface IApi {
   getComments(): Promise<ResponseComment>;
   getReplies(): Promise<ResponseComment>;
   postClientID(body: string): Promise<ResponseType>;
-  addTopic(topic: TopicProps): Promise<ResponseTopic>;
+  addTopic(topic: TopicTableProps): Promise<ResponseTopic>;
   addComment(comment: CommentProps): Promise<ResponseComment>;
   addReply(reply: ReplyProps): Promise<ResponseReply>;
   addEmotion(reply: EmotionProps): Promise<ResponseEmotion>;
+  addUser(user: UserType): Promise<ResponseUserType>;
 }
 
 const context = (): IApi => {
@@ -138,7 +140,7 @@ const context = (): IApi => {
     return localClient.get(`/forum/replies`);
   };
 
-  const addTopic = (data: TopicProps) => {
+  const addTopic = (data: TopicTableProps) => {
     return localClient.post(`/forum/topic`, data);
   };
 
@@ -152,6 +154,11 @@ const context = (): IApi => {
 
   const addEmotion = (data: EmotionProps) => {
     return localClient.post(`/forum/emotion`, data);
+  };
+
+  const addUser = (data: UserType) => {
+    console.log('userdata2', data);
+    return localClient.post(`/forum/user`, data);
   };
 
   return {
@@ -171,7 +178,8 @@ const context = (): IApi => {
     addReply,
     addEmotion,
     setLiderBoardResult,
-    postClientID
+    postClientID,
+    addUser
   };
 };
 

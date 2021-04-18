@@ -32,6 +32,7 @@ export const usePagination = <T,>(props: Props<T>): IPaginationHook<T> => {
     const indexOfLast = currentPage * perPage;
     const indexOfFirst = indexOfLast - perPage;
 
+    console.log('data', data);
     return data.slice(indexOfFirst, indexOfLast);
   }, [currentPage, data, perPage]);
 

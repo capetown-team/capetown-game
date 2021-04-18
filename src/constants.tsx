@@ -8,7 +8,7 @@ export enum ROUTES {
   SIGNUP = '/registration',
   PROFILE = '/profile',
   FEEDBACK = '/feedback',
-  INPUTFORUM = '/inputforum'
+  INPUTFORM = '/inputform'
 }
 
 export const baseUrl = 'https://ya-praktikum.tech';
