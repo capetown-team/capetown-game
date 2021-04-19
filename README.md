@@ -50,6 +50,17 @@
 2. После запуска образа подключиться к БД с помощью команды `psql postgres://admin:admin@localhost:5436/pacman`    
 3. Скопировать и выполнить в консоли код из migration.sql
 
+Врежиме разработке, создать папку .env
+```
+  DB_USERNAME=admin
+  DB_PASSWORD=admin
+  DB_HOST=localhost
+  DB_PORT=5436
+  EMAIL_FROM=pacman.capetown@gmail.com
+  EMAIL_PASS=passWord123
+  EMAIL_TO=pacman.capetown@yandex.ru
+```
+
 ## Актуальная версия с heroku
 На [demo](https://warm-anchorage-94393.herokuapp.com) пример для ознакомления
 ## Что сделано

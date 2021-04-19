@@ -4,6 +4,7 @@
 .form {
   min-height: calc(100vh - #{$headerHeight});
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding-top: 1rem;
@@ -23,11 +24,16 @@
   }
 
   &__link {
+    cursor: pointer;
     color: $light-blue;
   }
 
   &__error {
     color: $red;
+  }
+
+  &__success {
+    color: $green;
   }
 
   &__row {
