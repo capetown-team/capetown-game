@@ -13,5 +13,11 @@ services:
       - "27017:27017"
     volumes:
       - data-volume:/data/db
+    restart: always
+
+networks:
+  app-network:
+    driver: bridge
+
 volumes:
   data-volume:

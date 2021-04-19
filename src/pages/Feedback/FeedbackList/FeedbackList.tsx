@@ -9,7 +9,6 @@ import {
 } from '@/reducers/feedback/selectors';
 import { listFeedback } from '@/reducers/feedback/actions';
 import { Loading } from '@/components/Loading';
-import { FeedbackType } from '@/reducers/feedback/types';
 
 import './FeedbackList.scss';
 
@@ -18,7 +17,6 @@ const b = block('feedback-list');
 const FeedbackList = () => {
   const dispatch = useDispatch();
 
-  const [lists, setList] = useState<FeedbackType[]>([]);
   const [isLoading, setLoading] = useState(false);
 
   const { listData, pending } = useSelector((state: AppState) => {
@@ -33,10 +31,6 @@ const FeedbackList = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    setList(listData);
-  }, [listData]);
-
-  useEffect(() => {
     setLoading(pending);
   }, [pending]);
 
@@ -44,8 +38,8 @@ const FeedbackList = () => {
     <div className={b()}>
       {isLoading && <Loading />}
 
-      {lists && lists.length > 0 ? (
-        lists.map((list) => {
+      {listData.length > 0 ? (
+        listData.map((list) => {
           return (
             <div key={list._id} className={b('list')}>
               <div className={b('title')}>{list.name}</div>
