@@ -9,18 +9,10 @@ export const Emotion = {
   },
   userId: {
     type: DataType.INTEGER,
-    allowNull: false,
-    references: {
-      model: 'user',
-      key: 'id'
-    }
+    allowNull: false
   },
   commentId: {
     type: DataType.INTEGER,
-    allowNull: false,
-    references: {
-      model: 'comment',
-      key: 'id'
-    }
+    allowNull: false
   }
 };

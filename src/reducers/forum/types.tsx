@@ -29,8 +29,17 @@ export type ReplyProps = {
 export type CommentProps = {
   id: number;
   name: string;
-  content: string;
+  topicId: number;
   userid: number;
+};
+
+export type messageProps = {
+  id: number;
+  name: string;
+  content: string;
+  time: string;
+  countComments: number;
+  countLikes: number;
 };
 
 export type EmotionProps = {

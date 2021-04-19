@@ -26,5 +26,9 @@ export const User = {
   password: {
     type: DataType.STRING,
     allowNull: false
+  },
+  avatar: {
+    type: DataType.STRING,
+    allowNull: true
   }
 };

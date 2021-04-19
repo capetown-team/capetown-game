@@ -16,12 +16,6 @@
     "pre-commit": "npm-run-all lint:* ",
     "pre-push": "npm-run-all lint:*"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run pre-commit",
-      "pre-push": "npm run pre-push"
-    }
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/capetown-team/capetown-game.git"

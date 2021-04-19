@@ -69,10 +69,10 @@ const InputForm = () => {
 
   return (
     <div className={b()}>
-      <PageMeta title="Новый элемент форума" />
+      <PageMeta title="Новая тема" />
 
       <form className={b('wrapper')} onSubmit={(event) => submitForm(event)}>
-        <h3 className={b('title')}>Новый элемент форума</h3>
+        <h3 className={b('title')}>Новая тема</h3>
         <div className={b('main')}>
           <FormField
             id="name"
@@ -87,7 +87,7 @@ const InputForm = () => {
           {error && <div className={b('error')}>Не все поля заполнены</div>}
           <div className={b('row-button')}>
             <Button type="submit" size="m">
-              Отправить
+              Создать
             </Button>
           </div>
         </div>
