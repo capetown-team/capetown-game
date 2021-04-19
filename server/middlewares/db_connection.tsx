@@ -5,14 +5,14 @@ dotenv.config();
 const { DB_USERNAME, DB_PASSWORD } = process.env;
 
 const sequelizeOptions: SequelizeOptions = {
-    host: 'localhost',
-    port: 5436,
-    username: DB_USERNAME,
-    password: DB_PASSWORD,
-    database: 'pacman',
+  host: 'localhost',
+  port: 5436,
+  username: DB_USERNAME,
+  password: DB_PASSWORD,
+  database: 'pacman',
 
-    dialect: 'postgres',
-    define: {
+  dialect: 'postgres',
+  define: {
     timestamps: false
   }
 };

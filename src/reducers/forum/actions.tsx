@@ -182,25 +182,28 @@ export const addTopic = <S,>(
 ): ThunkAction<void, () => S, IApi, Action<string>> => {
   return async (dispatch: Dispatch, getState, { addTopic }): Promise<void> => {
     dispatch(topicRequest());
-    addTopic(topic).catch(() => {
-      dispatch(topicFailure());
-    });
+    addTopic(topic)
+      .then((response) => {
+        if (response) {
+          getTopics();
+        }
+      })
+      .catch(() => {
+        dispatch(topicFailure());
+      });
   };
 };
 
-export const getComments = <S,>(): ThunkAction<
-  void,
-  () => S,
-  IApi,
-  Action<string>
-> => {
+export const getComments = <S,>(
+  topicId: number
+): ThunkAction<void, () => S, IApi, Action<string>> => {
   return async (
     dispatch: Dispatch,
     getState,
     { getComments }
   ): Promise<void> => {
     dispatch(commentRequest());
-    getComments()
+    getComments(topicId)
       .then((response) => {
         if (response.data) {
           dispatch(commentSuccess(response.data));
@@ -224,7 +227,7 @@ export const addComment = <S,>(
     addComment(comment)
       .then((response) => {
         if (response) {
-          dispatch(commentSuccess(response.data));
+          dispatch(getComments(comment.topicId));
         }
       })
       .catch(() => {

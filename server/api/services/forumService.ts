@@ -21,7 +21,13 @@ export const forumService = () => {
   );
 
   const user = userRepository(modelUser);
-  const comment = commentRepository(modelComment);
+  const comment = commentRepository(
+    sequelize,
+    modelComment,
+    modelUser,
+    modelEmotion,
+    modelReply
+  );
   const reply = replyRepository(modelReply);
   const emotion = emotionRepository(modelEmotion);
 
@@ -79,8 +85,9 @@ export const forumService = () => {
 
   const getComments = (req: Request, res: Response) => {
     const topicId = Number(req.params.id);
+
     comment
-      .getAll(topicId)
+      .getMessages(topicId)
       .then((comments) => res.status(200).json(comments))
       .catch((err) => res.status(500).json({ error: ['db error', err] }));
   };

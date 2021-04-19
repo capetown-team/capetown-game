@@ -65,7 +65,7 @@ export interface IApi {
     cookies?: string
   ): Promise<ResponseLeaders>;
   getTopics(): Promise<ResponseTopic>;
-  getComments(): Promise<ResponseComment>;
+  getComments(topicId: number): Promise<ResponseComment>;
   getReplies(): Promise<ResponseComment>;
   postClientID(body: string): Promise<ResponseType>;
   addTopic(topic: TopicTableProps): Promise<ResponseTopic>;
@@ -132,8 +132,9 @@ const context = (): IApi => {
     return localClient.get(`/forum/topics`);
   };
 
-  const getComments = () => {
-    return localClient.get(`/forum/comments`);
+  const getComments = (topicId: number) => {
+    console.log('topicid2', topicId);
+    return localClient.get(`/forum/topic/${topicId}`);
   };
 
   const getReplies = () => {
