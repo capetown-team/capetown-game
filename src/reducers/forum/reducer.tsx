@@ -15,6 +15,7 @@ export const initialState = {
   topics: [],
   comments: [],
   replies: [],
+  emotions: [],
   isSuccessResult: false,
   pending: false,
   error: null,

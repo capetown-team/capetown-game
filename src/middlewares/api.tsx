@@ -6,20 +6,19 @@ import {
   UserProfileType,
   UserPasswordType
 } from '@/reducers/user/types';
-
 import { ThemeListType } from '@/reducers/theme/types';
 
 import {
   LeaderBoardType,
   LeaderBoardAllType
 } from '@/reducers/leaderBoard/types';
-
 import {
   TopicProps,
   CommentProps,
   ReplyProps,
   EmotionProps
 } from '@/reducers/forum/types';
+import { FeedbackCreateType, FeedbackType } from '@/reducers/feedback/types';
 
 export type ResponseUserType = {
   data: UserType;
@@ -64,6 +63,17 @@ export type ResponseThemeListType = {
   data: ThemeListType;
 };
 
+export type ResponseFeedbackAdd = {
+  data: {
+    success: boolean;
+    err?: { errors: { email: { message: string } } };
+  };
+};
+
+export type ResponseFeedback = {
+  data: FeedbackType[];
+};
+
 export interface IApi {
   getUserInfo(): Promise<ResponseUserType>;
   logOut(): Promise<ResponseType>;
@@ -91,6 +101,8 @@ export interface IApi {
   addComment(comment: CommentProps): Promise<ResponseComment>;
   addReply(reply: ReplyProps): Promise<ResponseReply>;
   addEmotion(reply: EmotionProps): Promise<ResponseEmotion>;
+  addFeedback(reply: FeedbackCreateType): Promise<ResponseFeedbackAdd>;
+  getFeedbackList(): Promise<ResponseFeedback>;
 }
 
 const context = (): IApi => {
@@ -186,6 +198,14 @@ const context = (): IApi => {
     return localClient.post(`/forum/emotion`, data);
   };
 
+  const addFeedback = async (data: FeedbackCreateType) => {
+    return localClient.post('/feedback/create', data);
+  };
+
+  const getFeedbackList = async () => {
+    return localClient.get('/feedback/list');
+  };
+
   return {
     getUserInfo,
     logOut,
@@ -206,7 +226,9 @@ const context = (): IApi => {
     addReply,
     addEmotion,
     setLiderBoardResult,
-    postClientID
+    postClientID,
+    addFeedback,
+    getFeedbackList
   };
 };
 
