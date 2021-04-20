@@ -18,7 +18,8 @@ export const initialState = {
   emotions: [],
   isSuccessResult: false,
   pending: false,
-  error: null
+  error: null,
+  emotions: []
 };
 
 export const forumReducer = (state = initialState, action: ForumAction) => {
@@ -62,8 +63,7 @@ export const forumReducer = (state = initialState, action: ForumAction) => {
         error: false
       };
     }
-    // no default
+    default:
+      return state;
   }
-
-  return state;
 };

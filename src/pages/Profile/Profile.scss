@@ -30,7 +30,7 @@
     height: 6rem;
     position: relative;
     overflow: hidden;
-    background-color: $light-grey;
+    background-color: var(--background-secondary);
     border-radius: 50%;
     display: flex;
     justify-content: center;
@@ -85,6 +85,15 @@
       margin-right: 0;
     }
   }
+
+  &__theme-select {
+    color: inherit;
+    font-size: inherit;
+    background-color: var(--background-secondary);
+    border: 0;
+    border-radius: 3px;
+    padding: 5px 8px;
+  }
 }
 
 .user-form {
@@ -105,24 +114,6 @@
   &__btn {
     padding-top: 2rem;
     width: 280px;
-  }
-
-  &__input {
-    margin-bottom: .5rem;
-  }
-
-  &__label {
-    display: block;
-    font-size: 1.6rem;
-    color: $grey;
-    width: 280px;
-    padding-left: .5rem;
-  }
-
-  &__invalid {
-    font-size: 1.6rem;
-    color: $red;
-    padding-left: .5rem;
   }
 }
 

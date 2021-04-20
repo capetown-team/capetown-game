@@ -169,10 +169,10 @@ VALUES
 ('Dudchenko', 'Pavel', 'DudchenkoPavel', 'DudchenkoPavel@yandex.ru', '89885678945', 'DudchenkoPavel'),
 ('Stepanov', 'Dmitriy', 'StepanovDmitriy', 'StepanovDmitriy@mail.ru', '89885678945', 'StepanovDmitriy');
 
-INSERT INTO themes (name, hidden)
+INSERT INTO themes (name, hidden, data)
 VALUES
-('dark', false),
-('light', false);
+('Светлая тема', false, '{"--text":"#333333","--background":"#FFFFFF","--background-secondary":"#F3F4F7","--btn-primary":"#6995E0","--btn-primary-hover":"#88ABE7","--btn-secondary":"#8D99AE","--btn-secondary-hover":"#A0AABB"}'),
+('Тёмная тема', false, '{"--text":"#FFFFFF","--background":"#082749","--background-secondary":"#061D37","--btn-primary":"#FE8720","--btn-primary-hover":"#FE9234","--btn-secondary":"#555D77","--btn-secondary-hover":"#666F8F"}');
 
 INSERT INTO users_theme (themeId, userId)
 VALUES
