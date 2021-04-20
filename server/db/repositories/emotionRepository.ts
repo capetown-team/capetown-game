@@ -1,10 +1,8 @@
 import { ModelCtor, Model } from 'sequelize-typescript';
 
 export const emotionRepository = (Emotion: ModelCtor<Model<any, any>>) => {
-  const getAll = (commentId: number) => {
+  const getAll = () => {
     return Emotion.findAll({
-      attributes: ['commentId'],
-      where: { commentId }
     });
   };
 

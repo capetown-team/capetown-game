@@ -18,5 +18,9 @@ export const Reply = {
   userId: {
     type: DataType.INTEGER,
     allowNull: false
+  },
+  timeMessage: {
+    type: DataType.DATE,
+    allowNull: true
   }
 };

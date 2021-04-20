@@ -85,10 +85,18 @@ export const forumService = () => {
 
   const getComments = (req: Request, res: Response) => {
     const topicId = Number(req.params.id);
-
-    comment
-      .getMessages(topicId)
-      .then((comments) => res.status(200).json(comments))
+    topic
+      .get(Number(topicId))
+      .then((curTopic) => {
+        console.log('curTopic', curTopic);
+        comment
+          .getMessages(topicId)
+          .then((comments) => {
+            console.log('comments', comments);
+            res.status(200).json({ topic: curTopic.dataValues, messages: comments[0] });
+          })
+          .catch((err) => res.status(500).json({ error: ['db error', err] }));
+      })
       .catch((err) => res.status(500).json({ error: ['db error', err] }));
   };
 
@@ -128,7 +136,7 @@ export const forumService = () => {
 
   const addReply = (req: Request, res: Response) => {
     const { content, commentId, userId } = req.body;
-
+    console.log({ content, commentId, userId } );
     const isContentValid = content.length > 0;
 
     if (!isContentValid) {
@@ -154,7 +162,7 @@ export const forumService = () => {
 
   const addEmotion = (req: Request, res: Response) => {
     const { userId, commentId } = req.body;
-
+    console.log('emotion', userId, commentId);
     return emotion
       .add(userId, commentId)
       .then((emotion) => {
@@ -189,6 +197,13 @@ export const forumService = () => {
       });
   };
 
+  const getEmotions = (req: Request, res: Response) => {
+    emotion
+      .getAll()
+      .then((emotions) => res.status(200).json(emotions))
+      .catch((err) => res.status(500).json({ error: ['db error', err] }));
+  };
+
   return {
     getTopics,
     getTopic,
@@ -199,6 +214,7 @@ export const forumService = () => {
     addReply,
     addEmotion,
     addUser,
-    getUsers
+    getUsers,
+    getEmotions
   };
 };

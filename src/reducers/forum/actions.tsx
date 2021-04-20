@@ -7,7 +7,8 @@ import {
   TopicTableProps,
   CommentProps,
   ReplyProps,
-  EmotionProps
+  EmotionProps,
+  MessageTableProps
 } from './types';
 
 import {
@@ -69,11 +70,11 @@ const commentRequest = (): CommentRequest => {
 
 type CommentSuccess = {
   type: typeof COMMENT_SUCCESS;
-  payload: { comments: CommentProps[] | CommentProps };
+  payload: { comments: MessageTableProps };
 };
 
 const commentSuccess = (
-  comments: CommentProps[] | CommentProps
+  comments: MessageTableProps
 ): CommentSuccess => {
   return {
     type: COMMENT_SUCCESS,
@@ -185,7 +186,7 @@ export const addTopic = <S,>(
     addTopic(topic)
       .then((response) => {
         if (response) {
-          getTopics();
+          dispatch(getTopics());
         }
       })
       .catch(() => {
@@ -269,6 +270,7 @@ export const addReply = <S,>(
       .then((response) => {
         if (response) {
           dispatch(replySuccess(response.data));
+          dispatch(getComments(reply.topicId));
         }
       })
       .catch(() => {
@@ -290,6 +292,7 @@ export const addEmotion = <S,>(
       .then((response) => {
         if (response) {
           dispatch(emotionSuccess(response.data));
+          dispatch(getComments(emotion.topicId));
         }
       })
       .catch(() => {
