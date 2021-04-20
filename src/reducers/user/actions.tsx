@@ -2,6 +2,7 @@ import { Dispatch, Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
 import { IApi } from '@/middlewares/api';
+import { getNewUser } from './helper';
 
 import {
   AUTH_REQUEST,
@@ -136,7 +137,7 @@ export const signIn = <S,>(
   return async (
     dispatch: Dispatch,
     getState,
-    { signIn, getUserInfo }
+    { signIn, getUserInfo, addUser }
   ): Promise<void> => {
     dispatch(userRequest());
     signIn(userSignin)
@@ -147,6 +148,9 @@ export const signIn = <S,>(
               if (response.data) {
                 const user: { user: UserType } = { user: response.data };
                 dispatch(authorize(user));
+                
+                const newUser = getNewUser(response, user);      
+                dispatch(addUser({ user: newUser }));
               }
             })
             .catch((error) => {
@@ -185,19 +189,8 @@ export const signUp = <S,>(
             }
           };
           dispatch(authorize(user));
-          const newUser = {
-            id: response.data.id,
-            login: userSignup.login,
-            avatar: '',
-            first_name: userSignup.first_name,
-            second_name: userSignup.second_name,
-            display_name: '',
-            email: userSignup.email,
-            phone: userSignup.phone,
-            password: userSignup.password
-          };
-          console.log('newuser', newUser);
-
+          
+          const newUser = getNewUser(response, response);
           dispatch(addUser({ user: newUser }));
         }
       })
@@ -213,7 +206,7 @@ export const changeProfile = <S,>(
   return async (
     dispatch: Dispatch,
     getState,
-    { changeUser }
+    { changeUser, addUser }
   ): Promise<void> => {
     dispatch(userRequest());
     changeUser(userData)
@@ -221,6 +214,9 @@ export const changeProfile = <S,>(
         if (response.data) {
           const user: { user: UserType } = { user: response.data };
           dispatch(authorize(user));
+
+          const newUser = getNewUser(response, user);
+          dispatch(addUser({ user: newUser }));
         }
       })
       .catch((error) => {
@@ -264,6 +260,9 @@ export const changeProfileAvatar = <S,>(
         if (response.data) {
           const user: { user: UserType } = { user: response.data };
           dispatch(authorize(user));
+
+          const newUser = getNewUser(response, user);
+          dispatch(addUser({ user: newUser }));
         }
       })
       .catch((error) => {
@@ -278,7 +277,7 @@ export const signinOAuth = <S,>(
   return async (
     dispatch: Dispatch,
     getState,
-    { postClientID, getUserInfo }
+    { postClientID, getUserInfo, addUser }
   ): Promise<void> => {
     dispatch(userRequest());
     postClientID(code)
@@ -289,6 +288,10 @@ export const signinOAuth = <S,>(
               if (response.data) {
                 const user: { user: UserType } = { user: response.data };
                 dispatch(authorize(user));
+                console.log('useroauth', user);
+                const newUser = getNewUser(response, user);
+                console.log('newuser', newUser);      
+                dispatch(addUser({ user: newUser }));
               }
             })
             .catch((error) => {

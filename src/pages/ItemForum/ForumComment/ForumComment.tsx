@@ -1,13 +1,17 @@
-import React, { memo, FC, useState, useCallback } from 'react';
+import React, { memo, FC, useState, useCallback, useRef } from 'react';
 import block from 'bem-cn-lite';
 
 import { Editor } from '@/components/Editor';
+import { addEmotion } from '@/reducers/forum/actions';
+import { userSelector } from '@/reducers/user/selectors';
 
 import './ForumComment.scss';
+import { useDispatch, useSelector } from 'react-redux';
 
 const b = block('forum-comment');
 
 type Props = {
+  id: number;
   right: boolean;
   name: string;
   content: string;
@@ -15,25 +19,37 @@ type Props = {
   countComments: number;
   countLikes: number;
   avatar?: string;
+  topicId: number;
 };
 
 const ForumComment: FC<Props> = ({
   right,
+  id,
   name,
   content,
   time,
   countComments,
   countLikes,
-  avatar
+  avatar,
+  topicId
 }) => {
+  const dispatch = useDispatch();
+  const user = useSelector(userSelector);
   const [isEditor, setEditor] = useState(false);
 
   const handlerShowEditor = useCallback(() => {
     setEditor(!isEditor);
   }, [isEditor]);
 
+  const handlerAddEmotion = useCallback(() => {
+    if (user !== null) {
+      console.log({id}, {countLikes}, {time});
+      dispatch(addEmotion({userId: user.id, commentId: id, topicId: topicId}));
+    }
+  }, [isEditor]);
+
   return (
-    <div className={b()}>
+    <div className={b()} >
       <div className={b('avatar', { right })}>
         <img className={b('img')} src={avatar} alt="name" />
       </div>
@@ -47,8 +63,11 @@ const ForumComment: FC<Props> = ({
       {!right && (
         <footer className={b('footer')}>
           <span className={b('link', { active: true })}>
-            <span className={b('icon')}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <span className={b('icon')} onClick={handlerAddEmotion}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+              >
                 <path d="M17,2.9A6.43,6.43,0,0,1,23.4,9.33c0,3.57-1.43,5.36-7.45,10l-2.78,2.16a1.9,1.9,0,0,1-2.33,0L8.05,19.37C2,14.69.6,12.9.6,9.33A6.43,6.43,0,0,1,7,2.9a6.46,6.46,0,0,1,5,2.54A6.46,6.46,0,0,1,17,2.9ZM7,4.7A4.63,4.63,0,0,0,2.4,9.33c0,2.82,1.15,4.26,6.76,8.63l2.78,2.16a.1.1,0,0,0,.12,0L14.84,18c5.61-4.36,6.76-5.8,6.76-8.63A4.63,4.63,0,0,0,17,4.7c-1.56,0-3,.88-4.23,2.73L12,8.5l-.74-1.07C10,5.58,8.58,4.7,7,4.7Z" />
               </svg>
             </span>
@@ -68,7 +87,7 @@ const ForumComment: FC<Props> = ({
           </span>
         </footer>
       )}
-      {isEditor && <Editor small />}
+      {isEditor && <Editor small commentId={id} />}
     </div>
   );
 };

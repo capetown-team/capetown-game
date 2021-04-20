@@ -12,8 +12,6 @@ import { commentsSelector, pendingSelector } from '@/reducers/forum/selectors';
 import { getComments } from '@/reducers/forum/actions';
 import { getTopicId } from '@/pages/Forum/helper';
 
-import { AppState } from '@/reducers';
-
 import { messageProps } from '@/reducers/forum/types';
 
 import './ItemForum.scss';
@@ -24,44 +22,46 @@ const ItemForum = () => {
   const dispatch = useDispatch();
   const topicId = getTopicId();
   const [data, setData] = useState([]);
+  const [topicName, setTopicName] = useState('');
 
   useEffect(() => {
-    console.log('topicId', topicId);
     dispatch(getComments(topicId));
   }, [dispatch]);
 
-  const { currentData, loading } = useSelector((state: AppState) => {
-    console.log('data', data);
-    return {
-      currentData: commentsSelector(state),
-      loading: pendingSelector(state)
-    };
-  });
+  const currentData = useSelector(commentsSelector); 
+  const loading = useSelector(pendingSelector); 
+  console.log('cur', currentData);
   useEffect(() => {
-    console.log('curdata', currentData[0]);
     if (currentData !== undefined) {
-      setData(currentData[0]);
+      
+      if (currentData.comments !== undefined) {
+        setData(currentData.comments.messages);
+        if (currentData.comments.topic !== null)
+          setTopicName(currentData.comments.topic.name);
+      }
+      
+      console.log('data', data);
+      
     }
   }, [currentData]);
 
-  if (loading) {
-    return <Loading />;
-  }
-
   return (
     <div className={b()}>
-      <PageMeta title="Форум" description="Какая интересная игра!" />
-      <Topping title="Делимся секретами игры" />
+      <PageMeta title="Форум" description="Форум" />
+      <Topping title={topicName} />
 
       <div className={b('comments')}>
         {data.map((item: messageProps) => (
           <ForumComment
-            right={false}
+            right={item.right}
+            id={item.id}
+            key={item.id}
             name={item.name}
             content={item.content}
             time={item.time}
-            countComments={item.countComments}
-            countLikes={item.countLikes}
+            countComments={item.replies}
+            countLikes={item.likes}
+            topicId={topicId}
           />
         ))}
       </div>

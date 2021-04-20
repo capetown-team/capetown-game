@@ -3,14 +3,13 @@ import React, {
   memo,
   useCallback,
   MouseEvent,
-  useEffect,
   useRef
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import block from 'bem-cn-lite';
 
 import { Button } from '@/components/Button';
-import { addComment } from '@/reducers/forum/actions';
+import { addComment, addReply } from '@/reducers/forum/actions';
 
 import { userSelector } from '@/reducers/user/selectors';
 import { AppState } from '@/reducers';
@@ -21,10 +20,11 @@ import './Editor.scss';
 const b = block('editor');
 
 type Props = {
+  commentId: number;
   small: boolean;
 };
 
-const Editor: FC<Props> = ({ small }) => {
+const Editor: FC<Props> = ({ small, commentId }) => {
   const dispatch = useDispatch();
   const topicId = getTopicId();
   const editorRef = useRef<HTMLDivElement>(null);
@@ -39,13 +39,25 @@ const Editor: FC<Props> = ({ small }) => {
     const target = editorRef.current;
 
     if (user !== null) {
-      dispatch(
-        addComment({
-          content: target.innerHTML,
-          topicId,
-          userId: user.id
-        })
-      );
+      if (small) {
+        console.log('idcom', commentId);
+        dispatch(
+          addReply({
+            content: target.innerHTML,
+            commentId: commentId,
+            userId: user.id,
+            topicId: topicId
+          })
+        );
+      } else {
+        dispatch(
+          addComment({
+            content: target.innerHTML,
+            topicId,
+            userId: user.id
+          })
+        );
+      }
     }
   }, []);
 

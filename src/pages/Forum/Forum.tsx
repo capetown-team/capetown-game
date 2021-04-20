@@ -56,9 +56,9 @@ const Forum = () => {
     data
   });
 
-  if (loading) {
+  /*if (loading) {
     return <Loading />;
-  }
+  }*/
 
   return (
     <main className={b()}>
