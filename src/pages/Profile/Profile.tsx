@@ -1,12 +1,16 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import block from 'bem-cn-lite';
 
 import { PageMeta } from '@/components/PageMeta';
 import { AppState } from '@/reducers';
 import { authSelector, userSelector } from '@/reducers/user/selectors';
+import {
+  themesListSelector,
+  selectedThemeSelector
+} from '@/reducers/theme/selectors';
 import { changeProfileAvatar } from '@/reducers/user/actions';
+import { getThemesList, changeUserTheme } from '@/reducers/theme/actions';
 import { baseUrl } from '@/constants';
 import { FilePopup } from '@/components/FilePopup';
 import { ProfileForm } from './ProfileForm';
@@ -22,12 +26,16 @@ export const Profile = () => {
   const [isShowPopup, setIsShowPopup] = useState(false);
 
   const dispatch = useDispatch();
-  const { user, isAuth } = useSelector((state: AppState) => {
-    return {
-      user: userSelector(state),
-      isAuth: authSelector(state)
-    };
-  });
+  const { user, isAuth, themesList, selectedTheme } = useSelector(
+    (state: AppState) => {
+      return {
+        user: userSelector(state),
+        isAuth: authSelector(state),
+        themesList: themesListSelector(state),
+        selectedTheme: selectedThemeSelector(state)
+      };
+    }
+  );
 
   if (isAuth) {
     formData.first_name.value = user?.first_name || '';
@@ -43,11 +51,29 @@ export const Profile = () => {
     id: user?.id
   };
 
+  useEffect(() => {
+    dispatch(getThemesList());
+  }, [dispatch]);
+
   const handleAvatarChange = (file: File) => {
     dispatch(changeProfileAvatar(file));
 
     setIsShowPopup(false);
   };
+
+  const changeThemeHandler = ({ target }: { target: HTMLSelectElement }) => {
+    const themeId: number = parseInt(target.value, 10);
+
+    if (user) {
+      dispatch(changeUserTheme(user.id, themeId));
+    }
+  };
+
+  const themeOptionList = themesList.map(({ id, name }) => (
+    <option key={id} value={id}>
+      {name}
+    </option>
+  ));
 
   return (
     <div className={b()}>
@@ -57,7 +83,10 @@ export const Profile = () => {
           <div className={b('avatar')}>
             <div className={b('avatar-img')}>
               {state.avatar ? (
-                <img src={`${baseUrl}${state.avatar}`} alt="avatar" />
+                <img
+                  src={`${baseUrl}/api/v2/resources/${state.avatar}`}
+                  alt="avatar"
+                />
               ) : (
                 <span>{formData.first_name.value}</span>
               )}
@@ -74,9 +103,13 @@ export const Profile = () => {
             </div>
           </div>
           <div>
-            <Link className="chat-link" to="/">
-              на главную
-            </Link>
+            <select
+              className={b('theme-select')}
+              onChange={changeThemeHandler}
+              value={selectedTheme}
+            >
+              {themeOptionList}
+            </select>
           </div>
         </div>
         {isProfileView ? (

@@ -19,6 +19,15 @@ body {
   color: $black;
   padding: 0;
   margin: 0;
+
+  // default style
+  --text: #333;
+  --background: #fff;
+  --background-secondary: #ccc;
+  --btn-primary: #ccc;
+  --btn-primary-hover: #ccc;
+  --btn-secondary: #ccc;
+  --btn-secondary-hover: #ccc;
 }
 
 input,
@@ -72,6 +81,8 @@ figure {
   display: block;
 }
 
+select,
+select:focus,
 button:focus,
 input:focus,
 textarea:focus,
