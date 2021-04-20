@@ -3,19 +3,13 @@
 .form-field {
   margin-bottom: 15px;
   text-align: left;
-
-  &__input {
-    margin-bottom: .5rem;
-  }
+  margin-bottom: .5rem;
 
   &__label {
     display: block;
+    margin-bottom: .1em;
     font-size: 1.6rem;
     color: $grey;
-    width: 280px;
-  }
-
-  &__label-text {
     padding-left: .5rem;
   }
 
@@ -44,6 +38,7 @@
 
   &__error {
     font-size: 1.6rem;
+    padding-top: .1em;
     color: $red;
     padding-left: .5rem;
   }
