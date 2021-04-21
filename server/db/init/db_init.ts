@@ -29,16 +29,19 @@ export const modelEmotion = sequelize.define('emotion', Emotion, {
 
 modelUser.hasMany(modelTopic);
 modelUser.hasMany(modelComment);
-// modelComment.hasOne(modelUser);
 modelTopic.hasMany(modelComment);
 modelComment.hasMany(modelReply);
 
 export const initDataBase = () => {
-  return sequelize
-    .sync()
-    .then(() => {
-      console.log('connected');
-    })
-    .catch((err) => console.log(err));
+  return (
+    sequelize
+      .sync()
+      .then(() => {
+        // eslint-disable-next-line no-console
+        console.log('connected');
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err))
+  );
 };
 export default sequelize;

@@ -7,7 +7,8 @@ CREATE TABLE IF NOT EXISTS public.users
     login character(50)  NOT NULL,
     email character(50)  NOT NULL,
     phone character(12) ,
-    password character(50)  NOT NULL,
+    password character(50),
+    avatar character(500),
     CONSTRAINT users_pkey PRIMARY KEY (id)
 );
 
@@ -78,6 +79,7 @@ CREATE TABLE IF NOT EXISTS public.comments
     content character(1000)  NOT NULL,
     topicId integer NOT NULL,
     userId integer NOT NULL,
+    timeMessage date,
     CONSTRAINT id PRIMARY KEY (id),
     CONSTRAINT topicId FOREIGN KEY (topicId)
         REFERENCES public.topics (id) MATCH SIMPLE
@@ -112,6 +114,7 @@ CREATE TABLE IF NOT EXISTS  public.replies
     commentId integer NOT NULL,
     userId integer NOT NULL,
     content character(100),
+    timeMessage date,
     CONSTRAINT replies_pkey PRIMARY KEY (id),
     CONSTRAINT commentId FOREIGN KEY (commentId)
         REFERENCES public.comments (id) MATCH SIMPLE

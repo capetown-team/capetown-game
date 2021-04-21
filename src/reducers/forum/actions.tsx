@@ -73,9 +73,7 @@ type CommentSuccess = {
   payload: { comments: MessageTableProps };
 };
 
-const commentSuccess = (
-  comments: MessageTableProps
-): CommentSuccess => {
+const commentSuccess = (comments: MessageTableProps): CommentSuccess => {
   return {
     type: COMMENT_SUCCESS,
     payload: { comments }

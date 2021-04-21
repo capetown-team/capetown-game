@@ -13,28 +13,17 @@ import sequelize, {
 } from '../../db/init/db_init';
 
 export const forumService = () => {
-  const topic = topicRepository(
-    sequelize,
-    modelTopic,
-    modelComment,
-    modelReply
-  );
+  const topic = topicRepository(sequelize, modelTopic);
 
   const user = userRepository(modelUser);
-  const comment = commentRepository(
-    sequelize,
-    modelComment,
-    modelUser,
-    modelEmotion,
-    modelReply
-  );
+  const comment = commentRepository(sequelize, modelComment);
   const reply = replyRepository(modelReply);
   const emotion = emotionRepository(modelEmotion);
 
   const getTopics = (req: Request, res: Response) => {
     topic
       .getAll()
-      .then((topics) => res.status(200).json(topics))
+      .then((topics) => res.status(200).json(topics[0]))
       .catch((err) => res.status(500).json({ error: ['db error', err] }));
   };
 
@@ -58,7 +47,7 @@ export const forumService = () => {
 
   const addTopic = (req: Request, res: Response) => {
     const { name, content, userId } = req.body;
-    console.log('addtopic', name, content, userId);
+
     const isNameValid = name.length > 0;
     const isContentValid = content.length > 2;
 
@@ -88,12 +77,12 @@ export const forumService = () => {
     topic
       .get(Number(topicId))
       .then((curTopic) => {
-        console.log('curTopic', curTopic);
         comment
           .getMessages(topicId)
           .then((comments) => {
-            console.log('comments', comments);
-            res.status(200).json({ topic: curTopic.dataValues, messages: comments[0] });
+            res
+              .status(200)
+              .json({ topic: curTopic.dataValues, messages: comments[0] });
           })
           .catch((err) => res.status(500).json({ error: ['db error', err] }));
       })
@@ -136,7 +125,7 @@ export const forumService = () => {
 
   const addReply = (req: Request, res: Response) => {
     const { content, commentId, userId } = req.body;
-    console.log({ content, commentId, userId } );
+
     const isContentValid = content.length > 0;
 
     if (!isContentValid) {
@@ -162,7 +151,7 @@ export const forumService = () => {
 
   const addEmotion = (req: Request, res: Response) => {
     const { userId, commentId } = req.body;
-    console.log('emotion', userId, commentId);
+
     return emotion
       .add(userId, commentId)
       .then((emotion) => {

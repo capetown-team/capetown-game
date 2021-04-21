@@ -13,7 +13,7 @@ import {
 
 export const initialState = {
   topics: [],
-  comments: { topic: null, messages: []},
+  comments: { topic: null, messages: [] },
   replies: [],
   isSuccessResult: false,
   pending: false,
@@ -40,7 +40,6 @@ export const forumReducer = (state = initialState, action: ForumAction) => {
     case COMMENT_FAILURE:
       return { ...state, pending: false, isSuccessResult: false };
     case COMMENT_SUCCESS: {
-      console.log('payload', action.payload);
       return {
         ...state,
         isSuccessResult: true,

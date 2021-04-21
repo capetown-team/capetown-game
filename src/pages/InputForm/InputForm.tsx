@@ -51,7 +51,6 @@ const InputForm = () => {
       setError(false);
       // eslint-disable-next-line no-console
       console.log('send', dataToSubmit);
-      console.log('user', user);
       if (user !== null) {
         dispatch(
           addTopic({

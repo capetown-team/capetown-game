@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom';
 
 import { usePagination } from '@/hooks/usePagination';
 import { Topping } from '@/components/Topping';
-import { Loading } from '@/components/Loading';
 import { ForumList } from '@/pages/Forum/ForumList';
 import { Pagination } from '@/components/Pagination';
 import { PageMeta } from '@/components/PageMeta';
@@ -14,7 +13,7 @@ import { ROUTES } from '@/constants';
 
 import './Forum.scss';
 
-import { topicsSelector, pendingSelector } from '@/reducers/forum/selectors';
+import { topicsSelector } from '@/reducers/forum/selectors';
 
 import { getTopics } from '@/reducers/forum/actions';
 import { AppState } from '@/reducers';
@@ -23,6 +22,7 @@ const b = block('table');
 
 export type Props = {
   id: number;
+  title?: string;
   name: string;
   message: number;
 };
@@ -42,10 +42,9 @@ const Forum = () => {
     dispatch(getTopics());
   }, [dispatch]);
 
-  const { data, loading } = useSelector((state: AppState) => {
+  const { data } = useSelector((state: AppState) => {
     return {
-      data: topicsSelector(state),
-      loading: pendingSelector(state)
+      data: topicsSelector(state)
     };
   });
 
@@ -55,10 +54,6 @@ const Forum = () => {
     perPage: usersPerPage,
     data
   });
-
-  /*if (loading) {
-    return <Loading />;
-  }*/
 
   return (
     <main className={b()}>

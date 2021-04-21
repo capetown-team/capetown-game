@@ -1,13 +1,24 @@
 import { ModelCtor, Model } from 'sequelize-typescript';
 
-export const emotionRepository = (Emotion: ModelCtor<Model<any, any>>) => {
+export const emotionRepository = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Emotion: ModelCtor<Model<any, any>>
+) => {
   const getAll = () => {
-    return Emotion.findAll({
-    });
+    return Emotion.findAll({});
   };
 
   const add = (userId: number, commentId: number) => {
-    return Emotion.create({ userId, commentId });
+    Emotion.findOne({ where: { userId, commentId } })
+      .then((findEmotion) => {
+        if (findEmotion == null) {
+          Emotion.create({ userId, commentId });
+        }
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log('err', err));
+
+    return Emotion.findOne({ where: { userId, commentId } });
   };
 
   return {
