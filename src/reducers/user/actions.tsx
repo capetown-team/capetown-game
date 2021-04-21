@@ -93,7 +93,7 @@ export const checkAuth = <S,>(): ThunkAction<
   IApi,
   Action<string>
 > => {
-  return async (dispatch: Dispatch, getState, { getUserInfo }) => {
+  return async (dispatch: Dispatch, getState, { getUserInfo, addUser }) => {
     dispatch(authRequest());
 
     try {
@@ -101,6 +101,8 @@ export const checkAuth = <S,>(): ThunkAction<
       const user: { user: UserType } = { user: response.data };
 
       dispatch(authorize(user));
+      const newUser = getNewUser(response, user);
+      dispatch(addUser({ user: newUser }));
     } catch (e) {
       dispatch(authCheckFailure());
     }
@@ -148,8 +150,8 @@ export const signIn = <S,>(
               if (response.data) {
                 const user: { user: UserType } = { user: response.data };
                 dispatch(authorize(user));
-                
-                const newUser = getNewUser(response, user);      
+
+                const newUser = getNewUser(response, user);
                 dispatch(addUser({ user: newUser }));
               }
             })
@@ -189,7 +191,7 @@ export const signUp = <S,>(
             }
           };
           dispatch(authorize(user));
-          
+
           const newUser = getNewUser(response, response);
           dispatch(addUser({ user: newUser }));
         }
@@ -288,9 +290,7 @@ export const signinOAuth = <S,>(
               if (response.data) {
                 const user: { user: UserType } = { user: response.data };
                 dispatch(authorize(user));
-                console.log('useroauth', user);
                 const newUser = getNewUser(response, user);
-                console.log('newuser', newUser);      
                 dispatch(addUser({ user: newUser }));
               }
             })

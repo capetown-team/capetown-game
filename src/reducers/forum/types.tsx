@@ -1,6 +1,6 @@
 export type ForumState = {
   topics: TopicProps[];
-  comments: {comments: messageTableProps};
+  comments: { comments: messageTableProps };
   replies: ReplyProps[];
   emotions: EmotionProps[];
   isSuccessResult: boolean;
@@ -15,7 +15,7 @@ export type TopicProps = {
 };
 
 export type MessageTableProps = {
-  topic: TopicProps,
+  topic: TopicProps;
   messages: CommentProps[];
 };
 
@@ -46,6 +46,8 @@ export type messageProps = {
   time: string;
   replies: number;
   likes: number;
+  right: boolean;
+  key: boolean;
 };
 
 export type EmotionProps = {

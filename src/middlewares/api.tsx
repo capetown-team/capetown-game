@@ -177,7 +177,6 @@ const context = (): IApi => {
   };
 
   const getComments = (topicId: number) => {
-    console.log('topicid2', topicId);
     return localClient.get(`/forum/topic/${topicId}`);
   };
 
@@ -210,7 +209,6 @@ const context = (): IApi => {
   };
 
   const addUser = (data: UserType) => {
-    console.log('userdata2', data);
     return localClient.post(`/forum/user`, data);
   };
   return {

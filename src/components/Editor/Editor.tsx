@@ -1,10 +1,4 @@
-import React, {
-  FC,
-  memo,
-  useCallback,
-  MouseEvent,
-  useRef
-} from 'react';
+import React, { FC, memo, useCallback, MouseEvent, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import block from 'bem-cn-lite';
 
@@ -20,7 +14,7 @@ import './Editor.scss';
 const b = block('editor');
 
 type Props = {
-  commentId: number;
+  commentId?: number;
   small: boolean;
 };
 
@@ -34,32 +28,35 @@ const Editor: FC<Props> = ({ small, commentId }) => {
       user: userSelector(state)
     };
   });
-  const submitHandler = useCallback((e: MouseEvent<Element>) => {
-    e.preventDefault();
-    const target = editorRef.current;
+  const submitHandler = useCallback(
+    (e: MouseEvent<Element>) => {
+      e.preventDefault();
+      const target = editorRef.current;
 
-    if (user !== null) {
-      if (small) {
-        console.log('idcom', commentId);
-        dispatch(
-          addReply({
-            content: target.innerHTML,
-            commentId: commentId,
-            userId: user.id,
-            topicId: topicId
-          })
-        );
-      } else {
-        dispatch(
-          addComment({
-            content: target.innerHTML,
-            topicId,
-            userId: user.id
-          })
-        );
+      if (user !== null) {
+        if (small) {
+          dispatch(
+            addReply({
+              content: target.innerHTML,
+              commentId,
+              userId: user.id,
+              topicId
+            })
+          );
+        } else {
+          dispatch(
+            addComment({
+              content: target.innerHTML,
+              topicId,
+              userId: user.id
+            })
+          );
+        }
+        target.innerHTML = '';
       }
-    }
-  }, []);
+    },
+    [dispatch, topicId, commentId, user, small]
+  );
 
   return (
     <form className={b()}>

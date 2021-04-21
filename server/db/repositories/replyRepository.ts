@@ -16,7 +16,12 @@ export const replyRepository = (
   };
 
   const add = (content: string, commentId: number, userId: number) => {
-    return Reply.create({ content, commentId, userId });
+    return Reply.create({
+      timeMessage: new Date(),
+      content,
+      commentId,
+      userId
+    });
   };
 
   return {

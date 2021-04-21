@@ -6,9 +6,8 @@ import { Topping } from '@/components/Topping';
 import { PageMeta } from '@/components/PageMeta';
 import { ForumComment } from '@/pages/ItemForum/ForumComment';
 import { Editor } from '@/components/Editor';
-import { Loading } from '@/components/Loading';
 
-import { commentsSelector, pendingSelector } from '@/reducers/forum/selectors';
+import { commentsSelector } from '@/reducers/forum/selectors';
 import { getComments } from '@/reducers/forum/actions';
 import { getTopicId } from '@/pages/Forum/helper';
 
@@ -26,22 +25,17 @@ const ItemForum = () => {
 
   useEffect(() => {
     dispatch(getComments(topicId));
-  }, [dispatch]);
+  }, [dispatch, topicId]);
 
-  const currentData = useSelector(commentsSelector); 
-  const loading = useSelector(pendingSelector); 
-  console.log('cur', currentData);
+  const currentData = useSelector(commentsSelector);
+
   useEffect(() => {
     if (currentData !== undefined) {
-      
       if (currentData.comments !== undefined) {
         setData(currentData.comments.messages);
         if (currentData.comments.topic !== null)
           setTopicName(currentData.comments.topic.name);
       }
-      
-      console.log('data', data);
-      
     }
   }, [currentData]);
 
@@ -55,7 +49,7 @@ const ItemForum = () => {
           <ForumComment
             right={item.right}
             id={item.id}
-            key={item.id}
+            key={String(item.right) + String(item.key)}
             name={item.name}
             content={item.content}
             time={item.time}
