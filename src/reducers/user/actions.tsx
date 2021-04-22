@@ -101,8 +101,6 @@ export const checkAuth = <S,>(): ThunkAction<
       const user: { user: UserType } = { user: response.data };
 
       dispatch(authorize(user));
-      const newUser = getNewUser(response, user);
-      dispatch(addUser({ user: newUser }));
     } catch (e) {
       dispatch(authCheckFailure());
     }
