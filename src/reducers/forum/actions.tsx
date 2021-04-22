@@ -2,7 +2,14 @@ import { Dispatch, Action } from 'redux';
 import { ThunkAction } from 'redux-thunk';
 
 import { IApi } from '@/middlewares/api';
-import { TopicProps, CommentProps, ReplyProps, EmotionProps } from './types';
+import {
+  TopicProps,
+  TopicTableProps,
+  CommentProps,
+  ReplyProps,
+  EmotionProps,
+  MessageTableProps
+} from './types';
 
 import {
   TOPIC_REQUEST,
@@ -63,12 +70,10 @@ const commentRequest = (): CommentRequest => {
 
 type CommentSuccess = {
   type: typeof COMMENT_SUCCESS;
-  payload: { comments: CommentProps[] | CommentProps };
+  payload: { comments: MessageTableProps };
 };
 
-const commentSuccess = (
-  comments: CommentProps[] | CommentProps
-): CommentSuccess => {
+const commentSuccess = (comments: MessageTableProps): CommentSuccess => {
   return {
     type: COMMENT_SUCCESS,
     payload: { comments }
@@ -172,14 +177,14 @@ export const getTopics = <S,>(): ThunkAction<
 };
 
 export const addTopic = <S,>(
-  topic: TopicProps
+  topic: TopicTableProps
 ): ThunkAction<void, () => S, IApi, Action<string>> => {
   return async (dispatch: Dispatch, getState, { addTopic }): Promise<void> => {
     dispatch(topicRequest());
     addTopic(topic)
       .then((response) => {
         if (response) {
-          dispatch(topicSuccess(response.data));
+          dispatch(getTopics());
         }
       })
       .catch(() => {
@@ -188,19 +193,16 @@ export const addTopic = <S,>(
   };
 };
 
-export const getComments = <S,>(): ThunkAction<
-  void,
-  () => S,
-  IApi,
-  Action<string>
-> => {
+export const getComments = <S,>(
+  topicId: number
+): ThunkAction<void, () => S, IApi, Action<string>> => {
   return async (
     dispatch: Dispatch,
     getState,
     { getComments }
   ): Promise<void> => {
     dispatch(commentRequest());
-    getComments()
+    getComments(topicId)
       .then((response) => {
         if (response.data) {
           dispatch(commentSuccess(response.data));
@@ -224,7 +226,7 @@ export const addComment = <S,>(
     addComment(comment)
       .then((response) => {
         if (response) {
-          dispatch(commentSuccess(response.data));
+          dispatch(getComments(comment.topicId));
         }
       })
       .catch(() => {
@@ -266,6 +268,7 @@ export const addReply = <S,>(
       .then((response) => {
         if (response) {
           dispatch(replySuccess(response.data));
+          dispatch(getComments(reply.topicId));
         }
       })
       .catch(() => {
@@ -287,6 +290,7 @@ export const addEmotion = <S,>(
       .then((response) => {
         if (response) {
           dispatch(emotionSuccess(response.data));
+          dispatch(getComments(emotion.topicId));
         }
       })
       .catch(() => {

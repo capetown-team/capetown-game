@@ -1,6 +1,6 @@
 export type ForumState = {
   topics: TopicProps[];
-  comments: CommentProps[];
+  comments: { comments: messageTableProps };
   replies: ReplyProps[];
   emotions: EmotionProps[];
   isSuccessResult: boolean;
@@ -14,21 +14,44 @@ export type TopicProps = {
   message: number;
 };
 
-export type ReplyProps = {
-  id: number;
+export type MessageTableProps = {
+  topic: TopicProps;
+  messages: CommentProps[];
+};
+
+export type TopicTableProps = {
   name: string;
   content: string;
-  userid: number;
+};
+
+export type ReplyProps = {
+  id: number;
+  commentId: number;
+  content: string;
+  userId: number;
+  topicId: number;
 };
 
 export type CommentProps = {
   id: number;
   name: string;
-  content: string;
+  topicId: number;
   userid: number;
+};
+
+export type messageProps = {
+  id: number;
+  name: string;
+  content: string;
+  time: string;
+  replies: number;
+  likes: number;
+  right: boolean;
+  key: boolean;
 };
 
 export type EmotionProps = {
   userId: number;
-  commentId: string;
+  commentId: number;
+  topicId: number;
 };

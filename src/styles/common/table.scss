@@ -61,4 +61,13 @@
     left: 50%;
     transform: translateX(-50%);
   }
+
+  &__header-button {
+    width: 100px;
+    margin-left: auto;
+  }
+
+  &__row {
+    display: flex;
+  }
 }

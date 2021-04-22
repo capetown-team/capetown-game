@@ -16,6 +16,10 @@ export const forumRouter = (apiRouter: Router) => {
   router.post('/reply', isAuthMiddleware, forum.addReply);
 
   router.post('/emotion', isAuthMiddleware, forum.addEmotion);
+  router.get('/emotions', isAuthMiddleware, forum.getEmotions);
+
+  router.get('/users', isAuthMiddleware, forum.getUsers);
+  router.post('/user', forum.addUser);
 
   apiRouter.use('/forum', router);
 };

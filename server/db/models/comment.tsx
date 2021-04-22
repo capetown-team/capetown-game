@@ -13,18 +13,14 @@ export const Comment = {
   },
   topicId: {
     type: DataType.INTEGER,
-    allowNull: false,
-    references: {
-      model: 'topic',
-      key: 'id'
-    }
+    allowNull: false
   },
   userId: {
     type: DataType.INTEGER,
-    allowNull: false,
-    references: {
-      model: 'user',
-      key: 'id'
-    }
+    allowNull: false
+  },
+  timeMessage: {
+    type: DataType.DATE,
+    allowNull: true
   }
 };
