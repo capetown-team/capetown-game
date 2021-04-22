@@ -13,7 +13,7 @@
     "lint:style": "stylelint --fix ./src/**/*.scss",
     "lint:ts": "eslint . --ext .tsx,.ts,.js",
     "test": "jest --runInBand --config .jest/config.json",
-    "pre-commit": "npm-run-all lint:* ",
+    "pre-commit": "npm-run-all lint:* test",
     "pre-push": "npm-run-all lint:*"
   },
   "husky": {
