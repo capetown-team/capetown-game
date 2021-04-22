@@ -35,11 +35,15 @@ modelTheme.hasOne(modelUserTheme, { foreignKey: 'themeId' });
 modelUserTheme.belongsTo(modelTheme, { foreignKey: 'themeId' });
 
 export const initDataBase = () => {
-  return sequelize
-    .sync()
-    .then(() => {
-      console.log('connected');
-    })
-    .catch((err) => console.log(err));
+  return (
+    sequelize
+      .sync()
+      .then(() => {
+        // eslint-disable-next-line no-console
+        console.log('connected');
+      })
+      // eslint-disable-next-line no-console
+      .catch((err) => console.log(err))
+  );
 };
 export default sequelize;

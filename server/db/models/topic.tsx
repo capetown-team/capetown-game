@@ -17,10 +17,6 @@ export const Topic = {
   },
   userId: {
     type: DataType.INTEGER,
-    allowNull: false,
-    references: {
-      model: 'user',
-      key: 'id'
-    }
+    allowNull: false
   }
 };

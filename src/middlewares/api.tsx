@@ -14,6 +14,7 @@ import {
 } from '@/reducers/leaderBoard/types';
 import {
   TopicProps,
+  TopicTableProps,
   CommentProps,
   ReplyProps,
   EmotionProps
@@ -94,15 +95,16 @@ export interface IApi {
     cookies?: string
   ): Promise<ResponseLeaders>;
   getTopics(): Promise<ResponseTopic>;
-  getComments(): Promise<ResponseComment>;
+  getComments(topicId: number): Promise<ResponseComment>;
   getReplies(): Promise<ResponseComment>;
   postClientID(body: string): Promise<ResponseType>;
-  addTopic(topic: TopicProps): Promise<ResponseTopic>;
+  addTopic(topic: TopicTableProps): Promise<ResponseTopic>;
   addComment(comment: CommentProps): Promise<ResponseComment>;
   addReply(reply: ReplyProps): Promise<ResponseReply>;
   addEmotion(reply: EmotionProps): Promise<ResponseEmotion>;
   addFeedback(reply: FeedbackCreateType): Promise<ResponseFeedbackAdd>;
   getFeedbackList(): Promise<ResponseFeedback>;
+  addUser(user: UserType): Promise<ResponseUserType>;
 }
 
 const context = (): IApi => {
@@ -174,15 +176,15 @@ const context = (): IApi => {
     return localClient.get(`/forum/topics`);
   };
 
-  const getComments = () => {
-    return localClient.get(`/forum/comments`);
+  const getComments = (topicId: number) => {
+    return localClient.get(`/forum/topic/${topicId}`);
   };
 
   const getReplies = () => {
     return localClient.get(`/forum/replies`);
   };
 
-  const addTopic = (data: TopicProps) => {
+  const addTopic = (data: TopicTableProps) => {
     return localClient.post(`/forum/topic`, data);
   };
 
@@ -206,6 +208,9 @@ const context = (): IApi => {
     return localClient.get('/feedback/list');
   };
 
+  const addUser = (data: UserType) => {
+    return localClient.post(`/forum/user`, data);
+  };
   return {
     getUserInfo,
     logOut,
@@ -228,7 +233,8 @@ const context = (): IApi => {
     setLiderBoardResult,
     postClientID,
     addFeedback,
-    getFeedbackList
+    getFeedbackList,
+    addUser
   };
 };
 

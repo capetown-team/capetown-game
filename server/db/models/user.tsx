@@ -21,10 +21,14 @@ export const User = {
   },
   phone: {
     type: DataType.STRING,
-    allowNull: false
+    allowNull: true
   },
   password: {
     type: DataType.STRING,
-    allowNull: false
+    allowNull: true
+  },
+  avatar: {
+    type: DataType.STRING,
+    allowNull: true
   }
 };

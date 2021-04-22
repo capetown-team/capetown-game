@@ -3,7 +3,9 @@ import { topicRepository } from '../../db/repositories/topicRepository';
 import { commentRepository } from '../../db/repositories/commentRepository';
 import { replyRepository } from '../../db/repositories/replyRepository';
 import { emotionRepository } from '../../db/repositories/emotionRepository';
+import { userRepository } from '../../db/repositories/userRepository';
 import sequelize, {
+  modelUser,
   modelTopic,
   modelComment,
   modelReply,
@@ -11,20 +13,17 @@ import sequelize, {
 } from '../../db/init/db_init';
 
 export const forumService = () => {
-  const topic = topicRepository(
-    sequelize,
-    modelTopic,
-    modelComment,
-    modelReply
-  );
-  const comment = commentRepository(modelComment);
+  const topic = topicRepository(sequelize, modelTopic);
+
+  const user = userRepository(modelUser);
+  const comment = commentRepository(sequelize, modelComment);
   const reply = replyRepository(modelReply);
   const emotion = emotionRepository(modelEmotion);
 
   const getTopics = (req: Request, res: Response) => {
     topic
       .getAll()
-      .then((topics) => res.status(200).json(topics))
+      .then((topics) => res.status(200).json(topics[0]))
       .catch((err) => res.status(500).json({ error: ['db error', err] }));
   };
 
@@ -75,9 +74,18 @@ export const forumService = () => {
 
   const getComments = (req: Request, res: Response) => {
     const topicId = Number(req.params.id);
-    comment
-      .getAll(topicId)
-      .then((comments) => res.status(200).json(comments))
+    topic
+      .get(Number(topicId))
+      .then((curTopic) => {
+        comment
+          .getMessages(topicId)
+          .then((comments) => {
+            res
+              .status(200)
+              .json({ topic: curTopic.dataValues, messages: comments[0] });
+          })
+          .catch((err) => res.status(500).json({ error: ['db error', err] }));
+      })
       .catch((err) => res.status(500).json({ error: ['db error', err] }));
   };
 
@@ -156,14 +164,46 @@ export const forumService = () => {
       });
   };
 
+  const getUsers = (req: Request, res: Response) => {
+    user
+      .getAll()
+      .then((users) => res.status(200).json(users))
+      .catch((err) => res.status(500).json({ error: ['db error', err] }));
+  };
+
+  const addUser = (req: Request, res: Response) => {
+    const userData = req.body.user;
+
+    return user
+      .add(userData)
+      .then((data) => {
+        res.status(200).send(data);
+      })
+      .catch((err) => {
+        res
+          .status(500)
+          .json({ error: { type: 'db error', data: JSON.stringify(err) } });
+      });
+  };
+
+  const getEmotions = (req: Request, res: Response) => {
+    emotion
+      .getAll()
+      .then((emotions) => res.status(200).json(emotions))
+      .catch((err) => res.status(500).json({ error: ['db error', err] }));
+  };
+
   return {
     getTopics,
     getTopic,
-    addTopic,
     getComments,
-    addComment,
     getReplies,
+    addComment,
+    addTopic,
     addReply,
-    addEmotion
+    addEmotion,
+    addUser,
+    getUsers,
+    getEmotions
   };
 };

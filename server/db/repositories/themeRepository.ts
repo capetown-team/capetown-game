@@ -3,7 +3,9 @@ import { Sequelize, ModelCtor, Model } from 'sequelize-typescript';
 
 export const themeRepository = (
   sequelize: Sequelize,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Theme: ModelCtor<Model<any, any>>,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   UserTheme: ModelCtor<Model<any, any>>
 ) => {
   const getAll = () => {
