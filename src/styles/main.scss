@@ -20,14 +20,14 @@ body {
   padding: 0;
   margin: 0;
 
-  // default style
+  // default theme colors
   --text: #333;
   --background: #fff;
-  --background-secondary: #ccc;
-  --btn-primary: #ccc;
-  --btn-primary-hover: #ccc;
-  --btn-secondary: #ccc;
-  --btn-secondary-hover: #ccc;
+  --background-secondary: #f3f4f7;
+  --btn-primary: #6995e0;
+  --btn-primary-hover: #88abe7;
+  --btn-secondary: #8d99ae;
+  --btn-secondary-hover: #a0aabb;
 }
 
 input,
