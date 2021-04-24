@@ -31,7 +31,7 @@ if (isDev) {
 app.use(
   expressCspHeader({
     directives: {
-      'default-src': [SELF],
+      'default-src': [SELF, 'https://ya-praktikum.tech'],
       'script-src': [SELF, INLINE, 'https://ya-praktikum.tech'],
       'style-src': [SELF, INLINE],
       'img-src': [DATA, SELF, INLINE, 'https://ya-praktikum.tech'],
