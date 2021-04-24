@@ -3,6 +3,7 @@ import express from 'express';
 import compression from 'compression';
 import 'babel-polyfill';
 import cookieParser from 'cookie-parser';
+import { expressCspHeader, INLINE, SELF, DATA } from 'express-csp-header';
 
 import { serverRenderMiddleware } from './middlewares/server-render-middleware';
 import { serverUserAuthMiddleware } from './middlewares/server-user-auth-middleware';
@@ -26,6 +27,19 @@ app.get('/sw.js', (req, res) => {
 if (isDev) {
   app.use(hmrMiddleware);
 }
+
+app.use(
+  expressCspHeader({
+    directives: {
+      'default-src': [SELF],
+      'script-src': [SELF, INLINE, 'https://ya-praktikum.tech'],
+      'style-src': [SELF, INLINE],
+      'img-src': [DATA, SELF, INLINE, 'https://ya-praktikum.tech'],
+      'worker-src': [SELF],
+      'block-all-mixed-content': true
+    }
+  })
+);
 
 app.use(serverUserAuthMiddleware);
 app.use('/api', apiRouter);
