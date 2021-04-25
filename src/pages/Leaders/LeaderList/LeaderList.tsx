@@ -17,7 +17,7 @@ const LeaderList: FC<Props> = ({ avatar, displayName, score, index }) => {
           {avatar ? (
             <img
               className={b('img')}
-              src={`${baseUrl}${avatar}`}
+              src={`${baseUrl}/api/v2/resources/${avatar}`}
               alt={displayName}
             />
           ) : null}

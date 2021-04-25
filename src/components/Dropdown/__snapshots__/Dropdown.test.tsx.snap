@@ -21,7 +21,7 @@ exports[`<Authorization /> should renders correct <Dropdown /> 1`] = `
       <img
         alt=""
         className="dropdown__img"
-        src="https://ya-praktikum.techtest"
+        src="https://ya-praktikum.tech/api/v2/resources/test"
       />
     </div>
     <div
