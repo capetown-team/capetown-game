@@ -1,9 +1,4 @@
-FROM node:13
-
+FROM node:14-alpine as build-stage
 COPY . .
-
 RUN npm install && npm run build
-
-EXPOSE 80
-
-CMD node server.js
+CMD ["npm","run","start"]

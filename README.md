@@ -52,13 +52,14 @@
 
 Врежиме разработке, создать папку .env
 ```
-  DB_USERNAME=admin
+  DB_USERNAME=admin   (при запуске из докера DB_USERNAME=postgres)
   DB_PASSWORD=admin
-  DB_HOST=localhost
-  DB_PORT=5436
+  DB_HOST=localhost   (при запуске из докера DB_HOST=postgresdb)
+  DB_PORT=5436        (при запуске из докера DB_PORT=5432)
   EMAIL_FROM=pacman.capetown@gmail.com
   EMAIL_PASS=passWord123
   EMAIL_TO=pacman.capetown@yandex.ru
+  MONGODB_URL="mongodb://mongodb:27017/pacman
 ```
 
 ## Актуальная версия с heroku
