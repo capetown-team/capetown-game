@@ -8,7 +8,6 @@ services:
       - ./server/db/postgres-initdb.sh:/docker-entrypoint-initdb.d/init.sh
     restart: always
     environment:
-      POSTGRES_DB: capetown
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: admin
     networks:
@@ -20,10 +19,6 @@ services:
     volumes:
       - data-volume:/data/db
     restart: always
-    environment:
-      MONGO_DB: pacman
-      MONGO_USER: mongodb
-      MONGO_PASSWORD: admin
     networks:
       - app-network
 
