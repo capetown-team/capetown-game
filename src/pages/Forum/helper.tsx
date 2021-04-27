@@ -1,5 +1,5 @@
 export const getTopicId = () => {
-  if (window) {
+  if (typeof window !== 'undefined') {
     return Number(window.location.pathname.replace('/forum/', ''));
   }
 
