@@ -1,0 +1,66 @@
+@import '../../styles/layout/colors';
+
+.photo-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(141, 153, 174, .6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.hidden {
+    display: none;
+  }
+
+  &__box {
+    padding: 1.5rem 4rem 2.5rem;
+    background-color: var(--background);
+    border-radius: .5rem;
+    position: relative;
+  }
+
+  &__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background-color: transparent;
+    border: none;
+    color: inherit;
+  }
+
+  &__title {
+    text-align: center;
+    font-size: 2.4rem;
+    font-weight: 400;
+    margin: 0;
+    margin-bottom: 2rem;
+  }
+
+  &__photo {
+    width: 320px;
+    height: 240px;
+  }
+
+  &__video {
+    width: 320px;
+    height: 240px;
+    background-color: #000;
+  }
+
+  &__canvas {
+    display: none;
+  }
+
+  &__btn {
+    padding-top: 2rem;
+  }
+
+  &__invalid {
+    font-size: 1.6rem;
+    color: $red;
+    text-align: center;
+  }
+}

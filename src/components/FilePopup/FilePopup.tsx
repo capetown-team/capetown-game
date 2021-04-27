@@ -1,3 +1,4 @@
+/* eslint-disable react/require-default-props */
 import React, { ChangeEvent, useState } from 'react';
 import block from 'bem-cn-lite';
 
@@ -11,6 +12,8 @@ type Props = {
   title: string;
   label: string;
   btnText: string;
+  secondBtnText?: string;
+  handleSecondClick?: () => void;
   show: boolean;
   onClose: () => void;
   onSubmit: (f: File) => void;
@@ -20,6 +23,8 @@ export const FilePopup = ({
   title,
   label,
   btnText,
+  secondBtnText,
+  handleSecondClick,
   show,
   onClose,
   onSubmit
@@ -70,6 +75,13 @@ export const FilePopup = ({
         <div className={b('invalid')} hidden={validState}>
           Необходимо выбрать файл
         </div>
+        {secondBtnText && (
+          <div className={b('btn')}>
+            <Button type="button" size="m" onClick={handleSecondClick}>
+              {secondBtnText}
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
