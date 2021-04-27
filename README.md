@@ -50,7 +50,7 @@
 2. После запуска образа подключиться к БД с помощью команды `psql postgres://admin:admin@localhost:5436/pacman`    
 3. Скопировать и выполнить в консоли код из migration.sql
 
-Врежиме разработке, создать папку .env
+В режиме разработке, создать папку .env
 ```
   DB_USERNAME=admin   (при запуске из докера DB_USERNAME=postgres)
   DB_PASSWORD=admin
