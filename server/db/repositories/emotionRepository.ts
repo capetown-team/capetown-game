@@ -13,6 +13,8 @@ export const emotionRepository = (
       .then((findEmotion) => {
         if (findEmotion == null) {
           Emotion.create({ userId, commentId });
+        } else {
+          Emotion.destroy({ where: { userId, commentId } });
         }
       })
       // eslint-disable-next-line no-console

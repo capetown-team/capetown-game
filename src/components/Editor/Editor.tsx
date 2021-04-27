@@ -37,7 +37,7 @@ const Editor: FC<Props> = ({ small, commentId }) => {
         if (small) {
           dispatch(
             addReply({
-              content: target.innerHTML,
+              content: target.innerText,
               commentId,
               userId: user.id,
               topicId
@@ -46,13 +46,13 @@ const Editor: FC<Props> = ({ small, commentId }) => {
         } else {
           dispatch(
             addComment({
-              content: target.innerHTML,
+              content: target.innerText,
               topicId,
               userId: user.id
             })
           );
         }
-        target.innerHTML = '';
+        target.innerText = '';
       }
     },
     [dispatch, topicId, commentId, user, small]
