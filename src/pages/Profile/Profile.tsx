@@ -13,6 +13,7 @@ import { changeProfileAvatar } from '@/reducers/user/actions';
 import { getThemesList, changeUserTheme } from '@/reducers/theme/actions';
 import { baseUrl } from '@/constants';
 import { FilePopup } from '@/components/FilePopup';
+import { PhotoPopup } from '@/components/PhotoPopup';
 import { ProfileForm } from './ProfileForm';
 import { ProfilePasswordForm } from './ProfilePasswordForm';
 
@@ -23,7 +24,8 @@ const b = block('user-profile');
 
 export const Profile = () => {
   const [isProfileView, setIsProfileView] = useState(true);
-  const [isShowPopup, setIsShowPopup] = useState(false);
+  const [showFilePopup, setShowFilePopup] = useState(false);
+  const [showPhotoPopup, setShowPhotoPopup] = useState(false);
 
   const dispatch = useDispatch();
   const { user, isAuth, themesList, selectedTheme } = useSelector(
@@ -58,7 +60,7 @@ export const Profile = () => {
   const handleAvatarChange = (file: File) => {
     dispatch(changeProfileAvatar(file));
 
-    setIsShowPopup(false);
+    setShowFilePopup(false);
   };
 
   const changeThemeHandler = ({ target }: { target: HTMLSelectElement }) => {
@@ -91,7 +93,7 @@ export const Profile = () => {
                 <span>{formData.first_name.value}</span>
               )}
               <button
-                onClick={() => setIsShowPopup(true)}
+                onClick={() => setShowFilePopup(true)}
                 type="button"
                 className={b('avatar-btn')}
               >
@@ -125,8 +127,20 @@ export const Profile = () => {
         title="Загрузите изображение"
         label="Выберете файл на компьютере"
         btnText="Поменять"
-        show={isShowPopup}
-        onClose={() => setIsShowPopup(false)}
+        show={showFilePopup}
+        onClose={() => setShowFilePopup(false)}
+        onSubmit={handleAvatarChange}
+        secondBtnText="Сделать снимок"
+        handleSecondClick={() => {
+          setShowPhotoPopup(true);
+          setShowFilePopup(false);
+        }}
+      />
+      <PhotoPopup
+        title="Изменение фотографии"
+        btnText="Поменять"
+        show={showPhotoPopup}
+        onClose={() => setShowPhotoPopup(false)}
         onSubmit={handleAvatarChange}
       />
     </div>
