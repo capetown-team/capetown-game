@@ -1,0 +1,24 @@
+@import '../../../styles/layout/colors';
+
+.feedback-list {
+  max-width: 50%;
+  min-width: 450px;
+  margin: 2rem auto 1rem;
+  border: 1px solid $grey;
+  border-radius: 4px;
+
+  &__list {
+    padding: 1rem;
+    border-bottom: 1px solid $grey;
+
+    &:last-child {
+      margin-bottom: 0;
+      border-bottom: none;
+    }
+  }
+
+  &__title {
+    font-size: 1.3em;
+    font-weight: bold;
+  }
+}

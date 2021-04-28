@@ -2,7 +2,8 @@ export type InitParameters = {
   width: number;
   height: number;
   head: number;
-  borderWalls: number;
+  level: number;
+  allCount: number;
 };
 
 export type ObjectType = {

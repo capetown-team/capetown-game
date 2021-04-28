@@ -1,5 +1,5 @@
 import React, { memo, useCallback, FC } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import block from 'bem-cn-lite';
 import { Link, NavLink, useHistory } from 'react-router-dom';
 
@@ -29,7 +29,7 @@ const Header: FC<Props> = ({ isAuth }) => {
       user: userSelector(state),
       isLoad: loadSelector(state)
     };
-  });
+  }, shallowEqual);
 
   const links = isAuth ? userLinks : overLinks;
 

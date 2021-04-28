@@ -1,0 +1,44 @@
+@import '../../styles/layout/colors';
+
+.form-field {
+  text-align: left;
+  margin-bottom: .5rem;
+
+  &__label {
+    display: block;
+    margin-bottom: .1em;
+    font-size: 1.6rem;
+    color: $grey;
+    padding-left: .5rem;
+  }
+
+  &__textarea {
+    max-width: 100%;
+    min-width: 100%;
+    min-height: 100px;
+    display: block;
+    background-color: var(--background-secondary);
+    background-clip: padding-box;
+    border: 0;
+    border-radius: 3px;
+    margin: auto;
+    font-size: inherit;
+    color: var(--text);
+    padding: 5px 10px;
+
+    &:disabled {
+      color: inherit;
+    }
+
+    &:focus {
+      box-shadow: 0 0 10px 1px var(--background-secondary);
+    }
+  }
+
+  &__error {
+    font-size: 1.6rem;
+    padding-top: .1em;
+    color: $red;
+    padding-left: .5rem;
+  }
+}

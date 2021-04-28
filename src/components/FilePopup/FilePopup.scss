@@ -17,7 +17,7 @@
 
   &__box {
     padding: 1.5rem 4rem 2.5rem;
-    background-color: $white;
+    background-color: var(--background);
     border-radius: .5rem;
     position: relative;
   }
@@ -28,6 +28,7 @@
     right: 1rem;
     background-color: transparent;
     border: none;
+    color: inherit;
   }
 
   &__title {

@@ -1,15 +1,14 @@
-// export const step = 41;
 export const step = 20;
 
 export enum ColorType {
-  Gray = '#8d99ae',
-  LightGrey = '#f3f4f7',
-  LightBlue = '#6995e0',
-  Red = '#c52233',
-  White = 'white',
-  Gold = 'gold',
-  Yellow = 'yellow',
-  Black = 'black'
+  GRAY = '#8d99ae',
+  LIGHTGRAY = '#f3f4f7',
+  LIGHTBLUE = '#6995e0',
+  RED = '#c52233',
+  WHITE = 'white',
+  GOLD = 'gold',
+  YELLOW = 'yellow',
+  BLACK = 'black'
 }
 
 export enum DirectionType {

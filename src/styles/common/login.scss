@@ -4,26 +4,36 @@
 .form {
   min-height: calc(100vh - #{$headerHeight});
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   padding-top: 1rem;
 
   &__title {
+    text-align: center;
     margin-bottom: 50px;
   }
 
   &__wrapper {
     width: 369px;
     min-height: 450px;
-    background: $light-grey;
-    text-align: center;
+    background: var(--background);
     padding: 48px 44px;
     border-radius: 5px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   }
 
   &__link {
+    cursor: pointer;
     color: $light-blue;
+  }
+
+  &__error {
+    color: $red;
+  }
+
+  &__success {
+    color: $green;
   }
 
   &__row {
@@ -39,5 +49,9 @@
     margin: auto;
     margin-top: 10px;
     width: 180px;
+  }
+
+  &__title-input {
+    padding-left: .5rem;
   }
 }

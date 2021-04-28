@@ -1,8 +1,4 @@
-import React, {
-  FC,
-  // , ChangeEvent,
-  FocusEvent
-} from 'react';
+import React, { FC } from 'react';
 
 import { InputType } from '@/types.d';
 
@@ -11,10 +7,9 @@ import './Input.scss';
 type InputProps = {
   placeholder?: string;
   type?: string;
-  // onChange?: (event: ChangeEvent) => void;
   onChange?: InputType;
   name?: string;
-  onBlur?: (event: FocusEvent) => void;
+  onBlur?: InputType;
   value?: string;
   id?: string;
   disabled?: boolean;

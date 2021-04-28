@@ -44,20 +44,47 @@
         + openssl rsa -in keytmp.pem -out key.pem
 - 3. Запустить проект `npm run start`
 - 4. Открыть страницу в браузере [https://local.ya-praktikum.tech:5000](https://local.ya-praktikum.tech:5000), port может быть другим
+
+## Работа с БД
+1. В консоли запустить docker-образ с помощью команды `docker-compose up`
+2. После запуска образа подключиться к БД с помощью команды `psql postgres://admin:admin@localhost:5436/pacman`    
+3. Скопировать и выполнить в консоли код из migration.sql
+
+Врежиме разработке, создать папку .env
+```
+  DB_USERNAME=admin
+  DB_PASSWORD=admin
+  DB_HOST=localhost
+  DB_PORT=5436
+  EMAIL_FROM=pacman.capetown@gmail.com
+  EMAIL_PASS=passWord123
+  EMAIL_TO=pacman.capetown@yandex.ru
+```
+
 ## Актуальная версия с heroku
 На [demo](https://warm-anchorage-94393.herokuapp.com) пример для ознакомления
 ## Что сделано
 - Приложение написано на : `React`, `Redux`, `TypeScript`, `БЭМ` и библиотеки `bem-cn-lite`;
 - Настроен Webpack:
-  - html: `HtmlWebpackPlugin`;
-  - обработка css: `css-loader`, `style-loader`, `sass-loader`, `mini-css-extract-plugin`;
-  - сборка TS/JS: `babel`, `ts-loader`;
+  - Написан полностью на `typescript`;
+  - обработка css: `css-loader`, `sass-loader`, `csso-webpack-plugin`, `mini-css-extract-plugin`;
+  - сборка TS/JS: `babel-loader`, дополнительные плагины используются в файле `.babelrc`;
+- Настроен: `server side rendering` или `ssr`;
+  - Написан полностью на `typescript`;
+  - Инструкция для запуска, описана выше;
+  - Настроен `HMR` и `dev-server` для Express;
+  - Добавлены `cookie` на сервере;
+  - Добавлена проверка авторизации на сервере
 - Настроен: `server worker`;
 - Защита от DOS атак: `express-rate-limit`;
 - Защита от xss атак: `serialize-javascript`;
 - Добавлены снепшотные тесты ;
-- Код стайлинг: `prettier`, `eslint`;
-- Создана механика игры.;
+- Код стайлинг: `prettier`, `eslint`, `stylelint`;
+- Создана механика игры:
+    - Построены: стены, монеты
+    - Реализовано управление персонажем через стрелки или джойстик
+    - Созданы 4 призрака, которые бегают по лабиринту и могут убить пакмана при столкновении
+- Проверен проект на утечки памяти;
 - Реализованы страницы:
   - Главная;
   - Игра;
@@ -71,10 +98,8 @@
 Для нахождения утечек памяти использовались инструменты вкладки браузера Memory и Perfomance.
 С помощью графиков Perfomance замерялись показатели начала и окончания работы. 
 ![Memory timeline](/ui/perfomancegame.png)
-
 На скриншоте видны периодические "пороги" выделения памяти, которые возникают вследствие работы сборщика мусора.
 В целом вся выделяемая память со времени освобождаетмся. Подробнее ниже.
-
 ![Memory timeline](/ui/perfomance.png)
 ## **Команда**
 Команда "Кейптаун"

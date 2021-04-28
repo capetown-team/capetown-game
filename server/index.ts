@@ -1,9 +1,15 @@
 import fs from 'fs';
 import https from 'https';
 import limiter from 'express-rate-limit';
+import dotenv from 'dotenv';
 
 import { isDev } from '../webpack/env';
 import { app } from './server';
+import { initDataBase } from './db/init/db_init';
+
+dotenv.config();
+
+dotenv.config();
 
 const port = process.env.PORT || 5000;
 
@@ -37,3 +43,5 @@ if (isDev && certificateIsExist) {
     console.log(`Listening on port: ${port}`);
   });
 }
+
+initDataBase();

@@ -1,28 +1,39 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 import { useSelector, useDispatch, shallowEqual } from 'react-redux';
 import { hot } from 'react-hot-loader/root';
+import block from 'bem-cn-lite';
 
-import { errorSelector, authSelector } from '@/reducers/user/selectors';
+import {
+  errorSelector,
+  authSelector,
+  userSelector
+} from '@/reducers/user/selectors';
+import { themeSelector } from '@/reducers/theme/selectors';
 import { withAuth } from '@/hocs/withAuth';
 import { withErrorBoundary } from '@/components/ErrorBoundary';
 import { PrivateRoute } from '@/components/PrivateRoute';
 import { Header } from '@/components/Header';
 import { Notification } from '@/components/Notification';
 import { signinOAuth } from '@/reducers/user/actions';
+import { getUserTheme } from '@/reducers/theme/actions';
 import { AppState } from '@/reducers';
 import { getCode } from '@/modules/OAuth';
 import { routes } from './routes';
 
 import './App.scss';
 
+const b = block('app');
+
 const App = () => {
   const dispatch = useDispatch();
 
-  const { isAuth, error } = useSelector((state: AppState) => {
+  const { isAuth, error, theme, user } = useSelector((state: AppState) => {
     return {
       isAuth: authSelector(state),
-      error: errorSelector(state)
+      error: errorSelector(state),
+      theme: themeSelector(state),
+      user: userSelector(state)
     };
   }, shallowEqual);
 
@@ -42,11 +53,13 @@ const App = () => {
       if (code !== null) {
         dispatch(signinOAuth(code));
       }
+    } else if (user) {
+      dispatch(getUserTheme(user.id));
     }
-  }, [isAuth, dispatch]);
+  }, [isAuth, user, dispatch]);
 
   return (
-    <>
+    <div className="app-wrapper" style={theme}>
       {userError && (
         <Notification
           title="Произошла ошибка"
@@ -55,7 +68,7 @@ const App = () => {
         />
       )}
       <Header isAuth={isAuth} />
-      <div className="app">
+      <div className={b()}>
         <Switch>
           {routes.map(({ path, component, isPrivate, ...rest }) => {
             const RouteComponent = isPrivate ? PrivateRoute : Route;
@@ -71,8 +84,11 @@ const App = () => {
             );
           })}
         </Switch>
+        <Link className={b('feedback')} to="/feedback">
+          <span className={b('feedback-icon')} />
+        </Link>
       </div>
-    </>
+    </div>
   );
 };
 

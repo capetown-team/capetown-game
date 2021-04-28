@@ -7,3 +7,4 @@ build
 **/template.ts
 webpack.config.js
 server.js
+*.js
