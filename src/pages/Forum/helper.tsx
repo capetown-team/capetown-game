@@ -1,3 +1,7 @@
 export const getTopicId = () => {
-  return Number(window.location.pathname.replace('/forum/', ''));
+  if (typeof window !== 'undefined') {
+    return Number(window.location.pathname.replace('/forum/', ''));
+  }
+
+  return undefined;
 };

@@ -93,7 +93,7 @@ export const checkAuth = <S,>(): ThunkAction<
   IApi,
   Action<string>
 > => {
-  return async (dispatch: Dispatch, getState, { getUserInfo, addUser }) => {
+  return async (dispatch: Dispatch, getState, { getUserInfo }) => {
     dispatch(authRequest());
 
     try {
