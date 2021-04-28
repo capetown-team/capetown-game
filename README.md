@@ -3,6 +3,8 @@
 [![scss](https://img.shields.io/badge/scss-%23239120.svg?&style=for-the-badge&logo=css3&logoColor=white)](https://sass-scss.ru/)
 [![Docker](https://img.shields.io/badge/Docker-%23239120.svg?&style=for-the-badge&logo=css3&logoColor=white)](https://www.docker.com)
 [![heroku](https://img.shields.io/badge/heroku-%23239120.svg?&style=for-the-badge&logo=css3&logoColor=white)](https://help.heroku.com)
+<img src="https://github.com/capetown-team/capetown-game/workflows/My-GithubAction-Basics/badge.svg?branch=master" /><br>
+
 ## Описание
 Браузерная игра в жанре Pac-Man, в которой необходимо собрать все монеты и обойти монстров
 ## PacMan

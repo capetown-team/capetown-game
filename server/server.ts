@@ -33,7 +33,8 @@ app.use(
     directives: {
       'default-src': [SELF, 'https://ya-praktikum.tech'],
       'script-src': [SELF, INLINE, 'https://ya-praktikum.tech'],
-      'style-src': [SELF, INLINE],
+      'style-src': [SELF, '*'],
+      'font-src': [SELF, '*'],
       'img-src': [DATA, SELF, INLINE, 'https://ya-praktikum.tech'],
       'worker-src': [SELF],
       'block-all-mixed-content': true
