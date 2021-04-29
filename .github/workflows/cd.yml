@@ -23,10 +23,10 @@ jobs:
       - name: Login to DockerHub and update
         uses: appleboy/ssh-action@master
         with:
-          host: $SSH_IP
-          port: $SSH_PORT
-          username: $SSH_USER
-          key: $SSH_PRIVATE_KEY
+          host: 84.252.132.4
+          port: 22
+          username: inna
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
             cd /var/www/capetown-game/
             git pull
