@@ -1,0 +1,33 @@
+name: CD
+
+on:
+  push:
+    branches:
+      - master
+      - sprint-9
+      - sprint-9_task-109
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      SSH_IP: ${{ secrets.SSH_IP }}
+      SSH_PORT: ${{ secrets.SSH_PORT }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v2
+
+      - name: Login to DockerHub and update
+        uses: appleboy/ssh-action@master
+        with:
+          host: $SSH_IP
+          port: SSH_PORT
+          username: $SSH_USER
+          key: $SSH_PRIVATE_KEY
+          script: |
+            cd /var/www/pacman
+            git pull
+            sudo docker-compose up -d --build app
