@@ -24,7 +24,7 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: $SSH_IP
-          port: SSH_PORT
+          port: $SSH_PORT
           username: $SSH_USER
           key: $SSH_PRIVATE_KEY
           script: |
