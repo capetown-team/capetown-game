@@ -56,6 +56,7 @@ const ItemForum = () => {
             countComments={item.replies}
             countLikes={item.likes}
             topicId={topicId}
+            avatar={item.avatar}
           />
         ))}
       </div>

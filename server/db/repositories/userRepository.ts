@@ -13,13 +13,13 @@ export const userRepository = (
       .then((findUser) => {
         if (findUser == null) {
           User.create({ ...userData });
+        } else {
+          User.update(userData, { where: { id: userData.id } })
+            // eslint-disable-next-line no-console
+            .then((result) => console.log('result', result))
+            // eslint-disable-next-line no-console
+            .catch((err) => console.log('updateerr', err));
         }
-
-        User.update(userData, { where: { id: userData.id } })
-          // eslint-disable-next-line no-console
-          .then((result) => console.log('result', result))
-          // eslint-disable-next-line no-console
-          .catch((err) => console.log('updateerr', err));
       })
       // eslint-disable-next-line no-console
       .catch((err) => console.log('finderr', err));
