@@ -1,8 +1,9 @@
 @import '../../styles/layout/colors';
+@import '../../styles/layout/variables';
 
 .user-profile {
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - #{$headerHeight});
   display: flex;
   justify-content: center;
   align-items: center;

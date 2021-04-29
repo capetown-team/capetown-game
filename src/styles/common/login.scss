@@ -24,7 +24,9 @@
   }
 
   &__link {
+    display: block;
     cursor: pointer;
+    text-align: center;
     color: $light-blue;
   }
 
