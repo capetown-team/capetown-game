@@ -27,11 +27,11 @@ jobs:
           port: 22
           username: inna
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /var/www/capetown-game/
-            git pull
-            git status
 #          script: |
 #            cd /var/www/capetown-game/
 #            git pull
-#            sudo docker-compose up -d --build app
+#            git status
+          script: |
+            cd /var/www/capetown-game/
+            git pull
+            sudo docker-compose up -d --build app
