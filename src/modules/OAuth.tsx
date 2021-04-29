@@ -1,7 +1,10 @@
 import { client, path } from '@/api';
 
 const getClientID = async () => {
-  return client.get(`${path}/oauth/yandex/service-id`);
+  const redirect_uri = window.location.origin;
+  return client.get(
+    `${path}/oauth/yandex/service-id?redirect_uri=${redirect_uri}`
+  );
 };
 
 export const getCode = () => {

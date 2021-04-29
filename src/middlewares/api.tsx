@@ -117,7 +117,8 @@ const context = (): IApi => {
   };
 
   const postClientID = async (code: string) => {
-    return client.post(`${path}/oauth/yandex`, { code });
+    const redirect_uri = window.location.origin;
+    return client.post(`${path}/oauth/yandex`, { code, redirect_uri });
   };
 
   const signIn = async (data: SignInType) => {

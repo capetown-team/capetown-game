@@ -190,7 +190,7 @@ export const signUp = <S,>(
           };
           dispatch(authorize(user));
 
-          const newUser = getNewUser(response, response);
+          const newUser = getNewUser(response, user);
           dispatch(addUser({ user: newUser }));
         }
       })
@@ -252,7 +252,7 @@ export const changeProfileAvatar = <S,>(
   return async (
     dispatch: Dispatch,
     getState,
-    { changeAvatar }
+    { changeAvatar, addUser }
   ): Promise<void> => {
     dispatch(userRequest());
     changeAvatar(avatar)

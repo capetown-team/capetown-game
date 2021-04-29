@@ -173,7 +173,6 @@ export const forumService = () => {
 
   const addUser = (req: Request, res: Response) => {
     const userData = req.body.user;
-
     return user
       .add(userData)
       .then((data) => {
