@@ -23,7 +23,7 @@ jobs:
       - name: Login to DockerHub and update
         uses: appleboy/ssh-action@master
         with:
-          host: 84.252.132.4
+          host: 178.154.201.122
           port: 22
           username: inna
           key: ${{ secrets.SSH_PRIVATE_KEY }}
