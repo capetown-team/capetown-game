@@ -24,7 +24,7 @@ const ItemForum = () => {
   const [topicName, setTopicName] = useState('');
 
   useEffect(() => {
-    dispatch(getComments(topicId));
+    dispatch(getComments(Number(topicId)));
   }, [dispatch, topicId]);
 
   const currentData = useSelector(commentsSelector);

@@ -25,6 +25,7 @@ export type Props = {
   title?: string;
   name: string;
   message: number;
+  key?: number;
 };
 
 const Forum = () => {
@@ -69,7 +70,7 @@ const Forum = () => {
         <div className={b('header-button')}>
           <Button
             type="submit"
-            size="m"
+            size="s"
             onClick={(e: React.MouseEvent<Element, globalThis.MouseEvent>) =>
               submitHandler(e)
             }
@@ -89,6 +90,7 @@ const Forum = () => {
           <ForumList
             key={item.id}
             id={item.id}
+            name={item.name}
             title={item.name}
             message={item.message}
           />
