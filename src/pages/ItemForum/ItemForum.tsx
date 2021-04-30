@@ -24,7 +24,7 @@ const ItemForum = () => {
   const [topicName, setTopicName] = useState('');
 
   useEffect(() => {
-    dispatch(getComments(topicId));
+    dispatch(getComments(Number(topicId)));
   }, [dispatch, topicId]);
 
   const currentData = useSelector(commentsSelector);
@@ -55,7 +55,7 @@ const ItemForum = () => {
             time={item.time}
             countComments={item.replies}
             countLikes={item.likes}
-            topicId={topicId}
+            topicId={Number(topicId)}
           />
         ))}
       </div>
