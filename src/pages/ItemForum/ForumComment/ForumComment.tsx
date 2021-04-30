@@ -55,7 +55,11 @@ const ForumComment: FC<Props> = ({
   return (
     <div className={b()}>
       <div className={b('avatar', { right })}>
-        <img className={b('img')} src={avatar} alt={name} />
+        <img
+          className={b('img')}
+          src={`https://ya-praktikum.tech/api/v2/resources/${avatar}`}
+          alt="name"
+        />
       </div>
       <div className={b('body', { right })}>
         <div>

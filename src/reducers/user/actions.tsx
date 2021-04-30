@@ -252,7 +252,7 @@ export const changeProfileAvatar = <S,>(
   return async (
     dispatch: Dispatch,
     getState,
-    { changeAvatar }
+    { changeAvatar, addUser }
   ): Promise<void> => {
     dispatch(userRequest());
     changeAvatar(avatar)

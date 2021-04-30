@@ -1,7 +1,7 @@
 export const getNewUser = (response, userSign) => {
-  const avatar = '';
-  if (userSign.avatar !== undefined) {
-    avatar = userSign.avatar;
+  let avatar = '';
+  if (userSign.user.avatar !== undefined) {
+    avatar = userSign.user.avatar;
   }
   return {
     id: response.data.id,
